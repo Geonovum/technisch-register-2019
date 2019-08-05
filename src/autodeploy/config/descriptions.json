@@ -1,0 +1,38 @@
+{
+	"zipfile": {
+		"titel": "Zipfile",
+		"beschrijving": "Zipfile met het complete informatiemodel"
+	},
+	"informatiemodel": {
+		"titel": "Informatiemodel",
+		"beschrijving": "UML informatiemodellen (*.EAP of *.XMI). UML modellen worden hier aangeboden voor technische doeleinden zoals het genereren van schema's/code of het hergebruiken van entiteiten uit elkaars informatiemodel."
+	},
+	"gmlapplicatieschema": {
+		"titel": "GML applicatieschema",
+		"beschrijving": "GML application schemas: XML schema's die een valide extensie van GML zijn."
+	},
+	"xmlschema": {
+		"titel": "XML schema",
+		"beschrijving": "StUF schema's en andere XML schema's"
+	},
+	"regels": {
+		"titel": "Regels",
+		"beschrijving": "Schematron schema's, waarin validatieregels aanvullend op GML of XML schema's zijn opgenomen."
+	},
+	"waardelijst": {
+		"titel": "Waardelijst",
+		"beschrijving": "Waardelijsten worden in het technisch register als downloadbaar bestand opgenomen. De inhoud van waardelijsten is in het conceptenregister te raadplegen."
+	},
+	"wsdl": {
+		"titel": "WSDL",
+		"beschrijving": "Web Services Description Language (WSDL) bestanden, die beschrijven welke services en operaties een webapplicatie aanbiedt voor het zenden/ontvangen van berichten."
+	},
+	"visualisatie": {
+		"titel": "Visualisatie",
+		"beschrijving": "Regels die specificeren hoe geografische objecten op de kaart weergegeven moeten worden, doorgaans geïmplementeerd in SLD/SE"
+	},
+	"symbool": {
+		"titel": "Symbool",
+		"beschrijving": "Symbolen / iconen voor het weergeven van geografische objecten op kaarten"
+	}
+}

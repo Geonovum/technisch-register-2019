@@ -1,0 +1,51 @@
+[
+    {
+        "id": "brt",
+        "titel": "BRT",
+        "titel_kort":"BRT",
+        "beschrijving": "Informatiemodellen Basisregistratie Topografie",
+        "beschrijving_kort": "Informatiemodellen Basisregistratie Topografie"
+    },
+	{
+        "id": "ro",
+        "titel": "RO standaarden",
+        "titel_kort":"RO standaarden",
+        "beschrijving": "De RO Standaarden bestaan uit afspraken die ervoor zorgen dat makers van plannen in heel Nederland dezelfde termen en kleuren toepassen conform de verplichting van de Wet ruimtelijke ordening. Ook zijn er technische afspraken gemaakt die ervoor zorgen dat plannen onbelemmerd digitaal uitgewisseld kunnen worden. Het geheel aan RO Standaarden omvat wettelijk verplichte standaarden en praktijkrichtlijnen. Op deze pagina vindt u de wettelijk verplichte onderdelen van de RO Standaarden, IMRO en STRI, en de facultatieve standaard PCP.",
+        "beschrijving_kort": "RO standaarden"
+    },
+	{
+        "id": "nen3610",
+        "titel": "NEN3610",
+        "titel_kort":"NEN3610",
+        "beschrijving": "Het Basismodel Geo-informatie (NEN3610)  bevat de gemeenschappelijke basis van de verschillende onderliggende sectorale informatiemodellen zoals IMGeo, IMRO, en IMKL. Voor meer informatie zie NEN3610 op de website van Geonovum",
+        "beschrijving_kort": "Basismodel Geo-informatie"
+    },
+	{
+        "id": "imgeo",
+        "titel": "Informatiemodel Grootschalige Geografie",
+        "titel_kort":"IMGeo",
+        "beschrijving": "Het informatiemodel geografie (IMGeo) is het informatiemodel horend bij de Basisregistratie Grootschalige Topografie (BGT). Het verplichte deel van IMGeo specificeert de inhoud van de BGT. Het optionele deel biedt ruimte voor het opnemen van meer objecttypen, gedetailleerdere kenmerken van objecten, en het uitwisselen van gegevens in 3D. Voor meer informatie zie BGT|IMGeo op de website van Geonovum.",
+        "beschrijving_kort": "Informatiemodel Grootschalige Geografie"
+    },
+    {
+        "id": "imkl2015",
+        "titel": "Informatiemodel Kabels en Leidingen",
+        "titel_kort":"IMKL2015",
+        "beschrijving": "IMKL2015 is ontwikkeld voor de realisatie van digitaal berichtenverkeer rond het thema utiliteitsnetten en de daarin voorkomende kabels, leidingen en leidingelementen voor de realisatie van een aantal wetten en regelingen. Met name de wet WION en de Europese regeling INSPIRE en daarin het thema Utility Networks zijn bepalend. Platform voor opmerkingen en meedenken op:  https://github.com/Geonovum/imkl2015-review",
+        "beschrijving_kort": "Informatiemodel Kabels en Leidingen"
+    },
+    {
+        "id": "imkad",
+        "titel": "Informatiemodel Kadaster",
+        "titel_kort":"IMKAD",
+        "beschrijving": "IMKAD staat voor “Informatiemodel Kadaster”. Dit informatiemodel beschrijft de gegevens die het Kadaster beheert. Het geeft inzicht in de kenmerken van de gegevens en hoe ze onderling samenhangen. IMKAD is de standaard voor het uitwisselen van Kadastergegevens.",
+        "beschrijving_kort": "Informatiemodel Kadaster"
+    },
+    {
+        "id": "imaer",
+        "titel": "Informatiemodel AERIUS",
+        "titel_kort": "IMAER",
+        "beschrijving": "Dit model beschrijft het InformatieModel AERius (IMAER). IMAER is het standaard gegevens uitwisselingsformaat van AERIUS en wordt gebruikt voor het importeren, exporteren en uitwisselen van gegevens met en tussen de verschillende AERIUS producten (o.a. Calculator, Monitor en Register). In IMAER zijn de objecten opgenomen die nodig zijn voor het berekenen van emissie en depositie van verschillende stoffen (voornamelijk stikstof gerelateerd). Voor meer informatie zie de website van AERIUS: http://www.aerius.nl/",
+        "beschrijving_kort": "Informatiemodel AERIUS"
+    }
+]

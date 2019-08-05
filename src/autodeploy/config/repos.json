@@ -1,0 +1,164 @@
+[{
+    "id": "nen3610",
+    "cluster": "",
+    "titel": "NEN3610",
+    "titel_kort": "NEN3610",
+    "beschrijving": "Het Basismodel Geo-informatie (NEN3610)  bevat de gemeenschappelijke basis van de verschillende onderliggende sectorale informatiemodellen zoals IMBRT, IMGeo, IMRO, en IMKL. Voor meer informatie zie NEN3610 op de website van Geonovum",
+    "beschrijving_kort": "Basismodel Geo-informatie",
+    "url": "https://github.com/Geonovum/NEN3610"
+  },
+  {
+    "id": "top10nl",
+    "cluster": "brt",
+    "titel": "TOP10NL",
+    "titel_kort": "TOP10NL",
+    "beschrijving": "TOP10NL is het meest gedetailleerde onderdeel van de Basisregistratie Topografie. De mate van detail is zondanig, dat de objecten gebruikt kunnen worden voor een leesbare kaart op schaalniveau 1: 10.000. TOP10NL is gemodelleerd binnen het Informatiemodel BRT (IMBRT).",
+    "beschrijving_kort": "BRT-TOP10NL product, gemodelleerd binnen IMBRT",
+    "url": "https://github.com/Kadaster/TOP10NL"
+  },
+  {
+    "id": "top50nl",
+    "cluster": "brt",
+    "titel": "TOP50NL",
+    "titel_kort": "TOP50NL",
+    "beschrijving": "TOP50NL is een onderdeel van de Basisregistratie Topografie en is afgeleid van TOP10NL. TOP50NL is vooral bedoeld voor het vervaardigen van een leesbare topografische kaart op schaalniveau 1: 50.000. TOP50NL is gemodelleerd binnen het Informatiemodel BRT (IMBRT).",
+    "beschrijving_kort": "BRT-TOP50NL product, gemodelleerd binnen IMBRT",
+    "url": "https://github.com/Kadaster/TOP50NL"
+  },
+  {
+    "id": "top100nl",
+    "cluster": "brt",
+    "titel": "TOP100NL",
+    "titel_kort": "TOP100NL",
+    "beschrijving": "TOP100NL is een onderdeel van de Basisregistratie Topografie en is afgeleid van TOP10NL. TOP100NL is vooral bedoeld voor het vervaardigen van een leesbare topografische kaart op schaalniveau 1: 100.000. TOP100NL is gemodelleerd binnen het Informatiemodel BRT (IMBRT).",
+    "beschrijving_kort": "BRT-TOP50NL product, gemodelleerd binnen IMBRT",
+    "url": "https://github.com/Kadaster/TOP100NL"
+  },
+  {
+    "id": "top250nl",
+    "cluster": "brt",
+    "titel": "TOP250NL",
+    "titel_kort": "TOP250NL",
+    "beschrijving": "TOP250NL is een onderdeel van de Basisregistratie Topografie en is afgeleid van TOP10NL. TOP250NL is vooral bedoeld voor het vervaardigen van een leesbare topografische kaart op schaalniveau 1: 250.000. TOP250NL is gemodelleerd binnen het Informatiemodel BRT (IMBRT).",
+    "beschrijving_kort": "BRT-TOP250NL product, gemodelleerd binnen IMBRT",
+    "url": "https://github.com/Kadaster/TOP250NL"
+  },
+  {
+    "id": "top500nl",
+    "cluster": "brt",
+    "titel": "TOP500NL",
+    "titel_kort": "TOP500NL",
+    "beschrijving": "TOP500NL is een onderdeel van de Basisregistratie Topografie en is afgeleid van European Regional Map (ERM). TOP500NL is vooral bedoeld voor het vervaardigen van een leesbare topografische kaart op schaalniveau 1: 500.000. TOP500NL is gemodelleerd binnen het Informatiemodel BRT (IMBRT).",
+    "beschrijving_kort": "BRT-TOP500NL product, gemodelleerd binnen IMBRT",
+    "url": "https://github.com/Kadaster/TOP500NL"
+  },
+  {
+    "id": "top1000nl",
+    "cluster": "brt",
+    "titel": "TOP1000NL",
+    "titel_kort": "TOP1000NL",
+    "beschrijving": "TOP1000NL is een onderdeel van de Basisregistratie Topografie en is afgeleid van European Regional Map (ERM). TOP1000NL is vooral bedoeld voor het vervaardigen van een leesbare topografische kaart op schaalniveau 1: 1.000.000. TOP1000NL is gemodelleerd binnen het Informatiemodel BRT (IMBRT).",
+    "beschrijving_kort": "BRT-TOP1000NL product, gemodelleerd binnen IMBRT",
+    "url": "https://github.com/Kadaster/TOP1000NL"
+  },
+  {
+    "id": "brt-algemeen",
+    "cluster": "brt",
+    "titel": "BRT-algemeen",
+    "titel_kort": "BRT-algemeen",
+    "beschrijving": "Algemene klasses binnen het Informatiemodel BRT (IMBRT). TOP10NL, TOP50NL en andere BRT producten refereren naar deze algemene klasses.",
+    "beschrijving_kort": "Algemeen applicatie schema binnen IMBRT",
+    "url": "https://github.com/Kadaster/BRT-algemeen"
+  },
+  {
+    "id": "imbrt",
+    "cluster": "brt",
+    "titel": "Informatiemodel BasisRegistratie Topografie",
+    "titel_kort": "IMBRT",
+    "beschrijving": "Informatiemodel van de BasisRegistratie Topografie (BRT). In IMBRT zijn de BRT producten TOP10NL, TOP50NL, TOP100NL en TOP250NL opgenomen en zal aangevuld worden met andere producten zoals TOP500NL en TOP1000NL. Algemene objectklasses zijn opgenomen in BRT-algemeen. Voor meer informatie zie BRT op de website van het Kadaster.",
+    "beschrijving_kort": "Informatiemodel van de BasisRegistratie Topografie (BRT).",
+    "url": "https://github.com/Kadaster/IMBRT"
+  },
+  {
+    "id": "imgeo",
+    "cluster": "",
+    "titel": "Informatiemodel Grootschalige Geografie",
+    "titel_kort": "IMGeo",
+    "beschrijving": "Het informatiemodel geografie (IMGeo) is het informatiemodel horend bij de Basisregistratie Grootschalige Topografie (BGT). Het verplichte deel van IMGeo specificeert de inhoud van de BGT. Het optionele deel biedt ruimte voor het opnemen van meer objecttypen, gedetailleerdere kenmerken van objecten, en het uitwisselen van gegevens in 3D. Voor meer informatie zie BGT|IMGeo op de website van Geonovum.",
+    "beschrijving_kort": "Informatiemodel Grootschalige Geografie",
+    "url": "https://github.com/Geonovum/IMGeo"
+  },
+  {
+    "id": "stri",
+    "cluster": "ro",
+    "titel": "Standaard Toegankelijkheid Ruimtelijke Instrumenten",
+    "titel_kort": "STRI",
+    "beschrijving": "Ieder ruimtelijk instrument is opgebouwd uit een samenhangende set bronbestanden. Voor verschillende typen instrumenten is dit een andere set. De STRI2012 geeft de vereisten voor beschikbaarstelling voor de in het IMRO gedefinieerde plannen, visies, besluiten e.d..",
+    "beschrijving_kort": "Standaard Toegankelijkheid Ruimtelijke Instrumenten",
+    "url": "https://github.com/Geonovum/stri"
+  },
+  {
+    "id": "pcp",
+    "cluster": "ro",
+    "titel": "Praktijkrichtlijn Plancontour en PDF",
+    "titel_kort": "PCP",
+    "beschrijving": "Het op basis van de objectgerichte plancontour toegang hebben tot de gescande planonderdelen wordt ook wel aangeduid als 'Plancontour & PDF'. Hiermee zijn oude ruimtelijke plannen van gemeenten, provincies en het rijk 'plat' digitaal beschikbaar en te benaderen vanuit de correcte geografische ligging van het gebied.",
+    "beschrijving_kort": "Praktijkrichtlijn Plancontour en PDF",
+    "url": "https://github.com/Geonovum/pcp"
+  },
+  {
+    "id": "imro",
+    "cluster": "ro",
+    "titel": "Informatiemodel Ruimtelijke Ordening",
+    "titel_kort": "IMRO",
+    "beschrijving": "IMRO is het informatiemodel voor het opstellen en uitwisselen van digitale plannen, visies en besluiten voor de ruimtelijke ordening (omgevingsinstrumenten). Het gaat hierbij om instrumenten zoals die voor de ruimtelijke ordening in de Wro en Wabo gedefinieerd zijn en op de verschillende administratieve niveaus gemaakt worden: gemeentelijk, provinciaal en nationaal.",
+    "beschrijving_kort": "Informatiemodel Ruimtelijke Ordening",
+    "url": "https://github.com/Geonovum/imro"
+  },
+  {
+    "id": "imropt",
+    "cluster": "ro",
+    "titel": "Informatiemodel Ruimtelijke Ordening planteksten",
+    "titel_kort": "IMROPT",
+    "beschrijving": "IMROPT is het informatiemodel voor het opstellen en uitwisselen van planteksten van digitale plannen, visies en besluiten voor de ruimtelijke ordening (omgevingsinstrumenten). Het gaat hierbij om instrumenten zoals die voor de ruimtelijke ordening in de Wro en Wabo gedefinieerd zijn en op de verschillende administratieve niveaus gemaakt worden: gemeentelijk, provinciaal en nationaal.",
+    "beschrijving_kort": "Informatiemodel Ruimtelijke Ordening Planteksten",
+    "url": "https://github.com/Geonovum/imropt"
+  },
+  {
+    "id": "imkl2015",
+    "cluster": "",
+    "titel": "Informatiemodel Kabels en Leidingen",
+    "titel_kort": "IMKL2015",
+    "beschrijving": "IMKL2015 is ontwikkeld voor de realisatie van digitaal berichtenverkeer rond het thema utiliteitsnetten en de daarin voorkomende kabels, leidingen en leidingelementen voor de realisatie van een aantal wetten en regelingen. Met name de wet WION en de Europese regeling INSPIRE en daarin het thema Utility Networks zijn bepalend. Platform voor opmerkingen en meedenken op:  https://github.com/Geonovum/imkl2015-review",
+    "beschrijving_kort": "Informatiemodel Kabels en Leidingen",
+    "url": "https://github.com/Geonovum/imkl2015"
+  },
+  {
+    "id": "imkad",
+    "cluster": "",
+    "titel": "Informatiemodel Kadaster",
+    "titel_kort": "IMKAD",
+    "beschrijving": "IMKAD staat voor “Informatiemodel Kadaster”. Dit informatiemodel beschrijft de gegevens die het Kadaster beheert. Het geeft inzicht in de kenmerken van de gegevens en hoe ze onderling samenhangen. IMKAD is de standaard voor het uitwisselen van Kadastergegevens.",
+    "beschrijving_kort": "Informatiemodel Kadaster",
+    "url": "https://github.com/Kadaster/IMKAD"
+  },
+  {
+    "id": "imaer",
+    "cluster": "",
+    "titel": "Informatiemodel AERIUS",
+    "titel_kort": "IMAER",
+    "beschrijving": "Dit model beschrijft het InformatieModel AERius (IMAER). IMAER is het standaard gegevens uitwisselingsformaat van AERIUS en wordt gebruikt voor het importeren, exporteren en uitwisselen van gegevens met en tussen de verschillende AERIUS producten (o.a. Calculator, Monitor en Register). In IMAER zijn de objecten opgenomen die nodig zijn voor het berekenen van emissie en depositie van verschillende stoffen (voornamelijk stikstof gerelateerd). Voor meer informatie zie de website van AERIUS: http://www.aerius.nl/",
+    "beschrijving_kort": "Informatiemodel AERIUS",
+    "url": "https://github.com/aerius/IMAER"
+  },
+  {
+    "id": "imoov",
+    "cluster": "",
+    "titel": "Informatiemodel Openbare Orde en Veiligheid",
+    "titel_kort": "IMOOV",
+    "beschrijving": "Het Informatiemodel voor de Openbare Orde en Veiligheid (IMOOV) maakt een soepele uitwisseling van geo-informatie mogelijk tussen brandweer, politie en andere hulpdiensten. Het informatiemodel richt zich in eerste instantie op bestrijding van drie soorten rampen: brand in grote gebouwen, verkeersongevallen op de weg en hoogwater. Actuele versie is 1.1/2008",
+    "beschrijving_kort": "Informatiemodel IMOOV",
+    "url": "https://github.com/Geonovum/IMOOV"
+  }
+
+]
