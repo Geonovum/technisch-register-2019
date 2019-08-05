@@ -1,0 +1,267 @@
+/*@import url("jquery-ui-1.10.1.min.css");*/
+
+body {
+    font: 12px Verdana,Tahoma,sans-serif;
+    color: #64686b;
+    margin: 0;
+    padding: 0;
+}
+acronym, abbr {
+    cursor: help;
+}
+a {
+    color: #027AB7;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+p {
+	font-size: 1.1em
+}
+h2 {
+	font-size:20px;
+	color:#003a6b;
+	border-bottom:1px solid #AED0EA
+}
+
+
+/* Banner styles */
+header {
+    background-image: url("https://register.geostandaarden.nl/r/img/logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 88px;
+    margin: 0;
+    min-width: 700px;
+    padding: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+#breadctxt_container {
+    position: relative;
+    top: 100px;
+	height: 1.2em;
+	padding-top: 0.4em;
+	padding-bottom: 0.3em;
+    background-color:#9ABD07;
+}
+
+#breadctxt {
+    color: #F0F0F0;
+    display: inline;
+    float: left;
+    font-family: Verdana,Tahoma,Sans-Serif;
+    font-size: 12px;
+    font-weight: bold;
+    left: 2px;
+    margin-left: 13px;
+}
+
+#breadctxt a:link {
+    border-bottom: medium none;
+    color: #F0F0F0;
+    font-weight: bold;
+    text-decoration: none;
+}
+#breadctxt a:hover {
+    border-bottom: medium none;
+    color: #F0F0F0;
+    font-weight: bold;
+    text-decoration: underline;
+}
+#breadctxt a:visited {
+    border-bottom: medium none;
+    color: #F0F0F0;
+    font-weight: bold;
+    text-decoration: underline;
+}
+#breadctxt a:active {
+    border-bottom: medium none;
+    color: #F0F0F0;
+    font-weight: bold;
+    text-decoration: none;
+}
+#topmenu_container {
+}
+#topmenu {
+    text-align:right;
+	margin-right:30px;
+	height: 1.3em;
+	font-size: 1.0em;
+	margin-top: 0.3em;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
+    float: right;
+    font-size: 11px;
+}
+#search {
+	width: 300px;
+    position: relative;
+    top: 15px;
+	float: right;	
+}
+#headline {
+    width: 100%;
+    position: relative;
+    top: 90px;
+    left:0%;
+    text-align: center;
+	height: 1.2em;
+	font-size: 1.0em;
+	margin-top: 0.3em;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
+}
+
+
+/* Content style */
+article{
+    width:950px;
+    margin:auto;
+    margin-top:50px;
+    min-height:400px
+}
+
+
+/*footer*/
+footer {
+	clear:both;
+	background-color:#9ABD07;
+	margin-top:30px
+}
+footer #footer {
+	color:#F0F0F0;
+	padding:3px;
+	font-size:11px;
+	text-align: center;
+}
+footer a:link {
+    border-bottom: medium none;
+    color: #F0F0F0;
+    text-decoration: none;
+}
+footer a:hover {
+    border-bottom: medium none;
+    color: #F0F0F0;
+    text-decoration: underline;
+}
+footer a:visited {
+    border-bottom: medium none;
+    color: #F0F0F0;
+    text-decoration: underline;
+}
+footer a:active {
+    border-bottom: medium none;
+    color: #F0F0F0;
+    text-decoration: none;
+}
+
+#container {
+  width: 100% ;
+  margin-left: auto ;
+  margin-right: auto ;
+}
+#rightcolumn {
+  float: right;
+  width:  50%;
+}
+#leftcolumn {
+  float: left;
+  width: 50%;
+}
+#rightcolumn2 {
+  float: left;
+  width:  80%;
+}
+#leftcolumn2 {
+  float: right;
+  width: 15%;
+}
+
+#mainDIV {
+    width:1200%;
+    margin:0 auto;
+}
+#mainLeftDIV {
+    float:left;
+    width:600px;
+}
+#mainCenterDIV {
+    float:left;
+    width:600px;
+}
+
+#home-container {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1200px;
+}
+
+#h1 {
+    width: 27px;
+    float:left;
+}
+
+#h2 {
+    width:100%;
+    margin-left: 27px;
+    margin-right:27px;
+    float:center;
+}
+
+#h3 {
+    width: 27px;
+    float:right;
+}
+
+/*HTML export*/
+article.exp{
+    width:950px
+}
+p span{
+    width:200px;
+    display:inline-block
+}
+div.tb_cont{
+    width:100%
+}
+div.tb_cont table{
+    /* font-size:12px;*/
+    border:1px solid #222;
+    border-collapse: collapse;
+    table-layout:auto;
+    width:100%
+}
+div.tb_cont table th{
+    background-color:#9ABD07;
+    color:#fff;
+    font-weight: bold;
+    border:1px solid #222;
+    padding:5px
+}
+div.tb_cont table tr, div.tb_cont table td{
+   border:1px solid #222 ;
+   padding:5px;
+   vertical-align: top
+}
+div.tb_cont table td{
+   word-wrap: break-word
+}
+div.tb_cont table td.deprecated{
+	color: lightgrey;
+   word-wrap: break-word
+}
+
+#topright{
+font: 10px Verdana,Helvetica,Arial,sans-serif
+}
+.ftrpw{
+	width:auto;
+	float:right;
+	line-height:20px;
+	line-height:10px
+}
+a img, a:hover img{background:#fff;border:0;text-decoration:none;color:#fff}
