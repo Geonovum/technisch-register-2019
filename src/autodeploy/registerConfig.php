@@ -23,11 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 // base path on server
-include './githubConfig.php';
+include 'githubConfig.php';
 
-$baseDir = '/var/www/html/register/';
+$baseDir = '/var/www/geostandaarden/v2';
+
 $baseURL = 'https://register.geostandaarden.nl/';
-$productionDir = 'productie';
+// for testing use this URL:
+$baseURL = 'http://35.164.200.141/v2/production/';
+
+$productionDir = 'production';
 $stagingDir = 'staging';
 $tmpDir = 'tmp';
 ?>
