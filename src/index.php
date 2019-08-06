@@ -1,5 +1,6 @@
 <?php
-// TODO: document config?
+// TODO: document config
+// how to deal with staging and production environment? Have a separate config for this?
 include './autodeploy/registerConfig.php';
 ?><html lang="nl">
  <head>
@@ -62,13 +63,13 @@ include './autodeploy/registerConfig.php';
        <span style="margin-left: 25px">
       <?php
         echo '<a href="./'.$cluster["id"].'/index.html">';
-        echo $cluster["beschrijving_kort"].'</a>' ; //BRT
+        echo $cluster["titel_kort"].'</a>' ; //BRT
         ?>
        </span>
       </p>
       <p>
        <span style="margin-left:37px; width: 100%">
-         <?= $cluster["titel"];?>
+         <?= $cluster["beschrijving_kort"];?>
        </span>
       </p>
       <?php
