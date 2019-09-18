@@ -31,9 +31,14 @@ PHP script to receive a release of a Github Webhook and copy relevant files and 
 include 'utils.php';
 include 'registerConfig.php';
 
-// security check first
-$hubSignature = $_SERVER['HTTP_X_HUB_SIGNATURE'];
+// The JSON payload as sent by Github
 $messageBody = file_get_contents('php://input');
+
+// security check first
+/*
+2019-09-18: Thijs: disable secret, not needed because we have additional configuration check
+$hubSignature = $_SERVER['HTTP_X_HUB_SIGNATURE'];
+
 list($algo, $hash) = explode('=', $hubSignature, 2) + ['', ''];
 if ($hash !== hash_hmac($algo, $messageBody, $hubSecret)) {
     header('HTTP/1.0 403 Forbidden');
@@ -41,6 +46,7 @@ if ($hash !== hash_hmac($algo, $messageBody, $hubSecret)) {
     trigger_error("403 forbidden, secret is missing", E_USER_WARNING);
     return;
 }
+*/
 
 // Prevent accidental XSS
 header('Content-type: text/plain');
@@ -66,24 +72,25 @@ $descJson = file_get_contents($descriptionsURL);
 $descriptions = json_decode($descJson, true);
 
 // process the GitHub release information
-if ($_POST['payload']) {
-    $evt = json_decode($_POST['payload']);
+// JSON format is used
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $evt = json_decode($messageBody);
     // a release (published) is supposed to be copied to production , a prerelease to staging
-    if ($evt->{'action'}=='published' || $evt->{'action'}=='prereleased') {
+    if ($evt->{'action'}=='published' || $evt->{'action'}=='prereleased' || $evt->{'action'}=='created') {
         // if the release has been published, continue creating the directories and copying files
         $envDir = $baseDir;
-        if ($evt->{'action'}=='published') {
+        // TODO: prerelease false is a better check
+        if ($evt->{'action'}=='published' || $evt->{'action'}=='created') {
           $envDir = $baseDir.'/'.$productionDir;
         } else {
           $envDir = $baseDir.'/'.$stagingDir;
         }
         $tagName = $evt->release->tag_name;
-        // TODO: check with Frank and original code versionnumber: number without a prefix v?
-        $version = str_replace('v','',$tagName);
+        // TODO: redirect to release script
         // for TR: match on URI of repo
         $repoURL = strtoupper($evt->repository->html_url);
         $repoInfo = getRepoInfoByURL($reposArr, $repoURL);
-        if ('id' in $repoInfo) {
+        // if ('id' in $repoInfo) {
           // the github zipball url does not seem to work properly, so fetch the zip based on the URL of the tagname
           // example:
           // https://github.com/thijsbrentjens/wfs-storedqueries/archive/def-hr-wpgs-20171223.zip
@@ -97,6 +104,15 @@ if ($_POST['payload']) {
               $tmpZipDir = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'_'.$tagName;
               $zip->extractTo($tmpZipDir);
               $zip->close();
+              // first: remove all existing directories of a standaard: remove any old data of the filetypes / descriptions
+              // 2019-09-18: first remove all existing data
+              foreach (array_keys($descriptions) as $fileType) {
+                  $fileTypeDir = $envDir.'/'.$fileType."/".$repoInfo['id'];
+                  // trigger_error("Removing directory: ".$fileTypeDir, E_USER_WARNING);
+                  if (file_exists($fileTypeDir)) {
+                    rmdir_recursive($fileTypeDir);
+                  }
+              }
               // zipfile is of format {repo}-{tagnumber-without-v}.zip.
               // get the name of the extracted zip from the staging dir and copy the allowed files to the repoName:
               $results = scandir($tmpZipDir);
@@ -118,9 +134,8 @@ if ($_POST['payload']) {
                             if (!file_exists($newBaseDir)) {
                                 mkdir($newBaseDir, 0777, true);
                             }
-                            $newDir = $newBaseDir.'/'.$version;
-                            mkdir($newDir, 0777, true);
-                            cpdir_recursive($tmpZipDir.'/'.$result.'/'.$subDir, $newDir);
+                            // 2019-09-18: the new directory does not include a version directory, use the BaseDir directly
+                            cpdir_recursive($tmpZipDir.'/'.$result.'/'.$subDir, $newBaseDir);
                         }
                       }
                   }
@@ -131,6 +146,7 @@ if ($_POST['payload']) {
           } else {
               trigger_error("Something went wrong in processing the zip file", E_USER_WARNING);
           }
-        }
+        // /}
+      // }
     }
 }

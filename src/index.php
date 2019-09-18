@@ -2,12 +2,61 @@
 // TODO: document config
 // how to deal with staging and production environment? Have a separate config for this?
 include './autodeploy/registerConfig.php';
+$urlparts = explode("/", $_GET['url']);
+$cluster = False;
+$indexPage = True;
+$clusterPage = False;
+$repo = False;
+$clusterData=[];
+if (count($urlparts) > 0 ) {
+  $cluster = $urlparts[0];
+  // if a cluster has 1 model, directly create an informationmodel page, otherwise create a cluster page
+  $repo = $cluster;
+  if (count($urlparts) > 1 ) {
+    if ($urlparts[1] != "index.html" ){
+      $repo = $urlparts[1];
+    }
+  }
+
+  $clustersJson = file_get_contents($clustersURL);
+  $clustersArr = json_decode($clustersJson, true);
+  foreach ($clustersArr as $cl) {
+      if ($cl["id"]==$cluster) {
+        $clusterData = $cl;
+        $indexPage = False;
+      }
+  }
+
+  // Use the length of the cluster array (excluding index.html)
+  $reposJson = file_get_contents($reposURL);
+  $reposArr = json_decode($reposJson, true);
+  $repoData = False;
+  $models = [];
+  // TODO: make more robust
+  foreach ($reposArr as $re) {
+      if ($re["id"]==$repo) {
+        $repoData = $re;
+        $indexPage = False;
+      }
+      if ($re["cluster"] == $cluster && $cluster!="" ) {
+        // get all models for the cluster
+        array_push($models, $re);
+      }
+  }
+
+  if (count($models) > 0 && $repoData == False) {
+    // no repos, but models: we are in a clusterPage
+    $clusterPage = True;
+  }
+  // find all directories for a repo?
+}
+
 ?><html lang="nl">
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
   <title>
-   Artefact Repository for Geo-Standards in the Netherlands
+   Technisch register voor geo-standaarden in Nederland
   </title>
   <!-- TODO: resources directories: ../resources/.. -->
   <link href="./resources/css/style.css" rel="stylesheet" type="text/css"/>
@@ -27,10 +76,23 @@ include './autodeploy/registerConfig.php';
      <a href="<?=$baseURL;?>">
       Technisch register voor geo-standaarden in Nederland
      </a>
+     <?php if ($cluster) { ?>
+       &gt;
+       <a href="<?=$baseURL;?><?=$cluster?>">
+        <?=$clusterData["titel_kort"];?>
+       </a>
+     <?php } ?>
+     <?php if ($repo && $repo!=$cluster) { ?>
+       &gt;
+       <a href="<?=$baseURL;?><?=$cluster."/".$repoData["id"]?>">
+        <?=$repoData["titel_kort"];?>
+       </a>
+     <?php } ?>
     </div>
    </div>
   </header>
   <article class="exp">
+   <?php if ($clusterPage || $indexPage) { ?>
    <h2>
     Technisch register voor geo-standaarden in Nederland
    </h2>
@@ -50,163 +112,85 @@ include './autodeploy/registerConfig.php';
    </p>
    <div id="container">
     <div id="leftcolumn">
-     <h3>
-      Ingang: informatiemodel
-     </h3>
+      <h3>
+       Ingang: informatiemodel
+      </h3>
     <?php
-    $clustersJson = file_get_contents($clustersURL);
-    $clustersArr = json_decode($clustersJson, true);
-    foreach ($clustersArr as $cluster) {
-      ?><p>
-       <i class="fa fa-file">
-       </i>
-       <span style="margin-left: 25px">
-      <?php
-        echo '<a href="./'.$cluster["id"].'/index.html">';
-        echo $cluster["titel_kort"].'</a>' ; //BRT
+    // if a cluster page, find the matching clusterinfo
+    // if the general index, list all clusters
+      if ($clusterPage) {
+        // only display relevant models with the proper URL
+        foreach ($models as $model) {
+          ?>
+          <p>
+             <i class="fa fa-file">
+             </i>
+             <span style="margin-left: 25px">
+            <?php
+              echo '<a href="./'.$cluster.'/'.$model["id"].'">';
+              echo $model["titel_kort"].'</a>' ; //BRT
+              ?>
+             </span>
+            </p>
+            <p>
+             <span style="margin-left:37px; width: 100%">
+               <?= $model["beschrijving_kort"];?>
+             </span>
+            </p>
+            <?php
+        }
+      } else {
+        // display all clusters, with a URL to a index.html page
+        $clustersJson = file_get_contents($clustersURL);
+        $clustersArr = json_decode($clustersJson, true);
+        foreach ($clustersArr as $cluster) {
         ?>
-       </span>
-      </p>
-      <p>
-       <span style="margin-left:37px; width: 100%">
-         <?= $cluster["beschrijving_kort"];?>
-       </span>
-      </p>
-      <?php
+        <p>
+           <i class="fa fa-file">
+           </i>
+           <span style="margin-left: 25px">
+          <?php
+            echo '<a href="./'.$cluster["id"].'/index.html">';
+            echo $cluster["titel_kort"].'</a>' ; //BRT
+            ?>
+           </span>
+          </p>
+          <p>
+           <span style="margin-left:37px; width: 100%">
+             <?= $cluster["beschrijving_kort"];?>
+           </span>
+          </p>
+        <?php
+      }
     }
     ?>
     </div>
     <div id="rightcolumn">
-     <h3>
-      Ingang: soort bestand
-     </h3>
-     <p>
-      <i class="fa fa-file-o">
-      </i>
-      <span style="margin-left: 25px">
-       <a href="<?=$baseURL;?>informatiemodel/">
-        Informatiemodel
-       </a>
-      </span>
-     </p>
-     <p>
-      <span style="margin-left:37px; width: 100%">
-       UML informatiemodellen (*.EAP of *.XMI). UML modellen worden hier aangeboden voor technische doeleinden zoals het genereren van schema's/code of het hergebruiken van entiteiten uit elkaars informatiemodel.
-      </span>
-     </p>
-     <p>
-      <i class="fa fa-file-code-o">
-      </i>
-      <span style="margin-left: 25px">
-       <a href="<?=$baseURL;?>gmlapplicatieschema/">
-        GML applicatieschema
-       </a>
-      </span>
-     </p>
-     <p>
-      <span style="margin-left:37px; width: 100%">
-       GML application schemas: XML schema's die een valide extensie van
-       <a href="http://www.opengeospatial.org/standards/gml">
-        GML
-       </a>
-       zijn.
-      </span>
-     </p>
-     <p>
-      <i class="fa fa-file-code-o">
-      </i>
-      <span style="margin-left: 25px">
-       <a href="<?=$baseURL;?>xmlschema/">
-        XML Schema
-       </a>
-      </span>
-     </p>
-     <p>
-      <span style="margin-left:37px; width: 100%">
-       <a href="https://www.gemmaonline.nl/index.php/StUF_Berichtenstandaard">
-        StUF
-       </a>
-       schema's en andere XML schema's
-      </span>
-     </p>
-     <p>
-      <i class="fa fa-file-code-o">
-      </i>
-      <span style="margin-left: 25px">
-       <a href="<?=$baseURL;?>regels/">
-        Regels
-       </a>
-      </span>
-     </p>
-     <p>
-      <span style="margin-left:37px; width: 100%">
-       <a href="http://www.schematron.com">
-        Schematron
-       </a>
-       schema's, waarin validatieregels aanvullend op GML of XML schema's zijn opgenomen.
-      </span>
-     </p>
-     <p>
-      <i class="fa fa-file-text-o">
-      </i>
-      <span style="margin-left: 25px">
-       <a href="<?=$baseURL;?>waardelijst/">
-        Waardelijst
-       </a>
-      </span>
-     </p>
-     <p>
-      <span style="margin-left:37px; width: 100%">
-       Waardelijsten worden in het technisch register als downloadbaar bestand opgenomen. De inhoud van waardelijsten is in de
-       <a href="http://definities.geostandaarden.nl">
-        conceptenbibliotheek
-       </a>
-       te raadplegen.
-      </span>
-     </p>
-     <p>
-      <i class="fa fa-file-o">
-      </i>
-      <span style="margin-left: 25px">
-       <a href="<?=$baseURL;?>wsdl/">
-        WSDL
-       </a>
-      </span>
-     </p>
-     <p>
-      <span style="margin-left:37px; width: 100%">
-       Web Services Description Language (WSDL) bestanden, die beschrijven welke services en operaties een webapplicatie aanbiedt voor het zenden/ontvangen van berichten.
-      </span>
-     </p>
-     <p>
-      <i class="fa fa-file-o">
-      </i>
-      <span style="margin-left: 25px">
-       <a href="<?=$baseURL;?>visualisatie/">
-        Visualisatie
-       </a>
-      </span>
-     </p>
-     <p>
-      <span style="margin-left:37px; width: 100%">
-       Regels die specificeren hoe geografische objecten op de kaart weergegeven moeten worden, doorgaans geïmplementeerd in SLD/SE
-      </span>
-     </p>
-     <p>
-      <i class="fa fa-file-image-o">
-      </i>
-      <span style="margin-left: 25px">
-       <a href="<?=$baseURL;?>symbool/">
-        Symbool
-       </a>
-      </span>
-     </p>
-     <p>
-      <span style="margin-left:37px; width: 100%">
-       Symbolen / iconen voor het weergeven van geografische objecten op kaarten
-      </span>
-     </p>
+      <?php
+        include "listDescriptions.php";
+      ?>
     </div>
+    <?php } else {
+      // If not, we are in a repo page, for a specific model
+      ?>
+      <div>
+      <h2>
+       <?=$clusterData["titel"];?>
+      </h2>
+      <p>
+       <?=$clusterData["beschrijving"];?>
+      </p>
+         </div>
+         <div id="container">
+           <!-- TODO: find corresponding dirs, and match descriptions. Create URLs based on clusterid  -->
+          <div id="leftcolumn">
+            <?php
+              include "listDescriptions.php";
+            ?>
+          </div>
+         </div>
+    <?php } ?>
+
    </div>
   </article>
   <footer>
