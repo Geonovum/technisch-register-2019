@@ -4,12 +4,13 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <title>Technisch register voor geo-standaarden in Nederland</title>
 <link href="../css/style.css" type="text/css" rel="stylesheet">
-<script src="../js/jquery-1.9.1.js" type="text/javascript"></script>
 </head>
 <body>
 <header>
 <div id="topmenu_container">
-<script>$("#topmenu_container").load("https://register.geostandaarden.nl/r/html/header.html");</script>
+  <?php
+   include "header.html";
+  ?>
 </div>
 <div id="breadctxt_container">
 <div id="breadctxt">
@@ -25,7 +26,9 @@
 
 </article>
 <footer>
-<script>$("footer").load("footer.html");</script>
+  <?php
+   include "footer.html";
+  ?>
 </footer>
 </body>
 </html>
