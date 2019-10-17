@@ -34,18 +34,8 @@ include 'registerConfig.php';
 // The JSON payload as sent by Github
 $messageBody = file_get_contents('php://input');
 
-// security check first
 /*
-2019-09-18: Thijs: disable secret, not needed because we have additional configuration check
-$hubSignature = $_SERVER['HTTP_X_HUB_SIGNATURE'];
-
-list($algo, $hash) = explode('=', $hubSignature, 2) + ['', ''];
-if ($hash !== hash_hmac($algo, $messageBody, $hubSecret)) {
-    header('HTTP/1.0 403 Forbidden');
-    echo "Invalid Signature!";
-    trigger_error("403 forbidden, secret is missing", E_USER_WARNING);
-    return;
-}
+2019-09-18: Thijs: disable the security check with a secret. this is not needed because we have an additional configuration check (in the corresponding Github repo)
 */
 
 // Prevent accidental XSS
@@ -56,15 +46,16 @@ $reposArr = array();
 $reposJson = file_get_contents($reposURL);
 $reposArr = json_decode($reposJson, true);
 
-function getRepoInfoByURL($reposArr, $repoUrl){
-  // get the repo information for a model, using the repoURL
-  $info;
-  foreach ($reposArr as $rp) {
-      if (strtoupper($rp['url']) == strtoupper($repoUrl)) {
-          $info = $rp;
-      }
-  }
-  return $info;
+function getRepoInfoByURL($reposArr, $repoUrl)
+{
+    // get the repo information for a model, using the repoURL
+    $info;
+    foreach ($reposArr as $rp) {
+        if (strtoupper($rp['url']) == strtoupper($repoUrl)) {
+            $info = $rp;
+        }
+    }
+    return $info;
 }
 
 // descriptions: types of artefacts
@@ -75,56 +66,53 @@ $descriptions = json_decode($descJson, true);
 // JSON format is used
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $evt = json_decode($messageBody);
-    // a release (published) is supposed to be copied to production , a prerelease to staging
+    // a release (published or created) is supposed to be copied to production, a prerelease to staging
     if ($evt->{'action'}=='published' || $evt->{'action'}=='prereleased' || $evt->{'action'}=='created') {
         // if the release has been published, continue creating the directories and copying files
         $envDir = $baseDir;
-        // TODO: prerelease false is a better check
+        // TODO: prerelease false is a better check?
         if ($evt->{'action'}=='published' || $evt->{'action'}=='created') {
-          $envDir = $baseDir.'/'.$productionDir;
+            $envDir = $baseDir.'/'.$productionDir;
         } else {
-          $envDir = $baseDir.'/'.$stagingDir;
+            $envDir = $baseDir.'/'.$stagingDir;
         }
         $tagName = $evt->release->tag_name;
         // TODO: redirect to release script
         // for TR: match on URI of repo
         $repoURL = strtoupper($evt->repository->html_url);
         $repoInfo = getRepoInfoByURL($reposArr, $repoURL);
-        // if ('id' in $repoInfo) {
-          // the github zipball url does not seem to work properly, so fetch the zip based on the URL of the tagname
-          // example:
-          // https://github.com/thijsbrentjens/wfs-storedqueries/archive/def-hr-wpgs-20171223.zip
-          $zipballUrl = $repoURL.'/archive/'.$tagName.'.zip';
-          $tempZipName = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'.zip';
-          file_put_contents($tempZipName, file_get_contents($zipballUrl));
-          $zip = new ZipArchive;
-          $res = $zip->open($tempZipName);
-          if ($res === true) {
-              // Use a staging dir to get all the documents
-              $tmpZipDir = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'_'.$tagName;
-              $zip->extractTo($tmpZipDir);
-              $zip->close();
-              // first: remove all existing directories of a standaard: remove any old data of the filetypes / descriptions
-              // 2019-09-18: first remove all existing data
-              foreach (array_keys($descriptions) as $fileType) {
-                  $fileTypeDir = $envDir.'/'.$fileType."/".$repoInfo['id'];
-                  // trigger_error("Removing directory: ".$fileTypeDir, E_USER_WARNING);
-                  if (file_exists($fileTypeDir)) {
+        // the github zipball url does not seem to work properly, so fetch the zip based on the URL of the tagname
+        // example:
+        // https://github.com/thijsbrentjens/wfs-storedqueries/archive/def-hr-wpgs-20171223.zip
+        $zipballUrl = $repoURL.'/archive/'.$tagName.'.zip';
+        $tempZipName = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'.zip';
+        file_put_contents($tempZipName, file_get_contents($zipballUrl));
+        $zip = new ZipArchive;
+        $res = $zip->open($tempZipName);
+        if ($res === true) {
+            // Use a staging dir to get all the documents
+            $tmpZipDir = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'_'.$tagName;
+            $zip->extractTo($tmpZipDir);
+            $zip->close();
+            // 2019-09-18: first remove all existing directories of a standaard. Remove any old data of the filetypes / descriptions
+            foreach (array_keys($descriptions) as $fileType) {
+                $fileTypeDir = $envDir.'/'.$fileType."/".$repoInfo['id'];
+                if (file_exists($fileTypeDir)) {
                     rmdir_recursive($fileTypeDir);
-                  }
-              }
-              // zipfile is of format {repo}-{tagnumber-without-v}.zip.
-              // get the name of the extracted zip from the staging dir and copy the allowed files to the repoName:
-              $results = scandir($tmpZipDir);
-              foreach ($results as $result) {
-                  if ($result === '.' or $result === '..') {
-                      continue;
-                  }
-                  if (is_dir($tmpZipDir. '/' . $result)) {
-                      // first dir is the repository dir. We need to copy the contents of that directory
-                      $contentDir = $tmpZipDir. '/' . $result;
-                      $subDirs = scandir($contentDir);
-                      foreach ($subDirs as $subDir) {
+                }
+            }
+            // zipfile is of format {repo}-{tagnumber-without-v}.zip.
+            // get the name of the extracted zip from the staging dir and copy the allowed files to the repoName:
+            $results = scandir($tmpZipDir);
+            foreach ($results as $result) {
+                if ($result === '.' or $result === '..') {
+                    continue;
+                }
+                if (is_dir($tmpZipDir. '/' . $result)) {
+                    // first dir is the repository dir. We need to copy the contents of that directory
+                    $contentDir = $tmpZipDir. '/' . $result;
+                    $subDirs = scandir($contentDir);
+                    foreach ($subDirs as $subDir) {
                         if ($subDir === '.' or $subDir === '..') {
                             continue;
                         }
@@ -137,16 +125,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             // 2019-09-18: the new directory does not include a version directory, use the BaseDir directly
                             cpdir_recursive($tmpZipDir.'/'.$result.'/'.$subDir, $newBaseDir);
                         }
-                      }
-                  }
-              }
-              // Remove working files
-              unlink($tempZipName);
-              rmdir_recursive($tmpZipDir);
-          } else {
-              trigger_error("Something went wrong in processing the zip file", E_USER_WARNING);
-          }
-        // /}
-      // }
+                    }
+                }
+            }
+            // Remove staging and tmp files
+            unlink($tempZipName);
+            rmdir_recursive($tmpZipDir);
+        } else {
+            trigger_error("Something went wrong in processing the zip file", E_USER_WARNING);
+        }
     }
 }

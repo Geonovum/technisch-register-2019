@@ -47,12 +47,5 @@
         "titel_kort": "IMAER",
         "beschrijving": "Dit model beschrijft het InformatieModel AERius (IMAER). IMAER is het standaard gegevens uitwisselingsformaat van AERIUS en wordt gebruikt voor het importeren, exporteren en uitwisselen van gegevens met en tussen de verschillende AERIUS producten (o.a. Calculator, Monitor en Register). In IMAER zijn de objecten opgenomen die nodig zijn voor het berekenen van emissie en depositie van verschillende stoffen (voornamelijk stikstof gerelateerd). Voor meer informatie zie de website van AERIUS: http://www.aerius.nl/",
         "beschrijving_kort": "Informatiemodel AERIUS"
-    },
-    {
-        "id": "imgolf",
-        "titel": "Informatiemodel IMGolf (test)",
-        "titel_kort": "IMGolf (test)",
-        "beschrijving": "Een informatiemodel voor test doeleinden van Geonovum",
-        "beschrijving_kort": "Informatiemodel IMGolf (test)"
     }
 ]

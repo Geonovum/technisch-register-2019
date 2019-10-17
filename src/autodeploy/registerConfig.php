@@ -32,6 +32,9 @@ $baseURL = 'https://register.geostandaarden.nl/';
 $baseURL = 'http://35.164.200.141/v2/production/';
 
 $productionDir = 'production';
+
+// NOTE: staging mechanism is not implemented yet
 $stagingDir = 'staging';
+
 $tmpDir = 'tmp';
 ?>

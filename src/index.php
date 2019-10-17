@@ -27,13 +27,14 @@ if (count($urlparts) > 0 ) {
       }
   }
 
-  // Use the length of the cluster array (excluding index.html)
+  // Process information from repos
   $reposJson = file_get_contents($reposURL);
   $reposArr = json_decode($reposJson, true);
   $repoData = False;
   $models = [];
   // TODO: make more robust
   foreach ($reposArr as $re) {
+      // if the id is the same as the repo, the information is not a cluster, but we got the repo data directly.
       if ($re["id"]==$repo) {
         $repoData = $re;
         $indexPage = False;
@@ -43,12 +44,10 @@ if (count($urlparts) > 0 ) {
         array_push($models, $re);
       }
   }
-
   if (count($models) > 0 && $repoData == False) {
     // no repos, but models: we are in a clusterPage
     $clusterPage = True;
   }
-  // find all directories for a repo?
 }
 
 ?><html lang="nl">
@@ -58,10 +57,8 @@ if (count($urlparts) > 0 ) {
   <title>
    Technisch register voor geo-standaarden in Nederland
   </title>
-  <!-- TODO: resources directories: ../resources/.. -->
   <link href="./resources/css/style.css" rel="stylesheet" type="text/css"/>
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
-  <!-- <script src="./resources/js/jquery-1.9.1.js" type="text/javascript"> -->
   </script>
  </head>
  <body>
@@ -116,8 +113,7 @@ if (count($urlparts) > 0 ) {
        Ingang: informatiemodel
       </h3>
     <?php
-    // if a cluster page, find the matching clusterinfo
-    // if the general index, list all clusters
+    // if we are building a cluster page, find the matching clusterinfo
       if ($clusterPage) {
         // only display relevant models with the proper URL
         foreach ($models as $model) {
@@ -128,7 +124,7 @@ if (count($urlparts) > 0 ) {
              <span style="margin-left: 25px">
             <?php
               echo '<a href="./'.$cluster.'/'.$model["id"].'">';
-              echo $model["titel_kort"].'</a>' ; //BRT
+              echo $model["titel_kort"].'</a>' ; // e.g. BRT
               ?>
              </span>
             </p>
@@ -140,7 +136,7 @@ if (count($urlparts) > 0 ) {
             <?php
         }
       } else {
-        // display all clusters, with a URL to a index.html page
+        // if we are building the general index, display all clusters, with a URL to an index.html page
         $clustersJson = file_get_contents($clustersURL);
         $clustersArr = json_decode($clustersJson, true);
         foreach ($clustersArr as $cluster) {
@@ -171,7 +167,8 @@ if (count($urlparts) > 0 ) {
       ?>
     </div>
     <?php } else {
-      // If not, we are in a repo page, for a specific model
+      // This means this is not a cluster page and not the index page
+      // So we are in a repo page, for a specific model. Build the information for this
       ?>
       <div>
       <h2>
@@ -182,7 +179,6 @@ if (count($urlparts) > 0 ) {
       </p>
          </div>
          <div id="container">
-           <!-- TODO: find corresponding dirs, and match descriptions. Create URLs based on clusterid  -->
           <div id="leftcolumn">
             <?php
               include "listDescriptions.php";

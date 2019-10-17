@@ -159,15 +159,5 @@
     "beschrijving": "Het Informatiemodel voor de Openbare Orde en Veiligheid (IMOOV) maakt een soepele uitwisseling van geo-informatie mogelijk tussen brandweer, politie en andere hulpdiensten. Het informatiemodel richt zich in eerste instantie op bestrijding van drie soorten rampen: brand in grote gebouwen, verkeersongevallen op de weg en hoogwater. Actuele versie is 1.1/2008",
     "beschrijving_kort": "Informatiemodel IMOOV",
     "url": "https://github.com/Geonovum/IMOOV"
-  },
-  {
-    "id": "imgolf",
-    "cluster": "",
-    "titel": "Informatiemodel IMGolf (test)",
-    "titel_kort": "IMGolf",
-    "beschrijving": "Een informatiemodel voor test doeleinden van Geonovum",
-    "beschrijving_kort": "Informatiemodel IMGolf (test)",
-    "url": "https://github.com/Geonovum/IMGolf"
   }
-
 ]

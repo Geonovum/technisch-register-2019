@@ -27,7 +27,5 @@ SOFTWARE.
 $descriptionsURL = 'https://raw.githubusercontent.com/Geonovum/technisch-register-2019/master/src/autodeploy/config/descriptions.json';
 $reposURL = 'https://raw.githubusercontent.com/Geonovum/technisch-register-2019/master/src/autodeploy/config/repos.json';
 $clustersURL = 'https://raw.githubusercontent.com/Geonovum/technisch-register-2019/master/src/autodeploy/config/cluster.json' ;
-// configure the secret in GitHub's webhook
-$hubSecret = 'My secret';
 
 ?>
