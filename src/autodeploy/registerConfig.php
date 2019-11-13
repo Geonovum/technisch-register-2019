@@ -29,7 +29,7 @@ $baseDir = '/var/www/geostandaarden/v2';
 
 $baseURL = 'https://register.geostandaarden.nl/';
 // for testing use this URL:
-$baseURL = 'http://35.164.200.141/v2/production/';
+// $baseURL = 'http://35.164.200.141/v2/production/';
 
 $productionDir = 'production';
 
