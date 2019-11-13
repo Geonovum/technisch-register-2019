@@ -22,6 +22,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 // the full URL to the json file with the pubDomains per github repo
 
 $descriptionsURL = 'https://raw.githubusercontent.com/Geonovum/technisch-register-2019/master/src/autodeploy/config/descriptions.json';

@@ -1,6 +1,5 @@
 <?php
-// TODO: document config
-// how to deal with staging and production environment? Have a separate config for this?
+// TODO: how to deal with staging and production environment? Have a separate config for this?
 include './autodeploy/registerConfig.php';
 $urlparts = explode("/", $_GET['url']);
 $cluster = False;
@@ -52,7 +51,6 @@ if (count($urlparts) > 0 ) {
 
 ?><html lang="nl">
  <head>
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
   <title>
    Technisch register voor geo-standaarden in Nederland

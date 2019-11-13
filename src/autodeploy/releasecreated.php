@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $tagName = $evt->release->tag_name;
         // TODO: redirect to release script
-        // for TR: match on URI of repo
+        // for Technisch Register: match on URI of repo
         $repoURL = strtoupper($evt->repository->html_url);
         $repoInfo = getRepoInfoByURL($reposArr, $repoURL);
         // the github zipball url does not seem to work properly, so fetch the zip based on the URL of the tagname

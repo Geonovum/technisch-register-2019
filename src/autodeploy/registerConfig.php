@@ -22,19 +22,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-// base path on server
 include 'githubConfig.php';
 
+// base path on server
 $baseDir = '/var/www/geostandaarden/v2';
 
-$baseURL = 'https://register.geostandaarden.nl/';
+// base url of register, needed for creation of some links
 // for testing use this URL:
 // $baseURL = 'http://35.164.200.141/v2/production/';
+$baseURL = 'https://register.geostandaarden.nl/';
 
+// the subdiroctory in the $baseDir where the documents for production should be published
 $productionDir = 'production';
 
 // NOTE: staging mechanism is not implemented yet
 $stagingDir = 'staging';
 
+// a writable subdirectory in the baseDir, to unpack ZIP-files from Github
 $tmpDir = 'tmp';
 ?>

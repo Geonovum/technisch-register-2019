@@ -1,0 +1,25 @@
+# Snippet of Apache 2 configuration containing the rewrite rules
+
+RewriteEngine On
+# if the directory exists, then the next rule is ignored
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# exclude existing dirs
+RewriteRule ^/(autodeploy[\/a-zA-Z0-9.]+)$ - [L]
+RewriteRule ^/resources(/|$) - [L]
+RewriteRule ^/regels(/|$) - [L]
+RewriteRule ^/informatiemodel(/|$) - [L]
+RewriteRule ^/gmlapplicatieschema(/|$) - [L]
+RewriteRule ^/xmlschema(/|$) - [L]
+RewriteRule ^/waardelijst(/|$) - [L]
+RewriteRule ^/wsdl(/|$) - [L]
+RewriteRule ^/visualisatie(/|$) - [L]
+RewriteRule ^/symbool(/|$) - [L]
+RewriteRule ^/r/($) - [L]
+
+# now rewrite dir to index.php, to handle it
+RewriteRule ^/([a-zA-Z0-9]+)/?$ /?url=$1 [R=301,L]
+RewriteRule ^/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/?$ /?url=$1/$2 [R=301,L]
+
+# add a rule for index.html as well
+RewriteRule ^/([a-zA-Z0-9]+\/index.html)$ /?url=$1 [R=301,L]

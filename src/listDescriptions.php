@@ -18,7 +18,6 @@ if ($repoData) {
     array_push($descriptions, $key);
     $descModelDir = $key."/".$repoData["id"];
     if (is_dir($descModelDir)) {
-      // echo "Dir found: ".$descModelDir."<br/>";
       ?>
       <p>
        <i class="fa fa-file-o">
