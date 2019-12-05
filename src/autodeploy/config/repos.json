@@ -159,5 +159,23 @@
     "beschrijving": "Het Informatiemodel voor de Openbare Orde en Veiligheid (IMOOV) maakt een soepele uitwisseling van geo-informatie mogelijk tussen brandweer, politie en andere hulpdiensten. Het informatiemodel richt zich in eerste instantie op bestrijding van drie soorten rampen: brand in grote gebouwen, verkeersongevallen op de weg en hoogwater. Actuele versie is 1.1/2008",
     "beschrijving_kort": "Informatiemodel IMOOV",
     "url": "https://github.com/Geonovum/IMOOV"
+  },
+  {
+    "id": "basisgeometrie",
+    "cluster": "",
+    "titel": "Basisgeometrie",
+    "titel_kort": "Basisgeometrie",
+    "beschrijving": "Het model Basisgeometrie is ontwikkeld om geometrie als eigenschap te kunnen refereren vanuit een ander informatiemodel. Op die manier kunnen geometrieën gedeeld worden door vanuit verschillende informatiemodellen naar dezelfde geometrie te verwijzen. De eerste toepassing en ook de use case waarvoor dit model is ontwikkeld is het DSO project waarin de behoefte is om geometrieën gezamenlijk te delen tussen het informatiemodel IMOW (Omgevingswet) en IMOP (Officiële Publicaties).",
+    "beschrijving_kort": "Informatiemodel Basisgeometrie",
+    "url": "https://github.com/Geonovum/Basisgeometrie"
+  },
+  {
+    "id": "tpod",
+    "cluster": "",
+    "titel": "Toepassings Profiel Omgevings Documenten",
+    "titel_kort": "TPOD",
+    "beschrijving": "Naast de generieke Standaard officiële publicaties(STOP) is er voor ieder domein een eigen toepassingsprofiel. Voor omgevingsdocumenten is dit het Toepassingsprofiel omgevingsdocumenten (TPOD).",
+    "beschrijving_kort": "Informatiemodel TPOD",
+    "url": "https://github.com/Geonovum/TPOD"
   }
 ]
