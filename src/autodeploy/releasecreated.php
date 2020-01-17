@@ -86,7 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // https://github.com/thijsbrentjens/wfs-storedqueries/archive/def-hr-wpgs-20171223.zip
         $zipballUrl = $repoURL.'/archive/'.$tagName.'.zip';
         $tempZipName = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'.zip';
-        file_put_contents($tempZipName, file_get_contents($zipballUrl));
+        // file_put_contents($tempZipName, file_get_contents($zipballUrl));
+        // Use a streaming writer to avoid the script to fail during processing of large files (like for TPOD)
+        file_put_contents($tempZipName, fopen($zipballUrl, 'r'));
         $zip = new ZipArchive;
         $res = $zip->open($tempZipName);
         if ($res === true) {
