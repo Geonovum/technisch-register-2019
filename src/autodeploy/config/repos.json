@@ -183,7 +183,7 @@
     "cluster": "",
     "titel": "Metamodel informatiemodellering",
     "titel_kort": "MIM",
-    "beschrijving": "MIM is bestemd voor informatiearchitecten en - modelleurs die informatiemodellen maken, informatieanalisten die willen weten wat de betekenis en definitie van informatieobjecten is en mensen die implementaties maken op basis van het model.”,
+    "beschrijving": "MIM is bestemd voor informatiearchitecten en - modelleurs die informatiemodellen maken, informatieanalisten die willen weten wat de betekenis en definitie van informatieobjecten is en mensen die implementaties maken op basis van het model.",
     "beschrijving_kort": "Metamodel informatiemodellering (MIM)"
     "url": "https://github.com/Geonovum/MIM"
   }
