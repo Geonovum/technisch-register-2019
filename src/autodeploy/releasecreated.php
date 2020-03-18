@@ -89,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // file_put_contents($tempZipName, file_get_contents($zipballUrl));
         // Use a streaming writer to avoid the script to fail during processing of large files (like for TPOD)
         file_put_contents($tempZipName, fopen($zipballUrl, 'r'));
+        echo "ZIP downloaded from GitHub: " .$zipballUrl ."\n";
         $zip = new ZipArchive;
         $res = $zip->open($tempZipName);
         if ($res === true) {
@@ -121,10 +122,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         if ($descriptions[$subDir]) {
                             // the repo contains a subdirectory that is an artefact, as listed in the descriptions. Copy the dir then to the corresponding artefact directory
                             $newBaseDir = $envDir.'/'.$subDir.'/'.$repoInfo['id'];
+                            echo "Resource directory: " .$subDir.'/'.$repoInfo['id']."\n";
                             if (!file_exists($newBaseDir)) {
                                 mkdir($newBaseDir, 0777, true);
                             }
                             // 2019-09-18: the new directory does not include a version directory, use the BaseDir directly
+                            echo "Sync ".$result.'/'.$subDir." directory to: ".$subDir.'/'.$repoInfo['id']."\n";
                             cpdir_recursive($tmpZipDir.'/'.$result.'/'.$subDir, $newBaseDir);
                         }
                     }
@@ -135,6 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             rmdir_recursive($tmpZipDir);
         } else {
             trigger_error("Something went wrong in processing the zip file", E_USER_WARNING);
+            echo "Something went wrong in processing the ZIP file";
         }
     }
 }
