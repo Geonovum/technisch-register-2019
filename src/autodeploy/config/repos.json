@@ -186,5 +186,14 @@
     "beschrijving": "MIM is bestemd voor informatiearchitecten en - modelleurs die informatiemodellen maken, informatieanalisten die willen weten wat de betekenis en definitie van informatieobjecten is en mensen die implementaties maken op basis van het model.",
     "beschrijving_kort": "Metamodel informatiemodellering (MIM)",
     "url": "https://github.com/Geonovum/MIM"
+  },
+  {
+    "id": "metadata",
+    "cluster": "metadata",
+    "titel": "Nederlandse metadata profielen",
+    "titel_kort": "Metadata",
+    "beschrijving": "Nederlandse metadata profielen voor datasets en services, op ISO 19115 en ISO 19119.",
+    "beschrijving_kort": "Nederlandse metadata profielen voor datasets en services",
+    "url": "https://github.com/Geonovum/metadata-schematron/"
   }
 ]
