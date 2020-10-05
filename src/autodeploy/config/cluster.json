@@ -28,10 +28,10 @@
         "beschrijving_kort": "Informatiemodel Grootschalige Geografie"
     },
     {
-        "id": "imkl2015",
+        "id": "imkl",
         "titel": "Informatiemodel Kabels en Leidingen",
-        "titel_kort":"IMKL2015",
-        "beschrijving": "IMKL2015 is ontwikkeld voor de realisatie van digitaal berichtenverkeer rond het thema utiliteitsnetten en de daarin voorkomende kabels, leidingen en leidingelementen voor de realisatie van een aantal wetten en regelingen. Met name de wet WION en de Europese regeling INSPIRE en daarin het thema Utility Networks zijn bepalend. Platform voor opmerkingen en meedenken op:  https://github.com/Geonovum/imkl2015-review",
+        "titel_kort":"IMKL",
+        "beschrijving": "IMKL is de opvolger van IMKL2015. IMKL is ontwikkeld voor de realisatie van digitaal berichtenverkeer rond het thema utiliteitsnetten en de daarin voorkomende kabels, leidingen en leidingelementen voor de realisatie van een aantal wetten en regelingen. Met name de wet WIBON en de Europese regeling INSPIRE en daarin het thema Utility Networks zijn bepalend.",
         "beschrijving_kort": "Informatiemodel Kabels en Leidingen"
     },
     {
@@ -49,20 +49,6 @@
         "beschrijving_kort": "Informatiemodel AERIUS"
     },
     {
-        "id": "tpod",
-        "titel": "Toepassings Profiel Omgevings Documenten",
-        "titel_kort": "TPOD",
-        "beschrijving": "Naast de generieke Standaard officiële publicaties(STOP) is er voor ieder domein een eigen toepassingsprofiel. Voor omgevingsdocumenten is dit het Toepassingsprofiel omgevingsdocumenten (TPOD).",
-        "beschrijving_kort": "Informatiemodel TPOD"
-    },
-    {
-        "id": "basisgeometrie",
-        "titel": "Basisgeometrie",
-        "titel_kort": "Basisgeometrie",
-        "beschrijving": "Het model Basisgeometrie is ontwikkeld om geometrie als eigenschap te kunnen refereren vanuit een ander informatiemodel. Op die manier kunnen geometrieën gedeeld worden door vanuit verschillende informatiemodellen naar dezelfde geometrie te verwijzen. De eerste toepassing en ook de use case waarvoor dit model is ontwikkeld is het DSO project waarin de behoefte is om geometrieën gezamenlijk te delen tussen het informatiemodel IMOW (Omgevingswet) en IMOP (Officiële Publicaties).",
-        "beschrijving_kort": "Informatiemodel Basisgeometrie"
-    },
-    {
       "id": "mim",
       "titel": "Metamodel informatiemodellering",
       "titel_kort": "MIM",
@@ -75,5 +61,19 @@
       "titel_kort": "Metadata",
       "beschrijving": "Nederlandse metadata profielen voor datasets en services, op ISO 19115 en ISO 19119.",
       "beschrijving_kort": "Nederlandse metadata profielen voor datasets en services"
+    },
+    {
+        "id": "tpod",
+        "titel": "Toepassings Profiel Omgevings Documenten",
+        "titel_kort": "TPOD",
+        "beschrijving": "Naast de generieke Standaard officiële publicaties(STOP) is er voor ieder domein een eigen toepassingsprofiel. Voor omgevingsdocumenten is dit het Toepassingsprofiel omgevingsdocumenten (TPOD).",
+        "beschrijving_kort": "Informatiemodel TPOD"
+    },
+    {
+        "id": "basisgeometrie",
+        "titel": "Basisgeometrie",
+        "titel_kort": "Basisgeometrie",
+        "beschrijving": "Het model Basisgeometrie is ontwikkeld om geometrie als eigenschap te kunnen refereren vanuit een ander informatiemodel. Op die manier kunnen geometrieën gedeeld worden door vanuit verschillende informatiemodellen naar dezelfde geometrie te verwijzen. De eerste toepassing en ook de use case waarvoor dit model is ontwikkeld is het DSO project waarin de behoefte is om geometrieën gezamenlijk te delen tussen het informatiemodel IMOW (Omgevingswet) en IMOP (Officiële Publicaties).",
+        "beschrijving_kort": "Informatiemodel Basisgeometrie"
     }
 ]
