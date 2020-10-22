@@ -176,7 +176,7 @@
     "titel_kort": "TPOD",
     "beschrijving": "Naast de generieke Standaard officiële publicaties(STOP) is er voor ieder domein een eigen toepassingsprofiel. Voor omgevingsdocumenten is dit het Toepassingsprofiel omgevingsdocumenten (TPOD).",
     "beschrijving_kort": "Informatiemodel TPOD",
-    "url": "https://github.com/Geonovum/TPOD"
+    "url": "https://github.com/Geonovum/TPOD-imp"
   },
   {
     "id": "basisgeometrie",
