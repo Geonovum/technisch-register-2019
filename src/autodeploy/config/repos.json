@@ -203,7 +203,7 @@
     "titel_kort": "Metadata",
     "beschrijving": "Nederlandse metadata profielen voor datasets en services, op ISO 19115 en ISO 19119.",
     "beschrijving_kort": "Nederlandse metadata profielen voor datasets en services",
-    "url": "https://github.com/Geonovum/metadata-schematron/"
+    "url": "https://github.com/Geonovum/metadata-schematron"
   },
   {
     "id": "img",

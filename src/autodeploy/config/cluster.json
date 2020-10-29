@@ -20,6 +20,13 @@
         "beschrijving": "Het Basismodel Geo-informatie (NEN3610)  bevat de gemeenschappelijke basis van de verschillende onderliggende sectorale informatiemodellen zoals IMGeo, IMRO, en IMKL. Voor meer informatie zie NEN3610 op de website van Geonovum",
         "beschrijving_kort": "Basismodel Geo-informatie"
     },
+    {
+          "id": "img",
+          "titel": "Informatiemodel Geluid",
+          "titel_kort":"IMGeluid",
+          "beschrijving": "Het informatiemodel Geluid (IMGeluid) beschrijft de semantiek van digitale bestanden voor de Centrale Voorziening Geluidgegevens",
+          "beschrijving_kort": "Informatiemodel Geluid"
+      },
 	{
         "id": "imgeo",
         "titel": "Informatiemodel Grootschalige Geografie",
