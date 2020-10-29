@@ -49,7 +49,7 @@ $reposArr = json_decode($reposJson, true);
 function getRepoInfoByURL($reposArr, $repoUrl)
 {
     // get the repo information for a model, using the repoURL
-    $info;
+    $info = false;
     foreach ($reposArr as $rp) {
         if (strtoupper($rp['url']) == strtoupper($repoUrl)) {
             $info = $rp;
@@ -81,64 +81,84 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // for Technisch Register: match on URI of repo
         $repoURL = strtoupper($evt->repository->html_url);
         $repoInfo = getRepoInfoByURL($reposArr, $repoURL);
-        // the github zipball url does not seem to work properly, so fetch the zip based on the URL of the tagname
-        // example:
-        // https://github.com/thijsbrentjens/wfs-storedqueries/archive/def-hr-wpgs-20171223.zip
-        $zipballUrl = $repoURL.'/archive/'.$tagName.'.zip';
-        $tempZipName = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'.zip';
-        // file_put_contents($tempZipName, file_get_contents($zipballUrl));
-        // Use a streaming writer to avoid the script to fail during processing of large files (like for TPOD)
-        file_put_contents($tempZipName, fopen($zipballUrl, 'r'));
-        echo "ZIP downloaded from GitHub: " .$zipballUrl ."\n";
-        $zip = new ZipArchive;
-        $res = $zip->open($tempZipName);
-        if ($res === true) {
-            // Use a staging dir to get all the documents
-            $tmpZipDir = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'_'.$tagName;
-            $zip->extractTo($tmpZipDir);
-            $zip->close();
-            // 2019-09-18: first remove all existing directories of a standaard. Remove any old data of the filetypes / descriptions
-            foreach (array_keys($descriptions) as $fileType) {
-                $fileTypeDir = $envDir.'/'.$fileType."/".$repoInfo['id'];
-                if (file_exists($fileTypeDir)) {
-                    rmdir_recursive($fileTypeDir);
-                }
-            }
-            // zipfile is of format {repo}-{tagnumber-without-v}.zip.
-            // get the name of the extracted zip from the staging dir and copy the allowed files to the repoName:
-            $results = scandir($tmpZipDir);
-            foreach ($results as $result) {
-                if ($result === '.' or $result === '..') {
-                    continue;
-                }
-                if (is_dir($tmpZipDir. '/' . $result)) {
-                    // first dir is the repository dir. We need to copy the contents of that directory
-                    $contentDir = $tmpZipDir. '/' . $result;
-                    $subDirs = scandir($contentDir);
-                    foreach ($subDirs as $subDir) {
-                        if ($subDir === '.' or $subDir === '..') {
-                            continue;
-                        }
-                        if ($descriptions[$subDir]) {
-                            // the repo contains a subdirectory that is an artefact, as listed in the descriptions. Copy the dir then to the corresponding artefact directory
-                            $newBaseDir = $envDir.'/'.$subDir.'/'.$repoInfo['id'];
-                            echo "Resource directory: " .$subDir.'/'.$repoInfo['id']."\n";
-                            if (!file_exists($newBaseDir)) {
-                                mkdir($newBaseDir, 0777, true);
-                            }
-                            // 2019-09-18: the new directory does not include a version directory, use the BaseDir directly
-                            echo "Sync ".$result.'/'.$subDir." directory to: ".$subDir.'/'.$repoInfo['id']."\n";
-                            cpdir_recursive($tmpZipDir.'/'.$result.'/'.$subDir, $newBaseDir);
-                        }
-                    }
-                }
-            }
-            // Remove staging and tmp files
-            unlink($tempZipName);
-            rmdir_recursive($tmpZipDir);
+        if ($repoInfo == false) {
+          echo "NOT SYNCED TO REGISTER. Repo information not found in repos.json or repos.json is not synced yet on Github. Fix repos.json or retry later.";
+          return;
+        }
+        if (strlen($repoInfo['id']) < 2) {
+          echo "NOT SYNCED TO REGISTER. Repo id is too short";
+          return;
         } else {
-            trigger_error("Something went wrong in processing the zip file", E_USER_WARNING);
-            echo "Something went wrong in processing the ZIP file";
+          // the github zipball url does not seem to work properly, so fetch the zip based on the URL of the tagname
+          // example:
+          // https://github.com/thijsbrentjens/wfs-storedqueries/archive/def-hr-wpgs-20171223.zip
+          $zipballUrl = $repoURL.'/archive/'.$tagName.'.zip';
+          $tempZipName = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'.zip';
+          // file_put_contents($tempZipName, file_get_contents($zipballUrl));
+          // Use a streaming writer to avoid the script to fail during processing of large files (like for TPOD)
+          file_put_contents($tempZipName, fopen($zipballUrl, 'r'));
+          echo "ZIP downloaded from GitHub: " .$zipballUrl ."\n";
+          $zip = new ZipArchive;
+          $res = $zip->open($tempZipName);
+          $date = new DateTime();
+          $backupTimeStamp = $date->getTimestamp();
+
+          if ($res === true) {
+              // Use a staging dir to get all the documents
+              $tmpZipDir = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'_'.$tagName;
+              $zip->extractTo($tmpZipDir);
+              $zip->close();
+              // 2019-09-18: first remove all existing directories of a standaard. Remove any old data of the filetypes / descriptions
+              foreach (array_keys($descriptions) as $fileType) {
+                  $fileTypeDir = $envDir.'/'.$fileType."/".$repoInfo['id'];
+                  if (file_exists($fileTypeDir)) {
+                      // rename instead of remove, to have a backup
+                      $backupDirFt = $backupDir.'/'.$fileType;
+                      $backupDirFtRepo = $backupDirFt.'/'.$repoInfo['id'];
+                      if (!file_exists($backupDirFt)) {
+                          mkdir($backupDirFt, 0777, true);
+                      }                
+                      // cpdir_recursive($fileTypeDir, $backupDirFt);
+                      // rmdir_recursive($fileTypeDir);
+                      rename($fileTypeDir, $backupDirFtRepo);
+                  }
+              }
+              // zipfile is of format {repo}-{tagnumber-without-v}.zip.
+              // get the name of the extracted zip from the staging dir and copy the allowed files to the repoName:
+              $results = scandir($tmpZipDir);
+              foreach ($results as $result) {
+                  if ($result === '.' or $result === '..') {
+                      continue;
+                  }
+                  if (is_dir($tmpZipDir. '/' . $result)) {
+                      // first dir is the repository dir. We need to copy the contents of that directory
+                      $contentDir = $tmpZipDir. '/' . $result;
+                      $subDirs = scandir($contentDir);
+                      foreach ($subDirs as $subDir) {
+                          if ($subDir === '.' or $subDir === '..') {
+                              continue;
+                          }
+                          if ($descriptions[$subDir]) {
+                              // the repo contains a subdirectory that is an artefact, as listed in the descriptions. Copy the dir then to the corresponding artefact directory
+                              $newBaseDir = $envDir.'/'.$subDir.'/'.$repoInfo['id'];
+                              echo "Resource directory: " .$subDir.'/'.$repoInfo['id']."\n";
+                              if (!file_exists($newBaseDir)) {
+                                  mkdir($newBaseDir, 0777, true);
+                              }
+                              // 2019-09-18: the new directory does not include a version directory, use the BaseDir directly
+                              echo "Sync ".$result.'/'.$subDir." directory to: ".$subDir.'/'.$repoInfo['id']."\n";
+                              cpdir_recursive($tmpZipDir.'/'.$result.'/'.$subDir, $newBaseDir);
+                          }
+                      }
+                  }
+              }
+              // Remove staging and tmp files
+              unlink($tempZipName);
+              rmdir_recursive($tmpZipDir);
+          } else {
+              trigger_error("Something went wrong in processing the zip file", E_USER_WARNING);
+              echo "Something went wrong in processing the ZIP file";
+          }
         }
     }
 }

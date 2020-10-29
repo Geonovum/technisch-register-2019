@@ -27,6 +27,8 @@ include 'githubConfig.php';
 // base path on server
 $baseDir = '/var/www/geostandaarden/v2';
 
+$backupDir = '/var/www/geostandaarden/v2/backup';
+
 // base url of register, needed for creation of some links
 // for testing use this URL:
 // $baseURL = 'http://35.164.200.141/v2/production/';
