@@ -37,3 +37,6 @@ The [Guide for registry maintainers](https://github.com/Geonovum/technisch-regis
 1. reload Apache config or start Apache
 
 (Note: we deliberately did not include the entire Apache configuration files on Github, contact us for any questions)
+
+### Tips
+If users update files via FTP, make sure these users are part of the appropriate group with write access (e.g. by adding the user to the www-data group, like `sudo usermod -aG {group} {user}`
