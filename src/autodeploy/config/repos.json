@@ -62,10 +62,10 @@
     "url": "https://github.com/Kadaster/TOP1000NL"
   },
   {
-    "id": "brt-algemeen",
+    "id": "brtalgemeen",
     "cluster": "brt",
-    "titel": "BRT-algemeen",
-    "titel_kort": "BRT-algemeen",
+    "titel": "BRTalgemeen",
+    "titel_kort": "BRTalgemeen",
     "beschrijving": "Algemene klasses binnen het Informatiemodel BRT (IMBRT). TOP10NL, TOP50NL en andere BRT producten refereren naar deze algemene klasses.",
     "beschrijving_kort": "Algemeen applicatie schema binnen IMBRT",
     "url": "https://github.com/Kadaster/BRT-algemeen"
