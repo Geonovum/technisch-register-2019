@@ -222,5 +222,14 @@
     "beschrijving": "Een beschrijving van alle objecten en attributen die maken dat annotaties voor omgevingsdocumenten in het Digitaal Stelsel Omgevingswet (DSO) terechtkomen.",
     "beschrijving_kort": "Informatiemodel Omgevingswet",
     "url": "https://github.com/Geonovum/IMOW"
+  },
+  {
+    "id": "imev",
+    "cluster": "imev",
+    "titel": "Informatiemodel Externe Veiligheid",
+    "titel_kort": "IMEV",
+    "beschrijving": "Het Informatiemodel Externe Veiligheid (IMEV) zorgt ervoor dat gegevens over gevaarlijke stoffen bij elkaar kunnen komen in het Register Externe Veiligheidsrisico's (REV) van het ministerie van Infrastructuur en Milieu. Op kaarten is vervolgens te zien waar externe risico’s van toepassing zijn.",
+    "beschrijving_kort": "Informatiemodel Externe Veiligheid",
+    "url": "https://github.com/Geonovum/imev"
   }
 ]
