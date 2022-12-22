@@ -90,19 +90,7 @@ Voeg een beschrijvende tekst toe en klik op “Commit to master”. De aangepast
 Plaatsen aanpassing op technisch register
 -----------------------------------------
 
-Nadat repos.json is aangepast dient deze op het technisch register geplaatst te worden
 
-Log in op de server van het technisch register middels secure shell toegang(ssh). Hiervoor kan je bijvoorbeeld het programma putty gebruiken.
-
-Log in met het username/wachtwoord van de beheerder ga naar de cgi-bin directory en doe een git-pull:
-
-<img src="./media/image13.png" width="604" height="292" />
-
-Bij een volgende release van een informatiemodel wordt het technisch register aangepast met de toegevoegde tekst. Geonovum is beheerder van meerdere informatiemodellen en kan in GitHub pre-releases en releases doen om dit te bereiken. Je kan ook de aanleverende beheerder vragen om zelf een pre-release en release te doen. (zie de handleiding voor beheerders informatiemodellen voor gedetailleerde instructies).
-
-Laatste en meest bewerkelijke alternatief is om het herbouwen van de pagina’s handmatig af te trappen. Dit kan door in de CGI-bin directory het commando “cat github-payload.json | python build.py” uit te voeren. Dit bouwt standaard de webpagina’s voor de staging omgeving opnieuw op. Door in het bestand github-payload.json de waarde pre-release op “false” te zetten wordt en het commando nogmaals uit te voeren wordt ook productie aangepast.
-
-N.B. de beheerder van het informatie model moet hebben ingesteld dat zijn/haar repository push berichten verstuurd naar het technisch register bij nieuwe releases. Dit staat beschreven in de handleiding voor beheerders van informatiemodellen.
 
 Aanpassen tekst website
 =======================
