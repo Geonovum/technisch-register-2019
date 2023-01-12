@@ -216,7 +216,7 @@
   },
   {
     "id": "imow",
-    "cluster": "imow",
+    "cluster": "",
     "titel": "Informatiemodel Omgevingswet",
     "titel_kort": "IMOW",
     "beschrijving": "Een beschrijving van alle objecten en attributen die maken dat annotaties voor omgevingsdocumenten in het Digitaal Stelsel Omgevingswet (DSO) terechtkomen.",
