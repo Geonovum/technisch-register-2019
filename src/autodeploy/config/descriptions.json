@@ -12,8 +12,8 @@
 		"beschrijving": "GML application schemas: XML schema's die een valide extensie van GML zijn."
 	},
 	"xmlschema": {
-		"titel": "XML schema",
-		"beschrijving": "StUF schema's en andere XML schema's"
+		"titel": "Schema",
+		"beschrijving": "StUF schema's en andere XML schema's, JSON schema's"
 	},
 	"regels": {
 		"titel": "Regels",
