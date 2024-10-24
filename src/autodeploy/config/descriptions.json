@@ -15,6 +15,10 @@
 		"titel": "Schema",
 		"beschrijving": "StUF schema's en andere XML schema's, JSON schema's"
 	},
+	"jsonschema": {
+		"titel": "JSON schema",
+		"beschrijving": "JSON schema's"
+	},
 	"regels": {
 		"titel": "Regels",
 		"beschrijving": "Schematron schema's, waarin validatieregels aanvullend op GML of XML schema's zijn opgenomen."
