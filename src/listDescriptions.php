@@ -92,6 +92,20 @@ if ($repoData) {
   <i class="fa fa-file-code-o">
   </i>
   <span style="margin-left: 25px">
+   <a href="<?=$baseURL;?>jsonschema/">
+    JSON Schema
+   </a>
+  </span>
+ </p>
+ <p>
+  <span style="margin-left:37px; width: 100%">
+   JSON schema's 
+  </span>
+ </p>
+ <p>
+  <i class="fa fa-file-code-o">
+  </i>
+  <span style="margin-left: 25px">
    <a href="<?=$baseURL;?>regels/">
     Regels
    </a>
