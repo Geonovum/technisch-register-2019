@@ -96,5 +96,12 @@
 		"titel_kort": "IMEV",
 		"beschrijving": "Het Informatiemodel Externe Veiligheid (IMEV) zorgt ervoor dat gegevens over gevaarlijke stoffen bij elkaar kunnen komen in het Register Externe Veiligheidsrisico's (REV) van het ministerie van Infrastructuur en Milieu. Op kaarten is vervolgens te zien waar externe risico’s van toepassing zijn.",
 		"beschrijving_kort": "Informatiemodel Externe Veiligheid"
-	}
+	},
+	{
+    "id": "vectortiling",
+    "titel": "Praktijkrichtlijn vector-tiling",
+    "titel_kort": "vectorTiling",
+    "beschrijving": "De Prakrijktrichtlijn specificeert hoe het beste vector tiles aangeboden kunnen worden om breed gebruik mogelijk te maken (maximale interoperabiliteit), voor Nederlandse toepassingen.",
+	"beschrijving_kort": "Praktijkrichtlijn vector-tiling"
+  }
 ]
