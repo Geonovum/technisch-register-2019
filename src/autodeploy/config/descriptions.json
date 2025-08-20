@@ -38,9 +38,5 @@
 	"symbool": {
 		"titel": "Symbool",
 		"beschrijving": "Symbolen / iconen voor het weergeven van geografische objecten op kaarten"
-	},
-	"tileMatrixSets": {
-		"titel": "Tile Matrix Sets",
-		"beschrijving": "Tiling schema's voor raster en vector tiling"
 	}
 }
