@@ -1,100 +1,107 @@
 [
-    {
-        "id": "brt",
-        "titel": "BRT",
-        "titel_kort":"BRT",
-        "beschrijving": "Informatiemodellen Basisregistratie Topografie",
-        "beschrijving_kort": "Informatiemodellen Basisregistratie Topografie"
-    },
-	{
-        "id": "ro",
-        "titel": "RO standaarden",
-        "titel_kort":"RO standaarden",
-        "beschrijving": "De RO Standaarden bestaan uit afspraken die ervoor zorgen dat makers van plannen in heel Nederland dezelfde termen en kleuren toepassen conform de verplichting van de Wet ruimtelijke ordening. Ook zijn er technische afspraken gemaakt die ervoor zorgen dat plannen onbelemmerd digitaal uitgewisseld kunnen worden. Het geheel aan RO Standaarden omvat wettelijk verplichte standaarden en praktijkrichtlijnen. Op deze pagina vindt u de wettelijk verplichte onderdelen van de RO Standaarden, IMRO en STRI, en de facultatieve standaard PCP.",
-        "beschrijving_kort": "RO standaarden"
-    },
-	{
-        "id": "nen3610",
-        "titel": "NEN3610",
-        "titel_kort":"NEN3610",
-        "beschrijving": "Het Basismodel Geo-informatie (NEN3610)  bevat de gemeenschappelijke basis van de verschillende onderliggende sectorale informatiemodellen zoals IMGeo, IMRO, en IMKL. Voor meer informatie zie NEN3610 op de website van Geonovum",
-        "beschrijving_kort": "Basismodel Geo-informatie"
-    },
-    {
-          "id": "img",
-          "titel": "Informatiemodel Geluid",
-          "titel_kort":"IMGeluid",
-          "beschrijving": "Het informatiemodel Geluid (IMGeluid) beschrijft de semantiek van digitale bestanden voor de Centrale Voorziening Geluidgegevens",
-          "beschrijving_kort": "Informatiemodel Geluid"
-      },
-	{
-        "id": "imgeo",
-        "titel": "Informatiemodel Grootschalige Geografie",
-        "titel_kort":"IMGeo",
-        "beschrijving": "Het informatiemodel geografie (IMGeo) is het informatiemodel horend bij de Basisregistratie Grootschalige Topografie (BGT). Het verplichte deel van IMGeo specificeert de inhoud van de BGT. Het optionele deel biedt ruimte voor het opnemen van meer objecttypen, gedetailleerdere kenmerken van objecten, en het uitwisselen van gegevens in 3D. Voor meer informatie zie BGT|IMGeo op de website van Geonovum.",
-        "beschrijving_kort": "Informatiemodel Grootschalige Geografie"
-    },
-    {
-        "id": "kabelsleidingen",
-        "titel": "Informatiemodel Kabels en Leidingen",
-        "titel_kort":"IMKL",
-        "beschrijving": "IMKL is ontwikkeld voor de realisatie van digitaal berichtenverkeer rond het thema utiliteitsnetten en de daarin voorkomende kabels, leidingen en leidingelementen voor de realisatie van een aantal wetten en regelingen. Met name de wet WIBON en de Europese regeling INSPIRE en daarin het thema Utility Networks zijn bepalend.",
-        "beschrijving_kort": "Informatiemodel Kabels en Leidingen"
-    },
-    {
-        "id": "imkad",
-        "titel": "Informatiemodel Kadaster",
-        "titel_kort":"IMKAD",
-        "beschrijving": "IMKAD staat voor “Informatiemodel Kadaster”. Dit informatiemodel beschrijft de gegevens die het Kadaster beheert. Het geeft inzicht in de kenmerken van de gegevens en hoe ze onderling samenhangen. IMKAD is de standaard voor het uitwisselen van Kadastergegevens.",
-        "beschrijving_kort": "Informatiemodel Kadaster"
-    },
-    {
-        "id": "imaer",
-        "titel": "Informatiemodel AERIUS",
-        "titel_kort": "IMAER",
-        "beschrijving": "Dit model beschrijft het InformatieModel AERius (IMAER). IMAER is het standaard gegevens uitwisselingsformaat van AERIUS en wordt gebruikt voor het importeren, exporteren en uitwisselen van gegevens met en tussen de verschillende AERIUS producten (o.a. Calculator, Monitor en Register). In IMAER zijn de objecten opgenomen die nodig zijn voor het berekenen van emissie en depositie van verschillende stoffen (voornamelijk stikstof gerelateerd). Voor meer informatie zie de website van AERIUS: http://www.aerius.nl/",
-        "beschrijving_kort": "Informatiemodel AERIUS"
-    },
-    {
-      "id": "mim",
-      "titel": "Metamodel informatiemodellering",
-      "titel_kort": "MIM",
-      "beschrijving": "MIM is bestemd voor informatiearchitecten en - modelleurs die informatiemodellen maken, informatieanalisten die willen weten wat de betekenis en definitie van informatieobjecten is en mensen die implementaties maken op basis van het model.",
-      "beschrijving_kort": "Metamodel informatiemodellering (MIM)"
-    },
-    {
-      "id": "metadata",
-      "titel": "Nederlandse metadata profielen",
-      "titel_kort": "Metadata",
-      "beschrijving": "Nederlandse metadata profielen voor datasets en services, op ISO 19115 en ISO 19119.",
-      "beschrijving_kort": "Nederlandse metadata profielen voor datasets en services"
-    },
-    {
-        "id": "tpod",
-        "titel": "Toepassings Profiel Omgevings Documenten",
-        "titel_kort": "TPOD",
-        "beschrijving": "Naast de generieke Standaard officiële publicaties(STOP) is er voor ieder domein een eigen toepassingsprofiel. Voor omgevingsdocumenten is dit het Toepassingsprofiel omgevingsdocumenten (TPOD).",
-        "beschrijving_kort": "Informatiemodel TPOD"
-    },
-    {
-        "id": "basisgeometrie",
-        "titel": "Basisgeometrie",
-        "titel_kort": "Basisgeometrie",
-        "beschrijving": "Het model Basisgeometrie is ontwikkeld om geometrie als eigenschap te kunnen refereren vanuit een ander informatiemodel. Op die manier kunnen geometrieën gedeeld worden door vanuit verschillende informatiemodellen naar dezelfde geometrie te verwijzen. De eerste toepassing en ook de use case waarvoor dit model is ontwikkeld is het DSO project waarin de behoefte is om geometrieën gezamenlijk te delen tussen het informatiemodel IMOW (Omgevingswet) en IMOP (Officiële Publicaties).",
-        "beschrijving_kort": "Informatiemodel Basisgeometrie"
-    },
-	{
-		"id": "imow",
-		"titel": "Informatiemodel Omgevingswet",
-		"titel_kort": "IMOW",
-		"beschrijving": "Een beschrijving van alle objecten en attributen die maken dat annotaties voor omgevingsdocumenten in het Digitaal Stelsel Omgevingswet (DSO) terechtkomen.",
-		"beschrijving_kort": "Informatiemodel Omgevingswet"
-	},
-	{
-		"id": "imev",
-		"titel": "Informatiemodel Externe Veiligheid",
-		"titel_kort": "IMEV",
-		"beschrijving": "Het Informatiemodel Externe Veiligheid (IMEV) zorgt ervoor dat gegevens over gevaarlijke stoffen bij elkaar kunnen komen in het Register Externe Veiligheidsrisico's (REV) van het ministerie van Infrastructuur en Milieu. Op kaarten is vervolgens te zien waar externe risico’s van toepassing zijn.",
-		"beschrijving_kort": "Informatiemodel Externe Veiligheid"
-	}
+  {
+    "id": "brt",
+    "titel": "BRT",
+    "titel_kort": "BRT",
+    "beschrijving": "Informatiemodellen Basisregistratie Topografie",
+    "beschrijving_kort": "Informatiemodellen Basisregistratie Topografie"
+  },
+  {
+    "id": "ro",
+    "titel": "RO standaarden",
+    "titel_kort": "RO standaarden",
+    "beschrijving": "De RO Standaarden bestaan uit afspraken die ervoor zorgen dat makers van plannen in heel Nederland dezelfde termen en kleuren toepassen conform de verplichting van de Wet ruimtelijke ordening. Ook zijn er technische afspraken gemaakt die ervoor zorgen dat plannen onbelemmerd digitaal uitgewisseld kunnen worden. Het geheel aan RO Standaarden omvat wettelijk verplichte standaarden en praktijkrichtlijnen. Op deze pagina vindt u de wettelijk verplichte onderdelen van de RO Standaarden, IMRO en STRI, en de facultatieve standaard PCP.",
+    "beschrijving_kort": "RO standaarden"
+  },
+  {
+    "id": "nen3610",
+    "titel": "NEN3610",
+    "titel_kort": "NEN3610",
+    "beschrijving": "Het Basismodel Geo-informatie (NEN3610)  bevat de gemeenschappelijke basis van de verschillende onderliggende sectorale informatiemodellen zoals IMGeo, IMRO, en IMKL. Voor meer informatie zie NEN3610 op de website van Geonovum",
+    "beschrijving_kort": "Basismodel Geo-informatie"
+  },
+  {
+    "id": "img",
+    "titel": "Informatiemodel Geluid",
+    "titel_kort": "IMGeluid",
+    "beschrijving": "Het informatiemodel Geluid (IMGeluid) beschrijft de semantiek van digitale bestanden voor de Centrale Voorziening Geluidgegevens",
+    "beschrijving_kort": "Informatiemodel Geluid"
+  },
+  {
+    "id": "imgeo",
+    "titel": "Informatiemodel Grootschalige Geografie",
+    "titel_kort": "IMGeo",
+    "beschrijving": "Het informatiemodel geografie (IMGeo) is het informatiemodel horend bij de Basisregistratie Grootschalige Topografie (BGT). Het verplichte deel van IMGeo specificeert de inhoud van de BGT. Het optionele deel biedt ruimte voor het opnemen van meer objecttypen, gedetailleerdere kenmerken van objecten, en het uitwisselen van gegevens in 3D. Voor meer informatie zie BGT|IMGeo op de website van Geonovum.",
+    "beschrijving_kort": "Informatiemodel Grootschalige Geografie"
+  },
+  {
+    "id": "kabelsleidingen",
+    "titel": "Informatiemodel Kabels en Leidingen",
+    "titel_kort": "IMKL",
+    "beschrijving": "IMKL is ontwikkeld voor de realisatie van digitaal berichtenverkeer rond het thema utiliteitsnetten en de daarin voorkomende kabels, leidingen en leidingelementen voor de realisatie van een aantal wetten en regelingen. Met name de wet WIBON en de Europese regeling INSPIRE en daarin het thema Utility Networks zijn bepalend.",
+    "beschrijving_kort": "Informatiemodel Kabels en Leidingen"
+  },
+  {
+    "id": "imkad",
+    "titel": "Informatiemodel Kadaster",
+    "titel_kort": "IMKAD",
+    "beschrijving": "IMKAD staat voor “Informatiemodel Kadaster”. Dit informatiemodel beschrijft de gegevens die het Kadaster beheert. Het geeft inzicht in de kenmerken van de gegevens en hoe ze onderling samenhangen. IMKAD is de standaard voor het uitwisselen van Kadastergegevens.",
+    "beschrijving_kort": "Informatiemodel Kadaster"
+  },
+  {
+    "id": "imaer",
+    "titel": "Informatiemodel AERIUS",
+    "titel_kort": "IMAER",
+    "beschrijving": "Dit model beschrijft het InformatieModel AERius (IMAER). IMAER is het standaard gegevens uitwisselingsformaat van AERIUS en wordt gebruikt voor het importeren, exporteren en uitwisselen van gegevens met en tussen de verschillende AERIUS producten (o.a. Calculator, Monitor en Register). In IMAER zijn de objecten opgenomen die nodig zijn voor het berekenen van emissie en depositie van verschillende stoffen (voornamelijk stikstof gerelateerd). Voor meer informatie zie de website van AERIUS: http://www.aerius.nl/",
+    "beschrijving_kort": "Informatiemodel AERIUS"
+  },
+  {
+    "id": "mim",
+    "titel": "Metamodel informatiemodellering",
+    "titel_kort": "MIM",
+    "beschrijving": "MIM is bestemd voor informatiearchitecten en - modelleurs die informatiemodellen maken, informatieanalisten die willen weten wat de betekenis en definitie van informatieobjecten is en mensen die implementaties maken op basis van het model.",
+    "beschrijving_kort": "Metamodel informatiemodellering (MIM)"
+  },
+  {
+    "id": "metadata",
+    "titel": "Nederlandse metadata profielen",
+    "titel_kort": "Metadata",
+    "beschrijving": "Nederlandse metadata profielen voor datasets en services, op ISO 19115 en ISO 19119.",
+    "beschrijving_kort": "Nederlandse metadata profielen voor datasets en services"
+  },
+  {
+    "id": "tpod",
+    "titel": "Toepassings Profiel Omgevings Documenten",
+    "titel_kort": "TPOD",
+    "beschrijving": "Naast de generieke Standaard officiële publicaties(STOP) is er voor ieder domein een eigen toepassingsprofiel. Voor omgevingsdocumenten is dit het Toepassingsprofiel omgevingsdocumenten (TPOD).",
+    "beschrijving_kort": "Informatiemodel TPOD"
+  },
+  {
+    "id": "basisgeometrie",
+    "titel": "Basisgeometrie",
+    "titel_kort": "Basisgeometrie",
+    "beschrijving": "Het model Basisgeometrie is ontwikkeld om geometrie als eigenschap te kunnen refereren vanuit een ander informatiemodel. Op die manier kunnen geometrieën gedeeld worden door vanuit verschillende informatiemodellen naar dezelfde geometrie te verwijzen. De eerste toepassing en ook de use case waarvoor dit model is ontwikkeld is het DSO project waarin de behoefte is om geometrieën gezamenlijk te delen tussen het informatiemodel IMOW (Omgevingswet) en IMOP (Officiële Publicaties).",
+    "beschrijving_kort": "Informatiemodel Basisgeometrie"
+  },
+  {
+    "id": "imow",
+    "titel": "Informatiemodel Omgevingswet",
+    "titel_kort": "IMOW",
+    "beschrijving": "Een beschrijving van alle objecten en attributen die maken dat annotaties voor omgevingsdocumenten in het Digitaal Stelsel Omgevingswet (DSO) terechtkomen.",
+    "beschrijving_kort": "Informatiemodel Omgevingswet"
+  },
+  {
+    "id": "imev",
+    "titel": "Informatiemodel Externe Veiligheid",
+    "titel_kort": "IMEV",
+    "beschrijving": "Het Informatiemodel Externe Veiligheid (IMEV) zorgt ervoor dat gegevens over gevaarlijke stoffen bij elkaar kunnen komen in het Register Externe Veiligheidsrisico's (REV) van het ministerie van Infrastructuur en Milieu. Op kaarten is vervolgens te zien waar externe risico’s van toepassing zijn.",
+    "beschrijving_kort": "Informatiemodel Externe Veiligheid"
+  },
+  {
+    "id": "nl-sbb",
+    "titel": "standaard voor het beschrijven van begrippen",
+    "titel_kort": "NL-SBB",
+    "beschrijving": "De Standaard voor het beschrijven van begrippen, biedt een kader voor het vastleggen begrippen. In het begrippenkader probeer je de betekenis van een begrip te “vangen”. Dit gebeurt door een voorkeursterm op te nemen samen met eventuele alternatieve termen, een verwoording van de betekenis in natuurlijke taal, het relateren van begrippen aan elkaar, het verwijzen naar een bron en het noemen van voorbeelden.",
+    "beschrijving_kort": "Standaard voor het beschrijven van begrippen"
+  }
 ]

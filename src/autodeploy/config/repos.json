@@ -1,4 +1,5 @@
-[{
+[
+  {
     "id": "nen3610",
     "cluster": "",
     "titel": "NEN3610",
@@ -231,5 +232,14 @@
     "beschrijving": "Het Informatiemodel Externe Veiligheid (IMEV) zorgt ervoor dat gegevens over gevaarlijke stoffen bij elkaar kunnen komen in het Register Externe Veiligheidsrisico's (REV) van het ministerie van Infrastructuur en Milieu. Op kaarten is vervolgens te zien waar externe risico’s van toepassing zijn.",
     "beschrijving_kort": "Informatiemodel Externe Veiligheid",
     "url": "https://github.com/Geonovum/imev"
+  },
+  {
+    "id": "nl-sbb",
+    "cluster": "",
+    "titel": "standaard voor het beschrijven van begrippen",
+    "titel_kort": "NL-SBB",
+    "beschrijving": "De Standaard voor het beschrijven van begrippen, biedt een kader voor het vastleggen begrippen. In het begrippenkader probeer je de betekenis van een begrip te “vangen”. Dit gebeurt door een voorkeursterm op te nemen samen met eventuele alternatieve termen, een verwoording van de betekenis in natuurlijke taal, het relateren van begrippen aan elkaar, het verwijzen naar een bron en het noemen van voorbeelden.",
+    "beschrijving_kort": "Standaard voor het beschrijven van begrippen",
+    "url": "https://github.com/Geonovum/NL-SBB"
   }
 ]

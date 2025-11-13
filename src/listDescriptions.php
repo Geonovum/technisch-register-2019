@@ -103,6 +103,21 @@ if ($repoData) {
   </span>
  </p>
  <p>
+  <p>
+  <i class="fa fa-file-code-o">
+  </i>
+  <span style="margin-left: 25px">
+   <a href="<?=$baseURL;?>shacl/">
+    SHACL
+   </a>
+  </span>
+ </p>
+ <p>
+  <span style="margin-left:37px; width: 100%">
+   SHACL
+  </span>
+ </p>
+ <p>
   <i class="fa fa-file-code-o">
   </i>
   <span style="margin-left: 25px">
