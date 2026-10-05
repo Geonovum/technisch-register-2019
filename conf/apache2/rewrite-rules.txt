@@ -20,8 +20,8 @@ RewriteRule ^/symbool(/|$) - [L]
 RewriteRule ^/r/($) - [L]
 
 # now rewrite dir to index.php, to handle it
-RewriteRule ^/([a-zA-Z0-9]+)/?$ /?url=$1 [R=301,L]
-RewriteRule ^/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/?$ /?url=$1/$2 [R=301,L]
+RewriteRule ^/([a-zA-Z0-9_-]+)/?$ /?url=$1 [R=301,L]
+RewriteRule ^/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/?$ /?url=$1/$2 [R=301,L]
 
 # add a rule for index.html as well
-RewriteRule ^/([a-zA-Z0-9]+\/index.html)$ /?url=$1 [R=301,L]
+RewriteRule ^/([a-zA-Z0-9_-]+\/index.html)$ /?url=$1 [R=301,L]
