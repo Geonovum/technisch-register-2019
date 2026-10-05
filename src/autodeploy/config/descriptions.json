@@ -19,7 +19,7 @@
     "titel": "JSON schema",
     "beschrijving": "JSON schema's"
   },
-  "SHACL": {
+  "shacl": {
     "titel": "Shapes Constraint Language",
     "beschrijving": "Een taal voor het valideren van linked data  "
   },
