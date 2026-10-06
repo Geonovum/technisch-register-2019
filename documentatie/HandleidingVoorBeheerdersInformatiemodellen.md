@@ -122,7 +122,7 @@ Je krijgt een mail zodra de aanmelding is verwerkt.
 
 Uitleg van de velden staat in de [handleiding voor beheerders van het technisch register](HandleidingVoorBeheerdersTechnischRegister.md#velden-in-reposjson). De belangrijkste regels:
 
-- `id` wordt onderdeel van alle URL's en kun je achteraf niet zonder gevolgen wijzigen. Gebruik alleen kleine letters en cijfers, minimaal 2 tekens. Vermijd koppeltekens; zie de beheerdershandleiding.
+- `id` wordt onderdeel van alle URL's en kun je achteraf niet zonder gevolgen wijzigen. Gebruik alleen kleine letters, cijfers en koppeltekens, minimaal 2 tekens (bijvoorbeeld `imgolf` of `nl-sbb`).
 - `url` moet de GitHub-URL van de repository zijn. Hoofdletters maken niet uit.
 
 ## Webhook instellen
@@ -156,7 +156,7 @@ GitHub stuurt direct een *ping*. Die verschijnt onder *Recent Deliveries* en doe
 5. Laat **Set as a pre-release uit**.
 6. Klik op **Publish release**.
 
-> **Pre-releases worden niet gepubliceerd.** Het register zet pre-releases in een aparte staging-omgeving, maar die is niet beschikbaar. Een pre-release komt dus nergens online. Wil je een concept- of consultatieversie publiceren? Maak dan een gewone release en geef de versiemap een herkenbare naam, zoals `1.0.1-cv`.
+> **Een pre-release is géén testrelease: die komt gewoon online.** GitHub meldt een pre-release aan het register ook als *published*, en het register zet de inhoud dan direct op <https://register.geostandaarden.nl>, net als bij een gewone release. Er is geen testomgeving om eerst te kijken. Publiceer daarom alleen wat online mag. Wil je een concept- of consultatieversie publiceren? Maak dan een gewone release en geef de versiemap een herkenbare naam, zoals `1.0.1-cv`.
 
 De releasetag hoeft niet overeen te komen met de versiemappen. Het register gebruikt de tag alleen om de juiste zip op te halen.
 
@@ -167,15 +167,16 @@ De releasetag hoeft niet overeen te komen met de versiemappen. Het register gebr
 
 | Response                                                                 | Betekenis                                                        |
 |--------------------------------------------------------------------------|------------------------------------------------------------------|
-| `ZIP downloaded from GitHub: …` gevolgd door `Sync <map> directory to: <map>/<id>` | Gelukt. Per gepubliceerde map staat er een regel.          |
+| `ZIP downloaded from GitHub: …` gevolgd door `Resource directory: …` en `Sync <map> directory to: <map>/<id>` | Gelukt. Per gepubliceerde map staan er twee regels.          |
 | Alleen `ZIP downloaded from GitHub: …`, geen `Sync`-regels                | De release bevat geen herkende artefactmappen. Controleer de mapnamen en of de mappen op de getagde commit staan. |
 | `NOT SYNCED TO REGISTER. Repo information not found in repos.json…`       | De repository staat niet (of met een andere URL) in `repos.json`, of de wijziging is nog niet gemerged. |
 | `NOT SYNCED TO REGISTER. Repo id is too short`                           | Het `id` in `repos.json` is korter dan 2 tekens.                 |
-| Lege response (of alleen een PHP-melding) met status 200                 | Het content type staat niet op `application/json`.               |
-| `Sync`-regels zichtbaar, maar de bestanden staan niet online             | Het was een pre-release: die gaat naar de niet-gepubliceerde staging-map. |
+| Lege response (of alleen een PHP-melding) met status 200, ook bij de levering met *published* | Het content type staat niet op `application/json`.               |
+| `ZIP downloaded from GitHub: …` gevolgd door `Something went wrong in processing the ZIP file` | De zip kon niet worden opgehaald of geopend. De eerste regel verschijnt ook als de download mislukt. Is de repository publiek en bestaat de tag? Zo ja, neem contact op met de beheerder van het register. |
+| Een levering met `action` *prereleased* toont `Sync`-regels             | Normaal bij een pre-release: deze levering zet een kopie in de niet-zichtbare staging-map. De levering met *published* zet dezelfde inhoud op productie. |
 | Status 4xx/5xx of een timeout                                            | Probleem op de server. Neem contact op met de beheerder van het register. |
 
-Een release roept de webhook soms twee keer aan (*created* en *published*). Dat is onschuldig.
+Eén release levert meerdere leveringen op, bijvoorbeeld *created*, *published* en *released* (bij een pre-release ook *prereleased*). De leveringen met *created* en *published* publiceren allebei dezelfde inhoud. Dat is onschuldig. Leveringen met andere acties krijgen een lege response.
 
 Mislukte leveringen kun je na een correctie opnieuw versturen met **Redeliver**. Dat werkt alleen voor fouten aan de kant van het register (bijvoorbeeld `repos.json`). Ontbreekt er iets in je repository, maak dan een nieuwe release: het register publiceert de inhoud van de tag, en een bestaande tag verandert niet.
 
@@ -186,8 +187,9 @@ Bekijk tot slot de pagina van je standaard: `https://register.geostandaarden.nl/
 | Symptoom                                              | Oorzaak                                                                          |
 |-------------------------------------------------------|----------------------------------------------------------------------------------|
 | Er gebeurt niets na een merge naar `main`             | Alleen een release start de publicatie.                                         |
-| Release gemaakt, maar niets online                    | Pre-release aangevinkt, verkeerd content type, of de artefactmap staat niet op de getagde branch. |
+| Release gemaakt, maar niets online                    | Verkeerd content type, de repository staat niet (goed) in `repos.json`, of de artefactmap staat niet op de getagde branch. |
+| Pre-release bedoeld als test, maar staat al online    | Een pre-release publiceert gewoon; er is geen testomgeving. Zie [Release maken](#release-maken). |
 | Oude versies zijn verdwenen                           | Ze stonden niet meer in de nieuwe release. Een release vervangt alles.          |
 | Verwijderd bestand staat nog online                   | Bekende beperking van het register; vraag de beheerder het weg te halen.        |
 | Map wordt genegeerd                                   | De mapnaam staat niet in `descriptions.json` of heeft afwijkende hoofdletters. |
-| Bestanden staan online, maar de pagina `/<id>/` werkt niet | Het `id` bevat tekens die de webserver niet doorstuurt (bijvoorbeeld een koppelteken). Neem contact op met de beheerder van het register. |
+| Bestanden staan online, maar de pagina `/<id>/` werkt niet | Het `id` ontbreekt in `cluster.json`, of bevat tekens die de webserver niet doorstuurt (alles behalve letters, cijfers, `_` en `-`). Neem contact op met de beheerder van het register. |

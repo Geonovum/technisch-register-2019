@@ -70,8 +70,7 @@ Zelfde velden als hierboven, zonder `cluster` en `url`. De titel en beschrijving
 
 ### Eisen aan het id
 
-- Gebruik **alleen kleine letters en cijfers** (`imgeo`, `top10nl`).
-- **Koppeltekens werken niet met de huidige rewrite-regels.** Die accepteren alleen `[a-zA-Z0-9]`, waardoor `/nl-sbb/index.html` en `/brt/brt-algemeen` niet naar `index.php` worden doorgestuurd en een fout geven. De bestanden zelf (`/shacl/nl-sbb/…`) zijn wel bereikbaar. Zie [Bekende beperkingen](#bekende-beperkingen) voor de oplossing.
+- Gebruik **alleen kleine letters, cijfers en koppeltekens** (`imgeo`, `top10nl`, `nl-sbb`). De rewrite-regels sturen alleen paden met `[a-zA-Z0-9_-]` door naar `index.php`; met andere tekens (zoals een punt of spatie) werkt de pagina van de standaard niet.
 - **Wijzig een id niet achteraf.** Het id zit in alle gepubliceerde URL's en mogelijk in de bestanden zelf (zoals `owl:versionIRI`).
 
 ## Taken
@@ -80,7 +79,7 @@ Zelfde velden als hierboven, zonder `cluster` en `url`. De titel en beschrijving
 
 1. Ontvang de gegevens via de helpdesk of als pull request op deze repository.
 2. Controleer:
-   - Is het `id` uniek, minimaal 2 tekens, en alleen kleine letters en cijfers?
+   - Is het `id` uniek, minimaal 2 tekens, en alleen kleine letters, cijfers en koppeltekens?
    - Is `url` de juiste GitHub-URL?
    - Is `beschrijving_kort` maximaal 58 tekens?
    - Is de JSON geldig? Let op komma's: `python3 -m json.tool repos.json` of de validatie van je editor.
@@ -116,7 +115,7 @@ Zie [Server](#server). Nodig na elke wijziging in `src/` (behalve de JSON-config
 |------------------------|---------------------------------------------------------------|
 | Basismap (`$baseDir`)  | `/var/www/geostandaarden/v2`                                  |
 | DocumentRoot           | `/var/www/geostandaarden/v2/production`                       |
-| Staging                | `/var/www/geostandaarden/v2/staging` (wordt gevuld door pre-releases, maar niet geserveerd) |
+| Staging                | `/var/www/geostandaarden/v2/staging` (krijgt een kopie van pre-releases, maar wordt niet geserveerd; zie [Wat de webhook precies doet](#wat-de-webhook-precies-doet)) |
 | Tijdelijke map         | `/var/www/geostandaarden/v2/tmp` (moet schrijfbaar zijn voor PHP) |
 | Backups                | `/var/www/geostandaarden/v2/backup/<type>/<id>`               |
 | Webhook                | `https://register.geostandaarden.nl/autodeploy/releasecreated.php` |
@@ -159,7 +158,7 @@ De rewrite-regels sturen `/<x>/`, `/<x>/<y>/` en `/<x>/index.html` door naar `/?
 `src/autodeploy/releasecreated.php`, bij een POST van GitHub:
 
 1. Leest de body als JSON. Daarom moet de webhook op content type `application/json` staan. Er is geen controle op een secret (bewust uitgezet in 2019; de controle is dat de repository in `repos.json` moet staan).
-2. Reageert alleen op `action` = `published`, `created` (→ `production/`) of `prereleased` (→ `staging/`).
+2. Reageert alleen op `action` = `published`, `created` (→ `production/`) of `prereleased` (→ `staging/`). **Let op:** GitHub stuurt bij het publiceren van een pre-release óók een levering met `published` (en meestal `created`), niet alleen `prereleased`. Het script kijkt alleen naar `action` en niet naar `release.prerelease`, dus **een pre-release komt gewoon op productie**, met daarnaast een kopie in `staging/`.
 3. Zoekt `repository.html_url` op in `repos.json` (hoofdletterongevoelig). Niet gevonden: `NOT SYNCED TO REGISTER…`.
 4. Downloadt `<repo-url>/archive/<tag>.zip` naar `tmp/` en pakt die uit.
 5. Verplaatst voor **elk** artefacttype de bestaande map `<type>/<id>/` naar `backup/<type>/<id>`.
@@ -172,10 +171,9 @@ De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliver
 
 | Beperking | Gevolg | Mogelijke oplossing |
 |-----------|--------|---------------------|
-| Rewrite-regels accepteren geen koppelteken (`[a-zA-Z0-9]+`). | Pagina's van `nl-sbb` en `brt/brt-algemeen` werken niet. | Gebruik `[a-zA-Z0-9-]+` in de drie doorstuurregels, op de server en in `rewrite-rules.txt`. |
-| `zipfile` staat in `descriptions.json`, maar heeft geen uitzondering in de rewrite-regels. | `/zipfile/` en `/zipfile/<id>/` sturen door naar `index.php` in plaats van een directory listing te tonen. Bestanden dieper in de map zijn wel bereikbaar. | Voeg `RewriteRule ^/zipfile(/|$) - [L]` toe. |
+| `zipfile` staat in `descriptions.json`, maar heeft geen uitzondering in de rewrite-regels. | `/zipfile/` en `/zipfile/<id>/` sturen door naar `index.php` in plaats van een directory listing te tonen. Bestanden dieper in de map zijn wel bereikbaar. | Voeg `RewriteRule ^/zipfile(/\|$) - [L]` toe. |
 | Backup via `rename()` mislukt als `backup/<type>/<id>` al bestaat (vanaf de tweede vervanging). | De oude map blijft staan en wordt overschreven. Bestanden die uit de repository zijn verwijderd, blijven online. | Backupmap met tijdstempel gebruiken (de variabele `$backupTimeStamp` bestaat al maar wordt niet gebruikt), of de oude backup eerst verwijderen. Tot die tijd: verwijderde bestanden handmatig van de server halen. |
-| Staging wordt gevuld maar niet geserveerd. | Pre-releases komen nergens online. | Beheerders adviseren gewone releases te gebruiken, of staging als aparte vhost inrichten. |
+| Pre-releases worden niet als test behandeld. GitHub stuurt bij een pre-release ook `published`, en het script kijkt alleen naar `action`. | Een pre-release komt direct op productie. Staging krijgt een kopie maar is nergens zichtbaar, dus een testrelease bestaat niet. | In `releasecreated.php` op `release.prerelease` controleren in plaats van alleen op `action` (zie de TODO in de code), en staging als aparte vhost inrichten. Tot die tijd: beheerders laten weten dat een pre-release gewoon publiceert. |
 | De `RewriteCond`-regels gelden alleen voor de eerstvolgende `RewriteRule` (`autodeploy`). | Bestaande mappen worden niet automatisch uitgezonderd; elk artefacttype heeft een eigen uitzondering nodig. | Bekend gedrag van `mod_rewrite`; bij nieuwe artefacttypen altijd een uitzondering toevoegen. |
 | De lijst artefacttypen op de hoofdpagina staat vast in `listDescriptions.php`. | Een nieuw type verschijnt daar niet vanzelf. | Lijst genereren uit `descriptions.json`, zoals al gebeurt op de pagina's per standaard. |
 
@@ -183,7 +181,7 @@ De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliver
 
 | Symptoom | Waar kijken |
 |----------|-------------|
-| Pagina `/<id>/index.html` geeft een fout | Bevat het id een koppelteken of ander teken? → rewrite-regels. Staat het id in `cluster.json`? |
+| Pagina `/<id>/index.html` geeft een fout | Bevat het id een ander teken dan letters, cijfers, `_` of `-`? → rewrite-regels. Staat het id in `cluster.json`? |
 | Standaard staat niet op de hoofdpagina | Ontbreekt de entry in `cluster.json`? |
 | Release publiceert niets | *Recent Deliveries* van de webhook bekijken; zie de tabel in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#controleren-of-het-gelukt-is). |
 | `/<type>/` toont de hoofdpagina in plaats van een lijst | Ontbrekende uitzondering in de rewrite-regels. |
