@@ -10,8 +10,8 @@ Voor beheerders van een standaard (hoe publiceer ik mijn bestanden?) zie de [han
 GitHub-repository van een standaard           register.geostandaarden.nl (Apache + PHP)
 ┌───────────────────────────┐   release   ┌──────────────────────────────────────────┐
 │ shacl/1.0.0/...           │ ──webhook──▶│ autodeploy/releasecreated.php            │
-│ xmlschema/2.1/...         │             │  1. zoekt repo op in repos.json          │
-└───────────────────────────┘             │  2. downloadt <repo>/archive/<tag>.zip   │
+│ xmlschema/2.1/...         │ (gesigneerd)│  1. controleert handtekening, zoekt repo │
+└───────────────────────────┘             │  2. downloadt de zip van de tag          │
                                           │  3. kopieert bekende mappen naar         │
 technisch-register-2019 (deze repo)       │     production/<type>/<id>/              │
 ┌───────────────────────────┐   leest     │                                          │
@@ -85,7 +85,7 @@ Zelfde velden als hierboven, zonder `cluster` en `url`. De titel en beschrijving
    - Is de JSON geldig? Let op komma's: `python3 -m json.tool repos.json` of de validatie van je editor.
 3. Voeg de entry toe aan `repos.json` en, bij een losse standaard, ook aan `cluster.json`.
 4. Merge naar `master`. De configuratie is daarna direct actief.
-5. Laat de beheerder van de standaard weten dat de webhook en een release kunnen volgen, en verwijs naar de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md).
+5. Laat de beheerder van de standaard weten dat de webhook en een release kunnen volgen, en verwijs naar de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md). Geef het [webhookgeheim](#webhookgeheim) door via een veilig kanaal, niet via een issue of pull request.
 6. Controleer na de eerste release de pagina `/<id>/index.html` en de bestanden onder `/<type>/<id>/`.
 
 Een pull request beoordelen gaat via **Pull requests → Files changed** op GitHub. Akkoord: **Merge pull request**. Niet akkoord: geef commentaar en **Close pull request**.
@@ -115,13 +115,27 @@ Zie [Server](#server). Nodig na elke wijziging in `src/` (behalve de JSON-config
 |------------------------|---------------------------------------------------------------|
 | Basismap (`$baseDir`)  | `/var/www/geostandaarden/v2`                                  |
 | DocumentRoot           | `/var/www/geostandaarden/v2/production`                       |
-| Staging                | `/var/www/geostandaarden/v2/staging` (krijgt een kopie van pre-releases, maar wordt niet geserveerd; zie [Wat de webhook precies doet](#wat-de-webhook-precies-doet)) |
+| Staging                | `/var/www/geostandaarden/v2/staging` (krijgt pre-releases, maar wordt niet geserveerd) |
 | Tijdelijke map         | `/var/www/geostandaarden/v2/tmp` (moet schrijfbaar zijn voor PHP) |
 | Backups                | `/var/www/geostandaarden/v2/backup/<type>/<id>`               |
+| Webhookgeheim          | `/var/www/geostandaarden/v2/webhook-secret` (buiten de DocumentRoot, niet in git; zie [Webhookgeheim](#webhookgeheim)) |
 | Webhook                | `https://register.geostandaarden.nl/autodeploy/releasecreated.php` |
 | Software               | Apache 2 met `mod_rewrite`, PHP 7.2+ met `ZipArchive` en `allow_url_fopen` |
 
-Instellingen staan in `src/autodeploy/registerConfig.php` (paden, basis-URL) en `src/autodeploy/githubConfig.php` (URL's van de configuratiebestanden).
+Instellingen staan in `src/autodeploy/registerConfig.php` (paden, basis-URL, locatie van het webhookgeheim) en `src/autodeploy/githubConfig.php` (URL's van de configuratiebestanden).
+
+### Webhookgeheim
+
+Het webhookscript verwerkt alleen berichten die GitHub met het gedeelde webhookgeheim heeft ondertekend (header `X-Hub-Signature-256`). Zonder geldig geheimbestand weigert het script alles (status 500), zodat een vergeten configuratie nooit tot een open webhook leidt.
+
+Instellen of vervangen:
+
+1. Maak een lang willekeurig geheim aan, bijvoorbeeld met `openssl rand -hex 32`.
+2. Zet het als enige regel in `/var/www/geostandaarden/v2/webhook-secret`. Maak het bestand alleen leesbaar voor de webserver: eigenaar `root`, groep `www-data`, rechten `640`.
+3. Vul hetzelfde geheim in bij *Secret* van de webhook in elke bronrepository, of laat de beheerders dat doen. Geef het door via een veilig kanaal.
+4. Controleer per repository: *Settings → Webhooks →* webhook *→ Recent Deliveries → Redeliver* op de *ping* moet `pong: …` opleveren.
+
+Bij een vervanging werken de webhooks van repositories die het nieuwe geheim nog niet hebben niet meer (status 401) tot het daar is bijgewerkt. Alle bronrepositories delen één geheim. Wie het kent, kan dus berichten namens elke geregistreerde repository sturen, maar daarmee alleen bestaande tags van die repository laten publiceren.
 
 ### Code uitrollen
 
@@ -157,13 +171,19 @@ De rewrite-regels sturen `/<x>/`, `/<x>/<y>/` en `/<x>/index.html` door naar `/?
 
 `src/autodeploy/releasecreated.php`, bij een POST van GitHub:
 
-1. Leest de body als JSON. Daarom moet de webhook op content type `application/json` staan. Er is geen controle op een secret (bewust uitgezet in 2019; de controle is dat de repository in `repos.json` moet staan).
-2. Reageert alleen op `action` = `published`, `created` (→ `production/`) of `prereleased` (→ `staging/`). **Let op:** GitHub stuurt bij het publiceren van een pre-release óók een levering met `published` (en meestal `created`), niet alleen `prereleased`. Het script kijkt alleen naar `action` en niet naar `release.prerelease`, dus **een pre-release komt gewoon op productie**, met daarnaast een kopie in `staging/`.
-3. Zoekt `repository.html_url` op in `repos.json` (hoofdletterongevoelig). Niet gevonden: `NOT SYNCED TO REGISTER…`.
-4. Downloadt `<repo-url>/archive/<tag>.zip` naar `tmp/` en pakt die uit.
-5. Verplaatst voor **elk** artefacttype de bestaande map `<type>/<id>/` naar `backup/<type>/<id>`.
-6. Kopieert elke map in de root van de release waarvan de naam een sleutel in `descriptions.json` is naar `<type>/<id>/`.
-7. Ruimt de tijdelijke bestanden op.
+1. Controleert de handtekening (`X-Hub-Signature-256`) met het [webhookgeheim](#webhookgeheim). Ontbreekt die of klopt die niet: status 401. Andere methoden dan POST: status 405.
+2. Beantwoordt een *ping* met `pong: …` en negeert andere events dan `release`.
+3. Leest de body als JSON. Daarom moet de webhook op content type `application/json` staan; anders status 400.
+4. Kiest de omgeving op basis van `action` én `release.prerelease`:
+   - `released` en geen pre-release → `production/`. Dit wordt eenmaal verstuurd bij een gewone release, en ook als een pre-release later een gewone release wordt.
+   - `published` en wel een pre-release → `staging/`.
+   - Alle andere acties (waaronder `created`, ook verstuurd bij het opslaan van een concept) → `Ignored release action: …`.
+5. Controleert de tagnaam: alleen letters, cijfers, `.`, `_` en `-`; anders status 400.
+6. Zoekt `repository.html_url` op in `repos.json` (hoofdletterongevoelig). Niet gevonden: `NOT SYNCED TO REGISTER…`.
+7. Downloadt `<url uit repos.json>/archive/refs/tags/<tag>.zip` naar `tmp/` en pakt die uit. De URL komt uit `repos.json`, niet uit het bericht, en via `refs/tags/` zijn alleen tags van die repository zelf bereikbaar, geen commits of tags uit forks. Mislukt de download: status 502.
+8. Verplaatst voor **elk** artefacttype de bestaande map `<type>/<id>/` naar `backup/<type>/<id>`.
+9. Kopieert elke map in de root van de release waarvan de naam een sleutel in `descriptions.json` is naar `<type>/<id>/`.
+10. Ruimt de tijdelijke bestanden op.
 
 De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliveries*) vermeldt de gedownloade zip en elke gesynchroniseerde map. Een overzicht van responses en hun betekenis staat in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#controleren-of-het-gelukt-is).
 
@@ -173,7 +193,8 @@ De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliver
 |-----------|--------|---------------------|
 | `zipfile` staat in `descriptions.json`, maar heeft geen uitzondering in de rewrite-regels. | `/zipfile/` en `/zipfile/<id>/` sturen door naar `index.php` in plaats van een directory listing te tonen. Bestanden dieper in de map zijn wel bereikbaar. | Voeg `RewriteRule ^/zipfile(/\|$) - [L]` toe. |
 | Backup via `rename()` mislukt als `backup/<type>/<id>` al bestaat (vanaf de tweede vervanging). | De oude map blijft staan en wordt overschreven. Bestanden die uit de repository zijn verwijderd, blijven online. | Backupmap met tijdstempel gebruiken (de variabele `$backupTimeStamp` bestaat al maar wordt niet gebruikt), of de oude backup eerst verwijderen. Tot die tijd: verwijderde bestanden handmatig van de server halen. |
-| Pre-releases worden niet als test behandeld. GitHub stuurt bij een pre-release ook `published`, en het script kijkt alleen naar `action`. | Een pre-release komt direct op productie. Staging krijgt een kopie maar is nergens zichtbaar, dus een testrelease bestaat niet. | In `releasecreated.php` op `release.prerelease` controleren in plaats van alleen op `action` (zie de TODO in de code), en staging als aparte vhost inrichten. Tot die tijd: beheerders laten weten dat een pre-release gewoon publiceert. |
+| Staging wordt gevuld maar niet geserveerd. | Pre-releases komen nergens online; er is geen testomgeving. | Staging als aparte vhost inrichten. |
+| Alle bronrepositories delen één webhookgeheim. | Wie het geheim kent, kan publicatie van een bestaande tag van elke geregistreerde repository starten. | Een geheim per repository, bijvoorbeeld in een bestand per `id`. |
 | De `RewriteCond`-regels gelden alleen voor de eerstvolgende `RewriteRule` (`autodeploy`). | Bestaande mappen worden niet automatisch uitgezonderd; elk artefacttype heeft een eigen uitzondering nodig. | Bekend gedrag van `mod_rewrite`; bij nieuwe artefacttypen altijd een uitzondering toevoegen. |
 | De lijst artefacttypen op de hoofdpagina staat vast in `listDescriptions.php`. | Een nieuw type verschijnt daar niet vanzelf. | Lijst genereren uit `descriptions.json`, zoals al gebeurt op de pagina's per standaard. |
 
@@ -186,7 +207,9 @@ De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliver
 | Release publiceert niets | *Recent Deliveries* van de webhook bekijken; zie de tabel in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#controleren-of-het-gelukt-is). |
 | `/<type>/` toont de hoofdpagina in plaats van een lijst | Ontbrekende uitzondering in de rewrite-regels. |
 | Wijziging in `repos.json` lijkt niet actief | Gemerged naar `master`? Enkele minuten wachten (cache van GitHub). |
-| Download van de zip mislukt | `allow_url_fopen` aan? Is `tmp/` schrijfbaar? Is de repository publiek? Het register haalt de zip zonder authenticatie op, dus private repositories werken niet. |
+| Levering geeft status 401 | Webhookgeheim in de bronrepository ontbreekt of wijkt af van `webhook-secret` op de server. |
+| Levering geeft status 500 `… webhook secret is not configured …` | `webhook-secret` ontbreekt, is leeg of is niet leesbaar voor de webserver. |
+| Download van de zip mislukt (status 502) | Bestaat de tag in de repository zelf? `allow_url_fopen` aan? Is `tmp/` schrijfbaar? Is de repository publiek? Het register haalt de zip zonder authenticatie op, dus private repositories werken niet. |
 
 ## Nog te documenteren
 

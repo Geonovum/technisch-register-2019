@@ -42,4 +42,9 @@ $stagingDir = 'staging';
 
 // a writable subdirectory in the baseDir, to unpack ZIP-files from Github
 $tmpDir = 'tmp';
+
+// file containing the shared secret of the GitHub webhooks (only the secret, on one line).
+// Keep it outside the DocumentRoot and out of git, readable for the webserver only.
+// The webhook rejects all requests when this file is missing or empty.
+$webhookSecretFile = $baseDir.'/webhook-secret';
 ?>

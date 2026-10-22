@@ -22,7 +22,8 @@ Voordat je een release maakt:
 - [ ] De bestanden staan in de root van de repository in een map met de naam van een artefacttype (zie [Mappenstructuur](#mappenstructuur)).
 - [ ] Die mappen staan op de branch of commit waarvan je de release maakt (meestal `main`).
 - [ ] De repository staat in `repos.json`, met precies de juiste GitHub-URL, en de wijziging is gemerged.
-- [ ] De webhook is ingesteld met content type `application/json` en het event *Releases*.
+- [ ] De webhook is ingesteld met content type `application/json`, het webhookgeheim en het event *Releases*.
+- [ ] De tag bestaat alleen uit letters, cijfers, punten, koppeltekens en underscores (bijvoorbeeld `v1.0.1`).
 - [ ] Je maakt een gewone release, geen pre-release.
 
 ## Mappenstructuur
@@ -136,47 +137,54 @@ Hiervoor heb je admin-rechten op de repository nodig.
    |------------------------|--------------------------------------------------------------|
    | Payload URL            | `https://register.geostandaarden.nl/autodeploy/releasecreated.php` |
    | Content type           | **`application/json`** (niet de standaardwaarde!)            |
-   | Secret                 | leeg laten                                                   |
+   | Secret                 | het webhookgeheim van het register (vraag het aan de beheerder van het register) |
    | SSL verification       | Enable                                                       |
    | Which events…          | *Let me select individual events* → alleen **Releases** aanvinken (en *Pushes* uitvinken) |
    | Active                 | aangevinkt                                                   |
 
 3. Klik op **Add webhook**.
 
-GitHub stuurt direct een *ping*. Die verschijnt onder *Recent Deliveries* en doet verder niets.
+GitHub stuurt direct een *ping*. Die verschijnt onder *Recent Deliveries*. Is alles goed ingesteld, dan is de response `pong: the webhook and its secret are configured correctly`. Bij status 401 klopt het geheim niet.
 
-> Laat je het content type op `application/x-www-form-urlencoded` staan, dan kan het register het bericht niet lezen. Er wordt dan niets gepubliceerd en je krijgt geen foutmelding.
+> Het register accepteert alleen berichten die met het webhookgeheim zijn ondertekend. Zonder geheim, of met een verkeerd geheim, wordt er niets gepubliceerd. Deel het geheim niet verder en zet het nooit in een repository. Heb je het vervangen of vermoed je dat het is uitgelekt, neem dan contact op met de beheerder van het register.
+
+> Laat je het content type op `application/x-www-form-urlencoded` staan, dan kan het register het bericht niet lezen en wordt er niets gepubliceerd (status 400).
 
 ## Release maken
 
 1. Zorg dat alles wat je wilt publiceren op `main` staat (of op de branch waarvan je de release maakt).
 2. Ga in de repository naar **Releases → Draft a new release**.
-3. Bij *Choose a tag*: vul een nieuwe tag in, bijvoorbeeld `v1.0.1`, en kies als *Target* de juiste branch.
+3. Bij *Choose a tag*: vul een nieuwe tag in, bijvoorbeeld `v1.0.1`, en kies als *Target* de juiste branch. Gebruik alleen letters, cijfers, punten, koppeltekens en underscores; een tag met een `/` wordt geweigerd.
 4. Geef een titel en beschrijving.
 5. Laat **Set as a pre-release uit**.
 6. Klik op **Publish release**.
 
-> **Een pre-release is géén testrelease: die komt gewoon online.** GitHub meldt een pre-release aan het register ook als *published*, en het register zet de inhoud dan direct op <https://register.geostandaarden.nl>, net als bij een gewone release. Er is geen testomgeving om eerst te kijken. Publiceer daarom alleen wat online mag. Wil je een concept- of consultatieversie publiceren? Maak dan een gewone release en geef de versiemap een herkenbare naam, zoals `1.0.1-cv`.
+> **Pre-releases worden niet gepubliceerd.** Het register zet een pre-release in een aparte staging-map, maar die is nergens online te bekijken. Wil je een concept- of consultatieversie publiceren? Maak dan een gewone release en geef de versiemap een herkenbare naam, zoals `1.0.1-cv`.
 
-De releasetag hoeft niet overeen te komen met de versiemappen. Het register gebruikt de tag alleen om de juiste zip op te halen.
+Heb je toch een pre-release gemaakt die online moet? Open de release, klik op *Edit*, zet het vinkje bij *Set as a pre-release* uit en klik op *Update release*. Het register publiceert hem dan alsnog.
+
+De releasetag hoeft niet overeen te komen met de versiemappen. Het register gebruikt de tag alleen om de juiste zip op te halen. Dat gebeurt altijd via de tag in jouw eigen repository.
 
 ## Controleren of het gelukt is
 
 1. Ga naar **Settings → Webhooks →** jouw webhook **→ Recent Deliveries**.
-2. Open de bovenste levering (event `release`) en kijk bij **Response**.
+2. Open de levering met event `release` en action *released* (bij een pre-release: *published*), en kijk bij **Response**.
 
-| Response                                                                 | Betekenis                                                        |
+| Status en response                                                      | Betekenis                                                        |
 |--------------------------------------------------------------------------|------------------------------------------------------------------|
-| `ZIP downloaded from GitHub: …` gevolgd door `Resource directory: …` en `Sync <map> directory to: <map>/<id>` | Gelukt. Per gepubliceerde map staan er twee regels.          |
-| Alleen `ZIP downloaded from GitHub: …`, geen `Sync`-regels                | De release bevat geen herkende artefactmappen. Controleer de mapnamen en of de mappen op de getagde commit staan. |
-| `NOT SYNCED TO REGISTER. Repo information not found in repos.json…`       | De repository staat niet (of met een andere URL) in `repos.json`, of de wijziging is nog niet gemerged. |
-| `NOT SYNCED TO REGISTER. Repo id is too short`                           | Het `id` in `repos.json` is korter dan 2 tekens.                 |
-| Lege response (of alleen een PHP-melding) met status 200, ook bij de levering met *published* | Het content type staat niet op `application/json`.               |
-| `ZIP downloaded from GitHub: …` gevolgd door `Something went wrong in processing the ZIP file` | De zip kon niet worden opgehaald of geopend. De eerste regel verschijnt ook als de download mislukt. Is de repository publiek en bestaat de tag? Zo ja, neem contact op met de beheerder van het register. |
-| Een levering met `action` *prereleased* toont `Sync`-regels             | Normaal bij een pre-release: deze levering zet een kopie in de niet-zichtbare staging-map. De levering met *published* zet dezelfde inhoud op productie. |
-| Status 4xx/5xx of een timeout                                            | Probleem op de server. Neem contact op met de beheerder van het register. |
+| 200, `ZIP downloaded from GitHub: …` gevolgd door `Resource directory: …` en `Sync <map> directory to: <map>/<id>` | Gelukt. Per gepubliceerde map staan er twee regels.          |
+| 200, alleen `ZIP downloaded from GitHub: …`, geen `Sync`-regels          | De release bevat geen herkende artefactmappen. Controleer de mapnamen en of de mappen op de getagde commit staan. |
+| 200, `Ignored release action: …`                                         | Normaal: van de leveringen per release publiceert er maar één (zie hieronder). |
+| 200, `NOT SYNCED TO REGISTER. Repo information not found in repos.json…` | De repository staat niet (of met een andere URL) in `repos.json`, of de wijziging is nog niet gemerged. |
+| 200, `NOT SYNCED TO REGISTER. Repo id is too short`                      | Het `id` in `repos.json` is korter dan 2 tekens.                 |
+| 401, `… Invalid or missing signature …`                                  | Het webhookgeheim ontbreekt of klopt niet. Controleer het veld *Secret* van de webhook. |
+| 400, `… The payload is not a release event in JSON …`                    | Het content type staat niet op `application/json`.               |
+| 400, `… Unsupported tag name …`                                          | De tag bevat andere tekens dan letters, cijfers, `.`, `_` en `-`. Maak een release met een andere tag. |
+| 502, `… Could not download …`                                            | De zip van de tag kon niet worden opgehaald. Bestaat de tag in deze repository en is de repository publiek? |
+| 200, `Something went wrong in processing the ZIP file`                   | De zip is gedownload maar kon niet worden geopend. Neem contact op met de beheerder van het register. |
+| 500 of een timeout                                                       | Probleem op de server. Neem contact op met de beheerder van het register. |
 
-Eén release levert meerdere leveringen op, bijvoorbeeld *created*, *published* en *released* (bij een pre-release ook *prereleased*). De leveringen met *created* en *published* publiceren allebei dezelfde inhoud. Dat is onschuldig. Leveringen met andere acties krijgen een lege response.
+Eén release levert meerdere leveringen op, zoals *created*, *published* en *released* (bij een pre-release *created*, *published* en *prereleased*). Alleen *released* publiceert naar productie, en bij een pre-release alleen *published* naar de staging-map. De andere leveringen krijgen de response `Ignored release action: …`.
 
 Mislukte leveringen kun je na een correctie opnieuw versturen met **Redeliver**. Dat werkt alleen voor fouten aan de kant van het register (bijvoorbeeld `repos.json`). Ontbreekt er iets in je repository, maak dan een nieuwe release: het register publiceert de inhoud van de tag, en een bestaande tag verandert niet.
 
@@ -187,8 +195,7 @@ Bekijk tot slot de pagina van je standaard: `https://register.geostandaarden.nl/
 | Symptoom                                              | Oorzaak                                                                          |
 |-------------------------------------------------------|----------------------------------------------------------------------------------|
 | Er gebeurt niets na een merge naar `main`             | Alleen een release start de publicatie.                                         |
-| Release gemaakt, maar niets online                    | Verkeerd content type, de repository staat niet (goed) in `repos.json`, of de artefactmap staat niet op de getagde branch. |
-| Pre-release bedoeld als test, maar staat al online    | Een pre-release publiceert gewoon; er is geen testomgeving. Zie [Release maken](#release-maken). |
+| Release gemaakt, maar niets online                    | Het was een pre-release, het webhookgeheim of content type klopt niet, de tag bevat een `/`, de repository staat niet (goed) in `repos.json`, of de artefactmap staat niet op de getagde branch. |
 | Oude versies zijn verdwenen                           | Ze stonden niet meer in de nieuwe release. Een release vervangt alles.          |
 | Verwijderd bestand staat nog online                   | Bekende beperking van het register; vraag de beheerder het weg te halen.        |
 | Map wordt genegeerd                                   | De mapnaam staat niet in `descriptions.json` of heeft afwijkende hoofdletters. |

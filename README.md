@@ -33,6 +33,7 @@ The [Guide for registry maintainers](https://github.com/Geonovum/technisch-regis
 1. the ```${baseDir}/production``` is the DocumentRoot for Apache. Configure Apache to serve files from this directory, including indexes for the files
 1. copy all files from the ```src``` directory of this repository to the baseDir
 1. configure autodeploy/githubConfig.php and registerConfig.php
+1. put the shared secret of the GitHub webhooks in ```${baseDir}/webhook-secret``` (outside the DocumentRoot, readable for the webserver only). The webhook rejects all requests without it. See the [guide for registry maintainers](documentatie/HandleidingVoorBeheerdersTechnischRegister.md#webhookgeheim) [NL]
 1. configure Apache to use the rewrite rules from ```conf/apache2/rewrite-rules.txt```
 1. reload Apache config or start Apache
 
