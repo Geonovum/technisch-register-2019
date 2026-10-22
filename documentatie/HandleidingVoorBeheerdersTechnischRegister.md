@@ -119,6 +119,7 @@ Zie [Server](#server). Nodig na elke wijziging in `src/` (behalve de JSON-config
 | Tijdelijke map         | `/var/www/geostandaarden/v2/tmp` (moet schrijfbaar zijn voor PHP) |
 | Backups                | `/var/www/geostandaarden/v2/backup/<type>/<id>`               |
 | Webhookgeheim          | `/var/www/geostandaarden/v2/webhook-secret` (buiten de DocumentRoot, niet in git; zie [Webhookgeheim](#webhookgeheim)) |
+| Log van de webhook     | `/var/www/geostandaarden/v2/log/webhook.log` (schrijfbaar voor de webserver; zie [Log van de webhook](#log-van-de-webhook)) |
 | Webhook                | `https://register.geostandaarden.nl/autodeploy/releasecreated.php` |
 | Software               | Apache 2 met `mod_rewrite`, PHP 7.2+ met `ZipArchive` en `allow_url_fopen` |
 
@@ -141,6 +142,18 @@ Bij een vervanging werken de webhooks van repositories die het nieuwe geheim nog
 
 1. Kopieer de gewijzigde bestanden uit `src/` naar de DocumentRoot.
 2. Zorg dat de bestanden leesbaar zijn voor de webserver en dat `tmp/`, `production/` en `backup/` schrijfbaar zijn (groep `www-data`). Gebruikers die via FTP of SSH bestanden aanpassen moeten in die groep zitten: `sudo usermod -aG www-data <gebruiker>`.
+
+### Log van de webhook
+
+Elk verzoek aan het webhookscript en de afloop ervan komt als één regel in `/var/www/geostandaarden/v2/log/webhook.log`: tijdstip, IP-adres, het *delivery id* van GitHub (dat ook bij *Recent Deliveries* staat), de statuscode en de melding. Ook details die bewust niet in de response staan komen hier, zoals waarom de webhook niet beschikbaar is, overgeslagen bestanden en mislukte backups. PHP-foutmeldingen staan nooit in de response, maar in het error-log van PHP/Apache.
+
+Inrichten: maak de map `log/` aan in de basismap en maak die schrijfbaar voor de webserver (eigenaar `www-data`). Kan het script niet in het log schrijven, dan gaan de regels naar het error-log van PHP/Apache. Het log groeit met elk verzoek; neem het op in `logrotate`.
+
+### Toegestane bestandstypen
+
+Het script pakt uit een release alleen bestanden in artefactmappen uit, en alleen als de extensie in `$allowedExtensions` in `src/autodeploy/registerConfig.php` staat. Verborgen bestanden en mappen, symbolische links en paden met `..`, `\` of lege delen worden altijd overgeslagen. Server-uitvoerbare extensies (`php`, `phtml`, `phar`, `asp`, `aspx`, `jsp`, `cgi`, `pl`, `py`, `sh`, `shtml` en varianten) worden altijd overgeslagen, ook als ze in de lijst staan en ook als tussenextensie (`x.php.xsd`).
+
+De lijst is in oktober 2026 samengesteld uit alle bestanden in de artefactmappen van de geregistreerde repositories (default branch en nieuwste tag): die kwamen er allemaal door. Een bestandstype toevoegen: voeg de extensie toe aan `$allowedExtensions`, zet `registerConfig.php` op de server, en werk de lijst in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#welke-bestanden-worden-gepubliceerd) bij.
 
 ### Rewrite-regels aanpassen
 
@@ -171,7 +184,7 @@ De rewrite-regels sturen `/<x>/`, `/<x>/<y>/` en `/<x>/index.html` door naar `/?
 
 `src/autodeploy/releasecreated.php`, bij een POST van GitHub:
 
-1. Controleert de handtekening (`X-Hub-Signature-256`) met het [webhookgeheim](#webhookgeheim). Ontbreekt die of klopt die niet: status 401. Andere methoden dan POST: status 405.
+1. Controleert het verzoek en de handtekening: andere methoden dan POST krijgen status 405 en een body groter dan 2 MB status 413. De handtekening (`X-Hub-Signature-256`) moet precies `sha256=` plus 64 hexadecimale tekens zijn en kloppen met het [webhookgeheim](#webhookgeheim); anders status 401. Ontbreekt het geheim op de server: status 500 `Webhook not available` (details in het [log](#log-van-de-webhook)).
 2. Beantwoordt een *ping* met `pong: …` en negeert andere events dan `release`.
 3. Leest de body als JSON. Daarom moet de webhook op content type `application/json` staan; anders status 400.
 4. Kiest de omgeving op basis van `action` én `release.prerelease`:
@@ -180,12 +193,13 @@ De rewrite-regels sturen `/<x>/`, `/<x>/<y>/` en `/<x>/index.html` door naar `/?
    - Alle andere acties (waaronder `created`, ook verstuurd bij het opslaan van een concept) → `Ignored release action: …`.
 5. Controleert de tagnaam: alleen letters, cijfers, `.`, `_` en `-`; anders status 400.
 6. Zoekt `repository.html_url` op in `repos.json` (hoofdletterongevoelig). Niet gevonden: `NOT SYNCED TO REGISTER…`.
-7. Downloadt `<url uit repos.json>/archive/refs/tags/<tag>.zip` naar `tmp/` en pakt die uit. De URL komt uit `repos.json`, niet uit het bericht, en via `refs/tags/` zijn alleen tags van die repository zelf bereikbaar, geen commits of tags uit forks. Mislukt de download: status 502.
-8. Verplaatst voor **elk** artefacttype de bestaande map `<type>/<id>/` naar `backup/<type>/<id>`.
-9. Kopieert elke map in de root van de release waarvan de naam een sleutel in `descriptions.json` is naar `<type>/<id>/`.
-10. Ruimt de tijdelijke bestanden op.
+7. Downloadt `<url uit repos.json>/archive/refs/tags/<tag>.zip` naar `tmp/`. De URL komt uit `repos.json`, niet uit het bericht, en via `refs/tags/` zijn alleen tags van die repository zelf bereikbaar, geen commits of tags uit forks. Mislukt de download: status 502.
+8. Pakt alleen bestanden in artefactmappen uit, en alleen van een [toegestaan bestandstype](#toegestane-bestandstypen). Kan de zip niet worden geopend: status 500.
+9. Verplaatst voor **elk** artefacttype de bestaande map `<type>/<id>/` naar `backup/<type>/<id>`. Mislukt dat, dan staat dat in het log.
+10. Kopieert elke uitgepakte artefactmap naar `<type>/<id>/`.
+11. Ruimt de tijdelijke bestanden op en schrijft het resultaat in het log.
 
-De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliveries*) vermeldt de gedownloade zip en elke gesynchroniseerde map. Een overzicht van responses en hun betekenis staat in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#controleren-of-het-gelukt-is).
+De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliveries*) vermeldt de gedownloade zip, elke gesynchroniseerde map en de overgeslagen bestanden. Een overzicht van responses en hun betekenis staat in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#controleren-of-het-gelukt-is). Mappen en bestanden worden aangemaakt met rechten `0775` en `0644` (onder de gebruikelijke umask `022`: `0755` en `0644`).
 
 ## Bekende beperkingen
 
@@ -208,7 +222,8 @@ De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliver
 | `/<type>/` toont de hoofdpagina in plaats van een lijst | Ontbrekende uitzondering in de rewrite-regels. |
 | Wijziging in `repos.json` lijkt niet actief | Gemerged naar `master`? Enkele minuten wachten (cache van GitHub). |
 | Levering geeft status 401 | Webhookgeheim in de bronrepository ontbreekt of wijkt af van `webhook-secret` op de server. |
-| Levering geeft status 500 `… webhook secret is not configured …` | `webhook-secret` ontbreekt, is leeg of is niet leesbaar voor de webserver. |
+| Levering geeft status 500 `Webhook not available` | `webhook-secret` ontbreekt, is leeg of is niet leesbaar voor de webserver. Het [log](#log-van-de-webhook) noemt de oorzaak. |
+| Bestanden uit een release ontbreken | Staan ze onder `Skipped` in de response of in het log? Zie [Toegestane bestandstypen](#toegestane-bestandstypen). |
 | Download van de zip mislukt (status 502) | Bestaat de tag in de repository zelf? `allow_url_fopen` aan? Is `tmp/` schrijfbaar? Is de repository publiek? Het register haalt de zip zonder authenticatie op, dus private repositories werken niet. |
 
 ## Nog te documenteren
