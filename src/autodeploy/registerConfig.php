@@ -42,4 +42,32 @@ $stagingDir = 'staging';
 
 // a writable subdirectory in the baseDir, to unpack ZIP-files from Github
 $tmpDir = 'tmp';
+
+// file containing the shared secret of the GitHub webhooks (only the secret, on one line).
+// Keep it outside the DocumentRoot and out of git, readable for the webserver only.
+// The webhook rejects all requests when this file is missing or empty.
+$webhookSecretFile = $baseDir.'/webhook-secret';
+
+// log of all webhook requests and their outcome, outside the DocumentRoot and writable for
+// the webserver. When it cannot be written, lines go to the PHP/Apache error log instead.
+$webhookLogFile = $baseDir.'/log/webhook.log';
+
+// File types (lowercase extension without the dot) that are published from a release.
+// Other files are skipped and listed in the webhook response. Server-side executable
+// types (php, phtml, phar, asp, cgi, ...) are always skipped, also when listed here.
+$allowedExtensions = array(
+    // models, schemas and rules
+    'xmi', 'eap', 'eapx', 'qea', 'xsd', 'xml', 'gml', 'wsdl', 'json', 'jsonld', 'yaml', 'yml',
+    'sch', 'xsl', 'xslt', 'cva', 'gc', 'rdf', 'ttl', 'owl',
+    // tables and documents
+    'csv', 'xls', 'xlsx', 'ods', 'pdf', 'doc', 'docx', 'txt', 'md', 'vsd',
+    // documentation pages (IMGeo publishes HTML documentation with CSS and JavaScript)
+    'html', 'htm', 'css', 'js',
+    // visualisation and symbols
+    'sld', 'svg', 'png', 'jpg', 'jpeg', 'gif', 'eps', 'ttf', 'otf',
+    // archives
+    'zip',
+    // files without an extension (e.g. xlink/1.0.0/web-location in IMKAD)
+    '',
+);
 ?>

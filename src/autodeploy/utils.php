@@ -39,7 +39,7 @@ function cpdir_recursive($src, $dst) {
       return false;
     }
     $dir = opendir($src);
-    @mkdir($dst);
+    @mkdir($dst, 0775);
     while(false !== ( $file = readdir($dir)) ) {
         if (( $file != '.' ) && ( $file != '..' )) {
             if ( is_dir($src . '/' . $file)) {
