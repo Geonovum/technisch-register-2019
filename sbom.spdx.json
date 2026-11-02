@@ -2,25 +2,25 @@
   "spdxVersion": "SPDX-2.3",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "name": "technisch-register-2019-a380915",
-  "documentNamespace": "https://github.com/Geonovum/technisch-register-2019/sbom/spdx-2.3/7cf12985-f288-4121-8d1b-97eb3e11f352",
+  "name": "technisch-register-2019-cb21d5dc24d1",
+  "documentNamespace": "https://github.com/Geonovum/technisch-register-2019/sbom/spdx-2.3/ea33c6f3-05e9-4be5-906b-ccbd20b91840",
   "creationInfo": {
-    "created": "2026-10-29T14:26:05Z",
+    "created": "2026-11-02T10:00:19Z",
     "creators": [
-      "Tool: technisch-register-sbom-generator-1.0.0",
+      "Tool: geonovum-sbom-build_sbom.js-1.1.0",
       "Organization: Geonovum",
       "Person: Frank Terpstra"
     ],
-    "comment": "SBOM version 1. Generation context: source (pre-build), from the committed files of the repository and the CDN files that src/index.php loads."
+    "comment": "SBOM version 1. Generation context: pre-build (source). Companion CycloneDX 1.7 document: urn:uuid:ea33c6f3-05e9-4be5-906b-ccbd20b91840."
   },
   "packages": [
     {
-      "SPDXID": "SPDXRef-Package-root",
+      "SPDXID": "SPDXRef-Package-product",
       "name": "technisch-register-2019",
-      "versionInfo": "a380915bba33301705cb2b2e7b333925da830057",
+      "versionInfo": "cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
       "supplier": "Organization: Geonovum",
       "originator": "Organization: Geonovum",
-      "downloadLocation": "git+https://github.com/Geonovum/technisch-register-2019.git@a380915bba33301705cb2b2e7b333925da830057",
+      "downloadLocation": "git+https://github.com/Geonovum/technisch-register-2019.git@cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
       "homepage": "https://register.geostandaarden.nl",
       "filesAnalyzed": false,
       "licenseConcluded": "MIT",
@@ -32,7 +32,7 @@
         {
           "referenceCategory": "PACKAGE-MANAGER",
           "referenceType": "purl",
-          "referenceLocator": "pkg:github/Geonovum/technisch-register-2019@a380915bba33301705cb2b2e7b333925da830057"
+          "referenceLocator": "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208"
         }
       ]
     },
@@ -69,8 +69,8 @@
       ],
       "copyrightText": "Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors",
       "description": "jQuery JavaScript Library, including the Sizzle CSS selector engine",
-      "comment": "Bundled in src/resources and publicly served under /resources, but not referenced by any page.",
-      "primaryPackagePurpose": "LIBRARY",
+      "comment": "bundled in src/resources and publicly served under /resources, but not loaded by any page",
+      "primaryPackagePurpose": "OTHER",
       "externalRefs": [
         {
           "referenceCategory": "PACKAGE-MANAGER",
@@ -85,20 +85,20 @@
         {
           "referenceCategory": "SECURITY",
           "referenceType": "advisory",
-          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2015-9251",
-          "comment": "CVE-2015-9251: not affected, The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding."
-        },
-        {
-          "referenceCategory": "SECURITY",
-          "referenceType": "advisory",
           "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2019-11358",
-          "comment": "CVE-2019-11358: not affected, The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding."
+          "comment": "CVE-2019-11358: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page."
         },
         {
           "referenceCategory": "SECURITY",
           "referenceType": "advisory",
           "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2020-11023",
-          "comment": "CVE-2020-11023: not affected, The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding."
+          "comment": "CVE-2020-11023: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page."
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2015-9251",
+          "comment": "CVE-2015-9251: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page."
         }
       ]
     },
@@ -121,8 +121,8 @@
       ],
       "copyrightText": "Copyright (c) 2013 jQuery Foundation and other contributors",
       "description": "jQuery UI custom build (all widgets and effects) with a ThemeRoller theme",
-      "comment": "Bundled in src/resources and publicly served under /resources, but not referenced by any page.",
-      "primaryPackagePurpose": "LIBRARY",
+      "comment": "bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out",
+      "primaryPackagePurpose": "OTHER",
       "externalRefs": [
         {
           "referenceCategory": "PACKAGE-MANAGER",
@@ -137,32 +137,32 @@
         {
           "referenceCategory": "SECURITY",
           "referenceType": "advisory",
-          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2016-7103",
-          "comment": "CVE-2016-7103: not affected, The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding."
-        },
-        {
-          "referenceCategory": "SECURITY",
-          "referenceType": "advisory",
           "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2021-41182",
-          "comment": "CVE-2021-41182: not affected, The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding."
-        },
-        {
-          "referenceCategory": "SECURITY",
-          "referenceType": "advisory",
-          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2021-41183",
-          "comment": "CVE-2021-41183: not affected, The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding."
+          "comment": "CVE-2021-41182: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
         },
         {
           "referenceCategory": "SECURITY",
           "referenceType": "advisory",
           "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2021-41184",
-          "comment": "CVE-2021-41184: not affected, The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding."
+          "comment": "CVE-2021-41184: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
         },
         {
           "referenceCategory": "SECURITY",
           "referenceType": "advisory",
           "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2022-31160",
-          "comment": "CVE-2022-31160: not affected, The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding."
+          "comment": "CVE-2022-31160: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2016-7103",
+          "comment": "CVE-2016-7103: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2021-41183",
+          "comment": "CVE-2021-41183: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
         }
       ]
     },
@@ -193,19 +193,56 @@
         }
       ],
       "licenseConcluded": "MIT",
-      "licenseDeclared": "NOASSERTION",
+      "licenseDeclared": "LicenseRef-MIT-BSD",
       "licenseInfoFromFiles": [
-        "NOASSERTION"
+        "LicenseRef-MIT-BSD"
       ],
       "copyrightText": "Copyright (c) Faruk Ates, Paul Irish, Alex Sexton",
       "description": "Modernizr 2.6.2 custom build",
-      "comment": "License declared in the file header: \"MIT & BSD\". Bundled in src/resources and publicly served under /resources, but not referenced by any page.",
-      "primaryPackagePurpose": "LIBRARY",
+      "comment": "bundled in src/resources and publicly served under /resources, but not loaded by any page",
+      "primaryPackagePurpose": "OTHER",
       "externalRefs": [
         {
           "referenceCategory": "PACKAGE-MANAGER",
           "referenceType": "purl",
           "referenceLocator": "pkg:npm/modernizr@2.6.2"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-yepnope",
+      "name": "yepnope",
+      "versionInfo": "1.5.4",
+      "supplier": "Organization: Alex Sexton",
+      "originator": "Organization: Alex Sexton",
+      "downloadLocation": "NOASSERTION",
+      "homepage": "https://github.com/SlexAxton/yepnope.js",
+      "filesAnalyzed": false,
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "280ac744c39f41acbddd3517384f84a20745205e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ce68fe41c2c6c11e6a038ef02ac49992152177c41652f0386e46132153877146"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "1b9e2fd1734df4ce54e50ad435634a9e4ca768fc9691a3d6ad683f00e2318f44ef6c710948242439a8f051e37fbd7a4be311fcb7c93620ca7efb503065ccc760"
+        }
+      ],
+      "licenseConcluded": "WTFPL",
+      "licenseDeclared": "WTFPL",
+      "copyrightText": "NOASSERTION",
+      "description": "Resource loader, embedded in the Modernizr custom build",
+      "comment": "Embedded in modernizr; the checksums are those of the containing file src/resources/js/modernizr.js.",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/yepnope@1.5.4"
         }
       ]
     },
@@ -224,12 +261,12 @@
       "licenseConcluded": "OFL-1.1 AND MIT",
       "licenseDeclared": "OFL-1.1 AND MIT",
       "licenseInfoFromFiles": [
-        "NOASSERTION"
+        "OFL-1.1 AND MIT"
       ],
       "copyrightText": "NOASSERTION",
-      "description": "Font Awesome icon font and CSS, loaded by src/index.php from a CDN",
-      "comment": "Loaded at runtime from a CDN by src/index.php; not bundled.",
-      "primaryPackagePurpose": "LIBRARY",
+      "description": "Font Awesome icon font and CSS",
+      "comment": "loaded at runtime from a CDN by src/index.php; the CSS loads the font files",
+      "primaryPackagePurpose": "OTHER",
       "externalRefs": [
         {
           "referenceCategory": "PACKAGE-MANAGER",
@@ -278,12 +315,34 @@
       "copyrightText": "NOASSERTION",
       "description": "ZipArchive, used by src/autodeploy to unpack release archives",
       "comment": "Provided by the deployment environment, not bundled; accepted versions >=7.2.",
-      "primaryPackagePurpose": "LIBRARY",
+      "primaryPackagePurpose": "OTHER",
       "externalRefs": [
         {
           "referenceCategory": "PACKAGE-MANAGER",
           "referenceType": "purl",
           "referenceLocator": "pkg:generic/php-zip"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-php-openssl",
+      "name": "PHP openssl extension",
+      "supplier": "Organization: The PHP Group",
+      "originator": "Organization: The PHP Group",
+      "downloadLocation": "NOASSERTION",
+      "homepage": "https://www.php.net/manual/en/book.openssl.php",
+      "filesAnalyzed": false,
+      "licenseConcluded": "PHP-3.01",
+      "licenseDeclared": "PHP-3.01",
+      "copyrightText": "NOASSERTION",
+      "description": "Needed for file_get_contents on https URLs in src/autodeploy (configuration from raw.githubusercontent.com, release archives from github.com)",
+      "comment": "Provided by the deployment environment, not bundled; accepted versions >=7.2.",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:generic/php-openssl"
         }
       ]
     },
@@ -404,7 +463,7 @@
       ],
       "licenseConcluded": "MIT",
       "licenseInfoInFiles": [
-        "NOASSERTION"
+        "LicenseRef-MIT-BSD"
       ],
       "copyrightText": "Copyright (c) Faruk Ates, Paul Irish, Alex Sexton"
     },
@@ -427,7 +486,7 @@
       ],
       "licenseConcluded": "OFL-1.1 AND MIT",
       "licenseInfoInFiles": [
-        "NOASSERTION"
+        "OFL-1.1 AND MIT"
       ],
       "copyrightText": "NOASSERTION",
       "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
@@ -451,7 +510,7 @@
       ],
       "licenseConcluded": "OFL-1.1 AND MIT",
       "licenseInfoInFiles": [
-        "NOASSERTION"
+        "OFL-1.1 AND MIT"
       ],
       "copyrightText": "NOASSERTION",
       "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.eot?v=4.2.0"
@@ -475,7 +534,7 @@
       ],
       "licenseConcluded": "OFL-1.1 AND MIT",
       "licenseInfoInFiles": [
-        "NOASSERTION"
+        "OFL-1.1 AND MIT"
       ],
       "copyrightText": "NOASSERTION",
       "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.svg?v=4.2.0"
@@ -499,7 +558,7 @@
       ],
       "licenseConcluded": "OFL-1.1 AND MIT",
       "licenseInfoInFiles": [
-        "NOASSERTION"
+        "OFL-1.1 AND MIT"
       ],
       "copyrightText": "NOASSERTION",
       "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf?v=4.2.0"
@@ -523,17 +582,24 @@
       ],
       "licenseConcluded": "OFL-1.1 AND MIT",
       "licenseInfoInFiles": [
-        "NOASSERTION"
+        "OFL-1.1 AND MIT"
       ],
       "copyrightText": "NOASSERTION",
       "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.woff?v=4.2.0"
+    }
+  ],
+  "hasExtractedLicensingInfos": [
+    {
+      "licenseId": "LicenseRef-MIT-BSD",
+      "name": "MIT & BSD",
+      "extractedText": "License as stated by the component: \"MIT & BSD\""
     }
   ],
   "relationships": [
     {
       "spdxElementId": "SPDXRef-DOCUMENT",
       "relationshipType": "DESCRIBES",
-      "relatedSpdxElement": "SPDXRef-Package-root"
+      "relatedSpdxElement": "SPDXRef-Package-product"
     },
     {
       "spdxElementId": "SPDXRef-Package-jquery",
@@ -581,32 +647,37 @@
       "relatedSpdxElement": "SPDXRef-File-font-awesome-fonts-fontawesome-webfont.woff"
     },
     {
-      "spdxElementId": "SPDXRef-Package-root",
+      "spdxElementId": "SPDXRef-Package-product",
       "relationshipType": "CONTAINS",
       "relatedSpdxElement": "SPDXRef-Package-jquery"
     },
     {
-      "spdxElementId": "SPDXRef-Package-root",
+      "spdxElementId": "SPDXRef-Package-product",
       "relationshipType": "CONTAINS",
       "relatedSpdxElement": "SPDXRef-Package-jquery-ui"
     },
     {
-      "spdxElementId": "SPDXRef-Package-root",
+      "spdxElementId": "SPDXRef-Package-product",
       "relationshipType": "CONTAINS",
       "relatedSpdxElement": "SPDXRef-Package-modernizr"
     },
     {
-      "spdxElementId": "SPDXRef-Package-root",
+      "spdxElementId": "SPDXRef-Package-modernizr",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-Package-yepnope"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
       "relationshipType": "DEPENDS_ON",
       "relatedSpdxElement": "SPDXRef-Package-font-awesome"
     },
     {
-      "spdxElementId": "SPDXRef-Package-root",
+      "spdxElementId": "SPDXRef-Package-product",
       "relationshipType": "DEPENDS_ON",
       "relatedSpdxElement": "SPDXRef-Package-php"
     },
     {
-      "spdxElementId": "SPDXRef-Package-root",
+      "spdxElementId": "SPDXRef-Package-product",
       "relationshipType": "DEPENDS_ON",
       "relatedSpdxElement": "SPDXRef-Package-php-zip"
     },
@@ -616,7 +687,17 @@
       "relatedSpdxElement": "SPDXRef-Package-php"
     },
     {
-      "spdxElementId": "SPDXRef-Package-root",
+      "spdxElementId": "SPDXRef-Package-product",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-php-openssl"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-php-openssl",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-php"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
       "relationshipType": "DEPENDS_ON",
       "relatedSpdxElement": "SPDXRef-Package-apache-httpd"
     }

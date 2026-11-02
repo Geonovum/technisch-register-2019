@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:7cf12985-f288-4121-8d1b-97eb3e11f352",
+  "serialNumber": "urn:uuid:ea33c6f3-05e9-4be5-906b-ccbd20b91840",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-29T14:26:05Z",
+    "timestamp": "2026-11-02T10:00:19Z",
     "lifecycles": [
       {
         "phase": "pre-build"
@@ -15,9 +15,8 @@
       "components": [
         {
           "type": "application",
-          "name": "technisch-register-sbom-generator",
-          "version": "1.0.0",
-          "description": "Script written with Claude Code; hashes committed blobs and CDN files"
+          "name": "geonovum-sbom build_sbom.js",
+          "version": "1.1.0"
         }
       ]
     },
@@ -40,7 +39,7 @@
     },
     "component": {
       "type": "application",
-      "bom-ref": "pkg:github/Geonovum/technisch-register-2019@a380915bba33301705cb2b2e7b333925da830057",
+      "bom-ref": "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
       "supplier": {
         "name": "Geonovum",
         "url": [
@@ -48,18 +47,16 @@
         ]
       },
       "name": "technisch-register-2019",
-      "version": "a380915bba33301705cb2b2e7b333925da830057",
+      "version": "cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
       "description": "Technisch register voor geo-standaarden: publiceert de technische bestanden van Nederlandse geo-standaarden vanuit GitHub op register.geostandaarden.nl",
       "licenses": [
         {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
+          "expression": "MIT",
+          "acknowledgement": "declared"
         }
       ],
       "copyright": "Copyright (c) 2019 Geonovum",
-      "purl": "pkg:github/Geonovum/technisch-register-2019@a380915bba33301705cb2b2e7b333925da830057",
+      "purl": "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
       "externalReferences": [
         {
           "type": "vcs",
@@ -121,8 +118,8 @@
       ],
       "properties": [
         {
-          "name": "nl.geonovum.technisch-register:usage",
-          "value": "bundled in src/resources and publicly served under /resources, but not referenced by any page"
+          "name": "geonovum-sbom:usage",
+          "value": "bundled in src/resources and publicly served under /resources, but not loaded by any page"
         }
       ],
       "evidence": {
@@ -131,12 +128,9 @@
             "location": "src/resources/js/jquery-1.9.1.js"
           }
         ],
-        "licenses": [
+        "copyright": [
           {
-            "license": {
-              "id": "MIT",
-              "acknowledgement": "declared"
-            }
+            "text": "Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors"
           }
         ]
       }
@@ -175,8 +169,8 @@
       ],
       "properties": [
         {
-          "name": "nl.geonovum.technisch-register:usage",
-          "value": "bundled in src/resources and publicly served under /resources, but not referenced by any page"
+          "name": "geonovum-sbom:usage",
+          "value": "bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out"
         }
       ],
       "evidence": {
@@ -188,12 +182,9 @@
             "location": "src/resources/css/jquery-ui-1.10.1.min.css"
           }
         ],
-        "licenses": [
+        "copyright": [
           {
-            "license": {
-              "id": "MIT",
-              "acknowledgement": "declared"
-            }
+            "text": "Copyright (c) 2013 jQuery Foundation and other contributors"
           }
         ]
       },
@@ -285,8 +276,8 @@
       ],
       "properties": [
         {
-          "name": "nl.geonovum.technisch-register:usage",
-          "value": "bundled in src/resources and publicly served under /resources, but not referenced by any page"
+          "name": "geonovum-sbom:usage",
+          "value": "bundled in src/resources and publicly served under /resources, but not loaded by any page"
         }
       ],
       "evidence": {
@@ -302,6 +293,66 @@
               "acknowledgement": "declared"
             }
           }
+        ],
+        "copyright": [
+          {
+            "text": "Copyright (c) Faruk Ates, Paul Irish, Alex Sexton"
+          }
+        ]
+      }
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/yepnope@1.5.4",
+      "supplier": {
+        "name": "Alex Sexton"
+      },
+      "name": "yepnope",
+      "version": "1.5.4",
+      "description": "Resource loader, embedded in the Modernizr custom build",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "280ac744c39f41acbddd3517384f84a20745205e"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "ce68fe41c2c6c11e6a038ef02ac49992152177c41652f0386e46132153877146"
+        },
+        {
+          "alg": "SHA-512",
+          "content": "1b9e2fd1734df4ce54e50ad435634a9e4ca768fc9691a3d6ad683f00e2318f44ef6c710948242439a8f051e37fbd7a4be311fcb7c93620ca7efb503065ccc760"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "WTFPL",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "purl": "pkg:npm/yepnope@1.5.4",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/SlexAxton/yepnope.js"
+        }
+      ],
+      "properties": [
+        {
+          "name": "geonovum-sbom:embedded-in",
+          "value": "pkg:npm/modernizr@2.6.2"
+        },
+        {
+          "name": "geonovum-sbom:hash-scope",
+          "value": "hash of the containing file src/resources/js/modernizr.js, which also holds modernizr"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "src/resources/js/modernizr.js"
+          }
         ]
       }
     },
@@ -316,7 +367,7 @@
       },
       "name": "font-awesome",
       "version": "4.2.0",
-      "description": "Font Awesome icon font and CSS, loaded by src/index.php from a CDN",
+      "description": "Font Awesome icon font and CSS",
       "scope": "required",
       "licenses": [
         {
@@ -337,20 +388,10 @@
       ],
       "properties": [
         {
-          "name": "nl.geonovum.technisch-register:usage",
-          "value": "loaded at runtime from a CDN by src/index.php; not bundled"
+          "name": "geonovum-sbom:usage",
+          "value": "loaded at runtime from a CDN by src/index.php; the CSS loads the font files"
         }
       ],
-      "evidence": {
-        "licenses": [
-          {
-            "license": {
-              "name": "OFL-1.1 AND MIT",
-              "acknowledgement": "declared"
-            }
-          }
-        ]
-      },
       "components": [
         {
           "type": "file",
@@ -481,7 +522,7 @@
     },
     {
       "type": "platform",
-      "bom-ref": "pkg:generic/php@>=7.2",
+      "bom-ref": "component:php",
       "supplier": {
         "name": "The PHP Group",
         "url": [
@@ -510,7 +551,7 @@
     },
     {
       "type": "library",
-      "bom-ref": "pkg:generic/php-zip@>=7.2",
+      "bom-ref": "component:php-zip",
       "supplier": {
         "name": "The PHP Group",
         "url": [
@@ -537,8 +578,36 @@
       ]
     },
     {
+      "type": "library",
+      "bom-ref": "component:php-openssl",
+      "supplier": {
+        "name": "The PHP Group",
+        "url": [
+          "https://www.php.net"
+        ]
+      },
+      "name": "PHP openssl extension",
+      "isExternal": true,
+      "versionRange": "vers:generic/>=7.2",
+      "description": "Needed for file_get_contents on https URLs in src/autodeploy (configuration from raw.githubusercontent.com, release archives from github.com)",
+      "scope": "required",
+      "licenses": [
+        {
+          "expression": "PHP-3.01",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "purl": "pkg:generic/php-openssl",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://www.php.net/manual/en/book.openssl.php"
+        }
+      ]
+    },
+    {
       "type": "application",
-      "bom-ref": "pkg:generic/apache-httpd@>=2.4",
+      "bom-ref": "component:apache-httpd",
       "supplier": {
         "name": "The Apache Software Foundation",
         "url": [
@@ -568,12 +637,13 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/Geonovum/technisch-register-2019@a380915bba33301705cb2b2e7b333925da830057",
+      "ref": "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
       "dependsOn": [
         "pkg:npm/font-awesome@4.2.0",
-        "pkg:generic/php@>=7.2",
-        "pkg:generic/php-zip@>=7.2",
-        "pkg:generic/apache-httpd@>=2.4"
+        "component:php",
+        "component:php-zip",
+        "component:php-openssl",
+        "component:apache-httpd"
       ]
     },
     {
@@ -586,6 +656,12 @@
     },
     {
       "ref": "pkg:npm/modernizr@2.6.2",
+      "dependsOn": [
+        "pkg:npm/yepnope@1.5.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/yepnope@1.5.4",
       "dependsOn": []
     },
     {
@@ -593,81 +669,43 @@
       "dependsOn": []
     },
     {
-      "ref": "pkg:generic/php@>=7.2",
+      "ref": "component:php",
       "dependsOn": []
     },
     {
-      "ref": "pkg:generic/php-zip@>=7.2",
+      "ref": "component:php-zip",
       "dependsOn": [
-        "pkg:generic/php@>=7.2"
+        "component:php"
       ]
     },
     {
-      "ref": "pkg:generic/apache-httpd@>=2.4",
+      "ref": "component:php-openssl",
+      "dependsOn": [
+        "component:php"
+      ]
+    },
+    {
+      "ref": "component:apache-httpd",
       "dependsOn": []
     }
   ],
   "compositions": [
     {
-      "aggregate": "complete",
+      "aggregate": "incomplete",
       "assemblies": [
-        "pkg:github/Geonovum/technisch-register-2019@a380915bba33301705cb2b2e7b333925da830057"
+        "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208"
       ]
     },
     {
       "aggregate": "incomplete",
       "dependencies": [
-        "pkg:github/Geonovum/technisch-register-2019@a380915bba33301705cb2b2e7b333925da830057"
+        "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208"
       ]
     }
   ],
   "vulnerabilities": [
     {
-      "bom-ref": "vex-CVE-2015-9251",
-      "id": "CVE-2015-9251",
-      "source": {
-        "name": "NVD",
-        "url": "https://nvd.nist.gov/vuln/detail/CVE-2015-9251"
-      },
-      "references": [
-        {
-          "id": "GHSA-rmxg-73gg-4p98",
-          "source": {
-            "name": "GitHub Advisories",
-            "url": "https://github.com/advisories/GHSA-rmxg-73gg-4p98"
-          }
-        }
-      ],
-      "ratings": [
-        {
-          "source": {
-            "name": "GitHub Advisories"
-          },
-          "severity": "medium"
-        }
-      ],
-      "recommendation": "Remove the unused file, or upgrade jquery to 1.12.2 or later.",
-      "analysis": {
-        "state": "not_affected",
-        "justification": "code_not_reachable",
-        "detail": "The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding.",
-        "firstIssued": "2026-10-29T14:26:05Z",
-        "lastUpdated": "2026-10-29T14:26:05Z"
-      },
-      "affects": [
-        {
-          "ref": "pkg:npm/jquery@1.9.1",
-          "versions": [
-            {
-              "version": "1.9.1",
-              "status": "unaffected"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "bom-ref": "vex-CVE-2019-11358",
+      "bom-ref": "vuln-CVE-2019-11358-jquery",
       "id": "CVE-2019-11358",
       "source": {
         "name": "NVD",
@@ -677,26 +715,48 @@
         {
           "id": "GHSA-6c3j-c64m-qhgq",
           "source": {
-            "name": "GitHub Advisories",
-            "url": "https://github.com/advisories/GHSA-6c3j-c64m-qhgq"
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-6c3j-c64m-qhgq"
+          }
+        },
+        {
+          "id": "DRUPAL-CORE-2019-006",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/DRUPAL-CORE-2019-006"
+          }
+        },
+        {
+          "id": "PYSEC-2026-628",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/PYSEC-2026-628"
+          }
+        },
+        {
+          "id": "SNYK-JS-JQUERY-174006",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/SNYK-JS-JQUERY-174006"
           }
         }
       ],
       "ratings": [
         {
           "source": {
-            "name": "GitHub Advisories"
+            "name": "OSV"
           },
           "severity": "medium"
         }
       ],
-      "recommendation": "Remove the unused file, or upgrade jquery to 3.4.0 or later.",
+      "description": "XSS in jQuery as used in Drupal, Backdrop CMS, and other products",
+      "recommendation": "Upgrade jquery to a fixed version (3.4.0, 4.3.4, 2.1.9, 2.2.2, 1.19.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
-        "detail": "The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding.",
-        "firstIssued": "2026-10-29T14:26:05Z",
-        "lastUpdated": "2026-10-29T14:26:05Z"
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page.",
+        "firstIssued": "2026-11-02T10:00:19Z",
+        "lastUpdated": "2026-11-02T10:00:19Z"
       },
       "affects": [
         {
@@ -711,7 +771,7 @@
       ]
     },
     {
-      "bom-ref": "vex-CVE-2020-11023",
+      "bom-ref": "vuln-CVE-2020-11023-jquery",
       "id": "CVE-2020-11023",
       "source": {
         "name": "NVD",
@@ -721,26 +781,34 @@
         {
           "id": "GHSA-jpcq-cgw6-v4j6",
           "source": {
-            "name": "GitHub Advisories",
-            "url": "https://github.com/advisories/GHSA-jpcq-cgw6-v4j6"
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-jpcq-cgw6-v4j6"
+          }
+        },
+        {
+          "id": "BIT-drupal-2020-11023",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/BIT-drupal-2020-11023"
           }
         }
       ],
       "ratings": [
         {
           "source": {
-            "name": "GitHub Advisories"
+            "name": "OSV"
           },
           "severity": "medium"
         }
       ],
-      "recommendation": "Remove the unused file, or upgrade jquery to 3.5.0 or later.",
+      "description": "Potential XSS vulnerability in jQuery",
+      "recommendation": "Upgrade jquery to a fixed version (3.5.0, 4.4.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
-        "detail": "The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding.",
-        "firstIssued": "2026-10-29T14:26:05Z",
-        "lastUpdated": "2026-10-29T14:26:05Z"
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page.",
+        "firstIssued": "2026-11-02T10:00:19Z",
+        "lastUpdated": "2026-11-02T10:00:19Z"
       },
       "affects": [
         {
@@ -755,43 +823,44 @@
       ]
     },
     {
-      "bom-ref": "vex-CVE-2016-7103",
-      "id": "CVE-2016-7103",
+      "bom-ref": "vuln-CVE-2015-9251-jquery",
+      "id": "CVE-2015-9251",
       "source": {
         "name": "NVD",
-        "url": "https://nvd.nist.gov/vuln/detail/CVE-2016-7103"
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2015-9251"
       },
       "references": [
         {
-          "id": "GHSA-hpcf-8vf9-q4gj",
+          "id": "GHSA-rmxg-73gg-4p98",
           "source": {
-            "name": "GitHub Advisories",
-            "url": "https://github.com/advisories/GHSA-hpcf-8vf9-q4gj"
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-rmxg-73gg-4p98"
           }
         }
       ],
       "ratings": [
         {
           "source": {
-            "name": "GitHub Advisories"
+            "name": "OSV"
           },
           "severity": "medium"
         }
       ],
-      "recommendation": "Remove the unused file, or upgrade jquery-ui to 1.12.0 or later.",
+      "description": "Cross-Site Scripting (XSS) in jquery",
+      "recommendation": "Upgrade jquery to a fixed version (1.12.2, 3.0.0, 4.2.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
-        "detail": "The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding.",
-        "firstIssued": "2026-10-29T14:26:05Z",
-        "lastUpdated": "2026-10-29T14:26:05Z"
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page.",
+        "firstIssued": "2026-11-02T10:00:19Z",
+        "lastUpdated": "2026-11-02T10:00:19Z"
       },
       "affects": [
         {
-          "ref": "pkg:npm/jquery-ui@1.10.1",
+          "ref": "pkg:npm/jquery@1.9.1",
           "versions": [
             {
-              "version": "1.10.1",
+              "version": "1.9.1",
               "status": "unaffected"
             }
           ]
@@ -799,7 +868,7 @@
       ]
     },
     {
-      "bom-ref": "vex-CVE-2021-41182",
+      "bom-ref": "vuln-CVE-2021-41182-jquery-ui",
       "id": "CVE-2021-41182",
       "source": {
         "name": "NVD",
@@ -809,26 +878,34 @@
         {
           "id": "GHSA-9gj3-hwp5-pmwc",
           "source": {
-            "name": "GitHub Advisories",
-            "url": "https://github.com/advisories/GHSA-9gj3-hwp5-pmwc"
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-9gj3-hwp5-pmwc"
+          }
+        },
+        {
+          "id": "BIT-drupal-2021-41182",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/BIT-drupal-2021-41182"
           }
         }
       ],
       "ratings": [
         {
           "source": {
-            "name": "GitHub Advisories"
+            "name": "OSV"
           },
           "severity": "medium"
         }
       ],
-      "recommendation": "Remove the unused file, or upgrade jquery-ui to 1.13.0 or later.",
+      "description": "XSS in the `altField` option of the Datepicker widget in jquery-ui",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0, 7.0.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
-        "detail": "The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding.",
-        "firstIssued": "2026-10-29T14:26:05Z",
-        "lastUpdated": "2026-10-29T14:26:05Z"
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-02T10:00:19Z",
+        "lastUpdated": "2026-11-02T10:00:19Z"
       },
       "affects": [
         {
@@ -843,51 +920,7 @@
       ]
     },
     {
-      "bom-ref": "vex-CVE-2021-41183",
-      "id": "CVE-2021-41183",
-      "source": {
-        "name": "NVD",
-        "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-41183"
-      },
-      "references": [
-        {
-          "id": "GHSA-j7qv-pgf6-hvh4",
-          "source": {
-            "name": "GitHub Advisories",
-            "url": "https://github.com/advisories/GHSA-j7qv-pgf6-hvh4"
-          }
-        }
-      ],
-      "ratings": [
-        {
-          "source": {
-            "name": "GitHub Advisories"
-          },
-          "severity": "medium"
-        }
-      ],
-      "recommendation": "Remove the unused file, or upgrade jquery-ui to 1.13.0 or later.",
-      "analysis": {
-        "state": "not_affected",
-        "justification": "code_not_reachable",
-        "detail": "The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding.",
-        "firstIssued": "2026-10-29T14:26:05Z",
-        "lastUpdated": "2026-10-29T14:26:05Z"
-      },
-      "affects": [
-        {
-          "ref": "pkg:npm/jquery-ui@1.10.1",
-          "versions": [
-            {
-              "version": "1.10.1",
-              "status": "unaffected"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "bom-ref": "vex-CVE-2021-41184",
+      "bom-ref": "vuln-CVE-2021-41184-jquery-ui",
       "id": "CVE-2021-41184",
       "source": {
         "name": "NVD",
@@ -897,26 +930,34 @@
         {
           "id": "GHSA-gpqq-952q-5327",
           "source": {
-            "name": "GitHub Advisories",
-            "url": "https://github.com/advisories/GHSA-gpqq-952q-5327"
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-gpqq-952q-5327"
+          }
+        },
+        {
+          "id": "BIT-drupal-2021-41184",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/BIT-drupal-2021-41184"
           }
         }
       ],
       "ratings": [
         {
           "source": {
-            "name": "GitHub Advisories"
+            "name": "OSV"
           },
           "severity": "medium"
         }
       ],
-      "recommendation": "Remove the unused file, or upgrade jquery-ui to 1.13.0 or later.",
+      "description": "XSS in the `of` option of the `.position()` util in jquery-ui",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0, 7.0.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
-        "detail": "The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding.",
-        "firstIssued": "2026-10-29T14:26:05Z",
-        "lastUpdated": "2026-10-29T14:26:05Z"
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-02T10:00:19Z",
+        "lastUpdated": "2026-11-02T10:00:19Z"
       },
       "affects": [
         {
@@ -931,7 +972,7 @@
       ]
     },
     {
-      "bom-ref": "vex-CVE-2022-31160",
+      "bom-ref": "vuln-CVE-2022-31160-jquery-ui",
       "id": "CVE-2022-31160",
       "source": {
         "name": "NVD",
@@ -941,26 +982,124 @@
         {
           "id": "GHSA-h6gj-6jjq-h8g9",
           "source": {
-            "name": "GitHub Advisories",
-            "url": "https://github.com/advisories/GHSA-h6gj-6jjq-h8g9"
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-h6gj-6jjq-h8g9"
           }
         }
       ],
       "ratings": [
         {
           "source": {
-            "name": "GitHub Advisories"
+            "name": "OSV"
           },
           "severity": "medium"
         }
       ],
-      "recommendation": "Remove the unused file, or upgrade jquery-ui to 1.13.2 or later.",
+      "description": "jQuery UI vulnerable to XSS when refreshing a checkboxradio with an HTML-like initial text label",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.2, 8.0.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
-        "detail": "The file is bundled in src/resources and publicly served under /resources, but no page of the application loads it, so the vulnerable code never runs in this product. Removing the unused file removes the finding.",
-        "firstIssued": "2026-10-29T14:26:05Z",
-        "lastUpdated": "2026-10-29T14:26:05Z"
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-02T10:00:19Z",
+        "lastUpdated": "2026-11-02T10:00:19Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery-ui@1.10.1",
+          "versions": [
+            {
+              "version": "1.10.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "vuln-CVE-2016-7103-jquery-ui",
+      "id": "CVE-2016-7103",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2016-7103"
+      },
+      "references": [
+        {
+          "id": "GHSA-hpcf-8vf9-q4gj",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-hpcf-8vf9-q4gj"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "jQuery-UI vulnerable to Cross-site Scripting in dialog closeText",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.12.0, 6.0.0), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-02T10:00:19Z",
+        "lastUpdated": "2026-11-02T10:00:19Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery-ui@1.10.1",
+          "versions": [
+            {
+              "version": "1.10.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "vuln-CVE-2021-41183-jquery-ui",
+      "id": "CVE-2021-41183",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-41183"
+      },
+      "references": [
+        {
+          "id": "GHSA-j7qv-pgf6-hvh4",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-j7qv-pgf6-hvh4"
+          }
+        },
+        {
+          "id": "BIT-drupal-2021-41183",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/BIT-drupal-2021-41183"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "XSS in `*Text` options of the Datepicker widget in jquery-ui",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0, 7.0.0), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-02T10:00:19Z",
+        "lastUpdated": "2026-11-02T10:00:19Z"
       },
       "affects": [
         {

@@ -1,0 +1,147 @@
+# SBOM bij elke release, gemaakt met de skill geonovum-sbom.
+#
+# Bij het publiceren van een release maakt deze workflow uit sbom-inventory.json
+# een CycloneDX 1.7- en een SPDX 2.3-SBOM, met de release-tag als productversie.
+# Hij valideert beide, ondertekent ze met een build-attestatie van GitHub en hangt
+# ze als asset aan de release. De SBOMs worden niet gecommit: een gecommitte SBOM
+# beschrijft alleen het moment van committen en raakt daarna verouderd.
+#
+# Elke maandag legt de workflow de componenten opnieuw naast OSV. Staan er
+# kwetsbaarheden op in_triage, dan opent of actualiseert hij een issue met het
+# label sbom. Leg de beoordeling vast in het vex-blok van sbom-inventory.json.
+#
+# De scripts komen uit de skill-repository op een vaste commit (SKILL_REF), zodat
+# een wijziging daar niet ongemerkt in deze workflow belandt. Werk SKILL_REF bij
+# naar een nieuwere release van de skill als je die wilt gebruiken.
+name: SBOM
+
+on:
+  release:
+    types: [published]
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SKILL_REPO: fterpstra/skill-SBOM
+  SKILL_REF: c03006b32e00ea249a24bbf57171e9f48a119a3a
+  SKILL_DIR: .sbom-skill/skills/geonovum-sbom
+
+jobs:
+  release:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Skill ophalen
+        uses: actions/checkout@v7
+        with:
+          repository: ${{ env.SKILL_REPO }}
+          ref: ${{ env.SKILL_REF }}
+          path: .sbom-skill
+          persist-credentials: false
+
+      # Geen dependency-cache: deze taak heeft schrijfrechten, en een cache die
+      # elders is gevuld, kan hier code binnenbrengen.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: SBOM maken
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          node "$SKILL_DIR/scripts/build_sbom.js" sbom-inventory.json --out "$RUNNER_TEMP/sbom" ${VERSION:+--version "$VERSION"}
+          cat "$RUNNER_TEMP/sbom/sbom-gaps.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: SBOM valideren
+        run: |
+          npm install --prefix "$RUNNER_TEMP/deps" --no-save --no-audit --no-fund ajv@8 ajv-formats@3
+          node "$SKILL_DIR/scripts/validate_sbom.js" "$RUNNER_TEMP/sbom" --deps "$RUNNER_TEMP/deps"
+
+      - name: Ondertekenen met een build-attestatie
+        if: github.event_name == 'release'
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: |
+            ${{ runner.temp }}/sbom/sbom.cdx.json
+            ${{ runner.temp }}/sbom/sbom.spdx.json
+
+      - name: Aan de release hangen
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" "$RUNNER_TEMP/sbom/sbom.cdx.json" "$RUNNER_TEMP/sbom/sbom.spdx.json" --clobber --repo "$GITHUB_REPOSITORY"
+
+      - name: Bewaren als artefact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom
+          path: |
+            ${{ runner.temp }}/sbom/sbom.cdx.json
+            ${{ runner.temp }}/sbom/sbom.spdx.json
+            ${{ runner.temp }}/sbom/sbom-gaps.md
+
+  kwetsbaarheden:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Skill ophalen
+        uses: actions/checkout@v7
+        with:
+          repository: ${{ env.SKILL_REPO }}
+          ref: ${{ env.SKILL_REF }}
+          path: .sbom-skill
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Componenten naast OSV leggen
+        run: node "$SKILL_DIR/scripts/build_sbom.js" sbom-inventory.json --out "$RUNNER_TEMP/sbom"
+
+      - name: Issue openen of bijwerken
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node -e '
+            const bom = require(process.env.RUNNER_TEMP + "/sbom/sbom.cdx.json");
+            const open = (bom.vulnerabilities || []).filter((v) => v.analysis && v.analysis.state === "in_triage");
+            const rows = open.map((v) => `| [${v.id}](${v.source.url}) | ${v.affects.map((a) => a.ref).join(", ")} | ${v.ratings?.[0]?.severity || "onbekend"} | ${(v.description || "").replace(/\|/g, "/").slice(0, 120)} |`);
+            const body = open.length
+              ? ["Deze kwetsbaarheden staan op in_triage en moeten worden beoordeeld. Leg de uitkomst vast in het vex-blok van sbom-inventory.json.", "", "| Kwetsbaarheid | Component | Ernst | Omschrijving |", "|---|---|---|---|", ...rows].join("\n")
+              : "";
+            require("fs").writeFileSync(process.env.RUNNER_TEMP + "/issue.md", body);
+          '
+          title="SBOM: kwetsbaarheden te beoordelen"
+          existing=$(gh issue list --label sbom --state open --search "in:title \"$title\"" --json number --jq '.[0].number')
+          if [ ! -s "$RUNNER_TEMP/issue.md" ]; then
+            echo "Geen kwetsbaarheden op in_triage." >> "$GITHUB_STEP_SUMMARY"
+            if [ -n "$existing" ]; then gh issue close "$existing" --comment "Er staan geen kwetsbaarheden meer op in_triage."; fi
+          elif [ -n "$existing" ]; then
+            gh issue edit "$existing" --body-file "$RUNNER_TEMP/issue.md"
+          else
+            gh label create sbom --color 5319e7 --description "Software bill of materials" 2>/dev/null || true
+            gh issue create --title "$title" --label sbom --body-file "$RUNNER_TEMP/issue.md"
+          fi
