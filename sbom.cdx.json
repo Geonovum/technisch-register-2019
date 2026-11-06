@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:ea33c6f3-05e9-4be5-906b-ccbd20b91840",
+  "serialNumber": "urn:uuid:4e4c29a1-bafa-4d82-a1ed-c3d7211e24d0",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-11-02T10:00:19Z",
+    "timestamp": "2026-11-06T09:23:04Z",
     "lifecycles": [
       {
         "phase": "pre-build"
@@ -16,10 +16,16 @@
         {
           "type": "application",
           "name": "geonovum-sbom build_sbom.js",
-          "version": "1.1.0"
+          "version": "1.2.0"
         }
       ]
     },
+    "properties": [
+      {
+        "name": "geonovum-sbom:commit",
+        "value": "738a1b59e27a0b8f9d0491ef694edaf692233b11"
+      }
+    ],
     "authors": [
       {
         "name": "Frank Terpstra"
@@ -39,7 +45,7 @@
     },
     "component": {
       "type": "application",
-      "bom-ref": "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
+      "bom-ref": "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11",
       "supplier": {
         "name": "Geonovum",
         "url": [
@@ -47,7 +53,7 @@
         ]
       },
       "name": "technisch-register-2019",
-      "version": "cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
+      "version": "738a1b59e27a0b8f9d0491ef694edaf692233b11",
       "description": "Technisch register voor geo-standaarden: publiceert de technische bestanden van Nederlandse geo-standaarden vanuit GitHub op register.geostandaarden.nl",
       "licenses": [
         {
@@ -56,7 +62,7 @@
         }
       ],
       "copyright": "Copyright (c) 2019 Geonovum",
-      "purl": "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
+      "purl": "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11",
       "externalReferences": [
         {
           "type": "vcs",
@@ -637,7 +643,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208",
+      "ref": "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11",
       "dependsOn": [
         "pkg:npm/font-awesome@4.2.0",
         "component:php",
@@ -693,13 +699,13 @@
     {
       "aggregate": "incomplete",
       "assemblies": [
-        "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208"
+        "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11"
       ]
     },
     {
       "aggregate": "incomplete",
       "dependencies": [
-        "pkg:github/Geonovum/technisch-register-2019@cb21d5dc24d1bd8923f3b009d68d70d9b5358208"
+        "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11"
       ]
     }
   ],
@@ -750,13 +756,13 @@
         }
       ],
       "description": "XSS in jQuery as used in Drupal, Backdrop CMS, and other products",
-      "recommendation": "Upgrade jquery to a fixed version (3.4.0, 4.3.4, 2.1.9, 2.2.2, 1.19.0), or remove it.",
+      "recommendation": "Upgrade jquery to a fixed version (3.4.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
         "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page.",
-        "firstIssued": "2026-11-02T10:00:19Z",
-        "lastUpdated": "2026-11-02T10:00:19Z"
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
       },
       "affects": [
         {
@@ -802,13 +808,13 @@
         }
       ],
       "description": "Potential XSS vulnerability in jQuery",
-      "recommendation": "Upgrade jquery to a fixed version (3.5.0, 4.4.0), or remove it.",
+      "recommendation": "Upgrade jquery to a fixed version (3.5.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
         "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page.",
-        "firstIssued": "2026-11-02T10:00:19Z",
-        "lastUpdated": "2026-11-02T10:00:19Z"
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
       },
       "affects": [
         {
@@ -847,13 +853,13 @@
         }
       ],
       "description": "Cross-Site Scripting (XSS) in jquery",
-      "recommendation": "Upgrade jquery to a fixed version (1.12.2, 3.0.0, 4.2.0), or remove it.",
+      "recommendation": "Upgrade jquery to a fixed version (1.12.2, 3.0.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
         "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page.",
-        "firstIssued": "2026-11-02T10:00:19Z",
-        "lastUpdated": "2026-11-02T10:00:19Z"
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
       },
       "affects": [
         {
@@ -899,13 +905,13 @@
         }
       ],
       "description": "XSS in the `altField` option of the Datepicker widget in jquery-ui",
-      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0, 7.0.0), or remove it.",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
         "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
-        "firstIssued": "2026-11-02T10:00:19Z",
-        "lastUpdated": "2026-11-02T10:00:19Z"
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
       },
       "affects": [
         {
@@ -951,13 +957,13 @@
         }
       ],
       "description": "XSS in the `of` option of the `.position()` util in jquery-ui",
-      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0, 7.0.0), or remove it.",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
         "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
-        "firstIssued": "2026-11-02T10:00:19Z",
-        "lastUpdated": "2026-11-02T10:00:19Z"
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
       },
       "affects": [
         {
@@ -996,13 +1002,13 @@
         }
       ],
       "description": "jQuery UI vulnerable to XSS when refreshing a checkboxradio with an HTML-like initial text label",
-      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.2, 8.0.0), or remove it.",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.2), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
         "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
-        "firstIssued": "2026-11-02T10:00:19Z",
-        "lastUpdated": "2026-11-02T10:00:19Z"
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
       },
       "affects": [
         {
@@ -1041,13 +1047,13 @@
         }
       ],
       "description": "jQuery-UI vulnerable to Cross-site Scripting in dialog closeText",
-      "recommendation": "Upgrade jquery-ui to a fixed version (1.12.0, 6.0.0), or remove it.",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.12.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
         "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
-        "firstIssued": "2026-11-02T10:00:19Z",
-        "lastUpdated": "2026-11-02T10:00:19Z"
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
       },
       "affects": [
         {
@@ -1093,13 +1099,13 @@
         }
       ],
       "description": "XSS in `*Text` options of the Datepicker widget in jquery-ui",
-      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0, 7.0.0), or remove it.",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0), or remove it.",
       "analysis": {
         "state": "not_affected",
         "justification": "code_not_reachable",
         "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
-        "firstIssued": "2026-11-02T10:00:19Z",
-        "lastUpdated": "2026-11-02T10:00:19Z"
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
       },
       "affects": [
         {
