@@ -1,0 +1,98 @@
+# Doorlopende controle op kwetsbaarheden, met de skill geonovum-sbom.
+#
+# Elke maandag legt deze workflow de SBOM van de versie die in gebruik is naast de
+# actuele gegevens van OSV. Dat is de SBOM die aan een release hangt, niet de
+# broncode op de hoofdbranch: wat er draait, bepaalt wat er geraakt kan worden.
+# Welke release dat is, staat in de repository-variabele SBOM_IN_GEBRUIK (een
+# release-tag); zonder die variabele is het de laatste release. Met de hand starten
+# kan ook, met een andere tag.
+#
+# Kwetsbaarheden die nog niet zijn beoordeeld, komen in een issue met het label
+# sbom. Beoordelingen in het vex-blok van sbom-inventory.json op de hoofdbranch
+# tellen mee, ook als ze van na de release zijn; staat alles beoordeeld, dan sluit
+# de workflow het issue.
+#
+# De workflow bouwt niets en heeft alleen leesrechten op de code. Het script komt
+# uit de skill-repository op een vaste commit (SKILL_REF); de actions zijn
+# vastgezet op een commit-hash.
+name: SBOM-kwetsbaarheden
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release-tag waarvan de SBOM wordt gecontroleerd (leeg: SBOM_IN_GEBRUIK of de laatste release)"
+        required: false
+
+permissions:
+  contents: read
+
+env:
+  SKILL_REPO: developer-overheid-nl/skills-sbom
+  SKILL_REF: 0d265b221314d6fa8e4b70b6d864a459778e0cb4 # v0.0.2
+  SKILL_DIR: .sbom-skill/skills/geonovum-sbom
+
+jobs:
+  controleren:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Skill ophalen
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ env.SKILL_REPO }}
+          ref: ${{ env.SKILL_REF }}
+          path: .sbom-skill
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: SBOM van de release ophalen
+        id: sbom
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag || vars.SBOM_IN_GEBRUIK }}
+        run: |
+          if [ -z "$TAG" ]; then TAG=$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName 2>/dev/null || true); fi
+          if [ -z "$TAG" ] || ! gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern sbom.cdx.json --dir "$RUNNER_TEMP/release"; then
+            echo "Geen release met sbom.cdx.json gevonden${TAG:+ voor $TAG}; er is niets te controleren." >> "$GITHUB_STEP_SUMMARY"
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Naast OSV leggen
+        if: steps.sbom.outputs.found == 'true'
+        run: |
+          vex=()
+          if [ -f sbom-inventory.json ]; then vex=(--vex sbom-inventory.json); fi
+          node "$SKILL_DIR/scripts/check_vulns.js" "$RUNNER_TEMP/release/sbom.cdx.json" "${vex[@]}" --out "$RUNNER_TEMP/check" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Issue openen, bijwerken of sluiten
+        if: steps.sbom.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.sbom.outputs.tag }}
+        run: |
+          title="SBOM: kwetsbaarheden te beoordelen"
+          existing=$(gh issue list --label sbom --state open --search "in:title \"$title\"" --json number --jq '.[0].number')
+          if [ ! -s "$RUNNER_TEMP/check/kwetsbaarheden.md" ]; then
+            if [ -n "$existing" ]; then gh issue close "$existing" --comment "Alle kwetsbaarheden in de SBOM van $TAG zijn beoordeeld."; fi
+          elif [ -n "$existing" ]; then
+            gh issue edit "$existing" --body-file "$RUNNER_TEMP/check/kwetsbaarheden.md"
+          else
+            gh label create sbom --color 5319e7 --description "Software bill of materials" 2>/dev/null || true
+            gh issue create --title "$title" --label sbom --body-file "$RUNNER_TEMP/check/kwetsbaarheden.md"
+          fi

@@ -1,0 +1,104 @@
+# SBOM bij elke release, gemaakt met de skill geonovum-sbom.
+#
+# Bij het publiceren van een release maakt deze workflow uit sbom-inventory.json
+# een CycloneDX 1.7- en een SPDX 2.3-SBOM, met de release-tag als productversie.
+# Hij valideert beide, ondertekent ze met een build-attestatie van GitHub en hangt
+# ze als asset aan de release. De SBOMs worden niet gecommit: een gecommitte SBOM
+# beschrijft alleen het moment van committen en raakt daarna verouderd.
+#
+# Het controleren op nieuwe kwetsbaarheden staat los hiervan, in
+# sbom-kwetsbaarheden.yml: dat moet doorlopend gebeuren, op de SBOM van de versie
+# die in gebruik is, ook als er lang geen release komt.
+#
+# De scripts komen uit de skill-repository op een vaste commit (SKILL_REF), zodat
+# een wijziging daar niet ongemerkt in deze workflow belandt. Werk SKILL_REF bij
+# naar een nieuwere release van de skill als je die wilt gebruiken. De actions zijn
+# om dezelfde reden vastgezet op een commit-hash; Dependabot kan ze bijwerken.
+name: SBOM
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SKILL_REPO: developer-overheid-nl/skills-sbom
+  SKILL_REF: 0d265b221314d6fa8e4b70b6d864a459778e0cb4 # v0.0.2
+  SKILL_DIR: .sbom-skill/skills/geonovum-sbom
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Skill ophalen
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ env.SKILL_REPO }}
+          ref: ${{ env.SKILL_REF }}
+          path: .sbom-skill
+          persist-credentials: false
+
+      # Geen dependency-cache: deze taak heeft schrijfrechten, en een cache die
+      # elders is gevuld, kan hier code binnenbrengen.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      # Heeft de repository een lockfile of een manifest zonder vaste versies, bouw
+      # of installeer dan hier zoals de release wordt gebouwd, en laat een tool de
+      # geïnstalleerde boom lezen. Pas dan staan de versies in de SBOM die echt
+      # worden geleverd. Schrijf naar het pad dat in "import" van de inventaris
+      # staat, en zet "lifecycle" daar op "build". Bijvoorbeeld voor npm:
+      #
+      # - name: Bouwen en afhankelijkheden lezen
+      #   run: |
+      #     npm ci --omit=dev
+      #     npx --yes @cyclonedx/cdxgen@11 -t js --required-only -o "$RUNNER_TEMP/bom.tool.cdx.json" --spec-version 1.6 .
+
+      - name: SBOM maken
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          node "$SKILL_DIR/scripts/build_sbom.js" sbom-inventory.json --out "$RUNNER_TEMP/sbom" ${VERSION:+--version "$VERSION"}
+          cat "$RUNNER_TEMP/sbom/sbom-gaps.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: SBOM valideren
+        run: |
+          npm install --prefix "$RUNNER_TEMP/deps" --no-save --no-audit --no-fund ajv@8 ajv-formats@3
+          node "$SKILL_DIR/scripts/validate_sbom.js" "$RUNNER_TEMP/sbom" --deps "$RUNNER_TEMP/deps"
+
+      - name: Ondertekenen met een build-attestatie
+        if: github.event_name == 'release'
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: |
+            ${{ runner.temp }}/sbom/sbom.cdx.json
+            ${{ runner.temp }}/sbom/sbom.spdx.json
+
+      - name: Aan de release hangen
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" "$RUNNER_TEMP/sbom/sbom.cdx.json" "$RUNNER_TEMP/sbom/sbom.spdx.json" --clobber --repo "$GITHUB_REPOSITORY"
+
+      - name: Bewaren als artefact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sbom
+          path: |
+            ${{ runner.temp }}/sbom/sbom.cdx.json
+            ${{ runner.temp }}/sbom/sbom.spdx.json
+            ${{ runner.temp }}/sbom/sbom-gaps.md

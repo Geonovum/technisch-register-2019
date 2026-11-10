@@ -42,3 +42,13 @@ The [Guide for registry maintainers](https://github.com/Geonovum/technisch-regis
 
 ### Tips
 If users update files via FTP, make sure these users are part of the appropriate group with write access (e.g. by adding the user to the www-data group, like `sudo usermod -aG {group} {user}`
+
+## Metadata and SBOM
+* [`publiccode.yml`](publiccode.yml) describes this software following the [publiccode.yml standard](https://publiccodeyml.github.io/v0/) (version 0.7), for catalogues of public sector software.
+* [`sbom.cdx.json`](sbom.cdx.json) ([CycloneDX](https://cyclonedx.org/) 1.7) and [`sbom.spdx.json`](sbom.spdx.json) ([SPDX](https://spdx.dev/) 2.3) list the third-party components: jQuery 1.9.1, jQuery UI 1.10.1 and Modernizr 2.6.2 (bundled in `src/resources`, not used by any page), Font Awesome 4.2.0 (loaded from a CDN by `index.php`), and PHP with its zip and openssl extensions and Apache HTTP Server (provided by the server). They follow the [2026 CISA minimum elements](https://www.cisa.gov/resources-tools/resources/2026-minimum-elements-software-bill-materials-sbom). The CycloneDX file also holds VEX statements for the known vulnerabilities in the unused jQuery and jQuery UI files.
+* [`sbom-inventory.json`](sbom-inventory.json) is the source for both SBOMs, made with the [`geonovum-sbom`](https://github.com/developer-overheid-nl/skills-sbom) skill (v0.0.2). Two workflows use it:
+  * [`.github/workflows/sbom.yml`](.github/workflows/sbom.yml) builds the SBOMs on every published GitHub release, validates them, signs them with a build attestation and attaches them to the release.
+  * [`.github/workflows/sbom-kwetsbaarheden.yml`](.github/workflows/sbom-kwetsbaarheden.yml) checks the SBOM of the release in use against [OSV](https://osv.dev) every Monday, and opens an issue labelled `sbom` when vulnerabilities need to be assessed. The release in use is the latest one, unless the repository variable `SBOM_IN_GEBRUIK` names another tag.
+
+  Update the inventory when a third-party component is added, removed or upgraded, and record vulnerability assessments in its `vex` block; the weekly check takes those into account. Once releases carry the SBOMs, the copies in the repository root can be removed.
+* The actions in the workflows are pinned to a commit hash, and so is the skill (`SKILL_REF`). [`.github/dependabot.yml`](.github/dependabot.yml) opens a pull request when an action has a new version; to use a new release of the skill, update `SKILL_REF` by hand.

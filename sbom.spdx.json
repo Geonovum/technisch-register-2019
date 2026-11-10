@@ -1,0 +1,705 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "technisch-register-2019-738a1b59e27a",
+  "documentNamespace": "https://github.com/Geonovum/technisch-register-2019/sbom/spdx-2.3/4e4c29a1-bafa-4d82-a1ed-c3d7211e24d0",
+  "creationInfo": {
+    "created": "2026-11-06T09:23:04Z",
+    "creators": [
+      "Tool: geonovum-sbom-build_sbom.js-1.2.0",
+      "Organization: Geonovum",
+      "Person: Frank Terpstra"
+    ],
+    "comment": "SBOM version 1. Generation context: pre-build (source). Companion CycloneDX 1.7 document: urn:uuid:4e4c29a1-bafa-4d82-a1ed-c3d7211e24d0."
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-product",
+      "name": "technisch-register-2019",
+      "versionInfo": "738a1b59e27a0b8f9d0491ef694edaf692233b11",
+      "supplier": "Organization: Geonovum",
+      "originator": "Organization: Geonovum",
+      "downloadLocation": "git+https://github.com/Geonovum/technisch-register-2019.git@738a1b59e27a0b8f9d0491ef694edaf692233b11",
+      "homepage": "https://register.geostandaarden.nl",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "Copyright (c) 2019 Geonovum",
+      "description": "Technisch register voor geo-standaarden: publiceert de technische bestanden van Nederlandse geo-standaarden vanuit GitHub op register.geostandaarden.nl",
+      "primaryPackagePurpose": "APPLICATION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-jquery",
+      "name": "jquery",
+      "versionInfo": "1.9.1",
+      "supplier": "Organization: OpenJS Foundation",
+      "originator": "Organization: OpenJS Foundation",
+      "downloadLocation": "https://code.jquery.com/jquery-1.9.1.js",
+      "homepage": "https://jquery.com",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "a17fea4dd49b2c582392e2b7e8fe288f1958ecc5"
+      },
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9257afd2d46c3a189ec0d40a45722701d47e9ca5"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7bd80d06c01c0340c1b9159b9b4a197db882ca18cbac8e9b9aa025e68f998d40"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "d62700e7a1ff41f9d6326ca024ba2be1d391bc8fbb2aeae0f427d74837899b230940bf7c2df3d193f5300a68bb3686706d4c31328234b5cda026a1bf52ef9e70"
+        }
+      ],
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "licenseInfoFromFiles": [
+        "MIT"
+      ],
+      "copyrightText": "Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors",
+      "description": "jQuery JavaScript Library, including the Sizzle CSS selector engine",
+      "comment": "bundled in src/resources and publicly served under /resources, but not loaded by any page",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/jquery@1.9.1"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:jquery:jquery:1.9.1:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2019-11358",
+          "comment": "CVE-2019-11358: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page."
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2020-11023",
+          "comment": "CVE-2020-11023: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page."
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2015-9251",
+          "comment": "CVE-2015-9251: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page."
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-jquery-ui",
+      "name": "jquery-ui",
+      "versionInfo": "1.10.1",
+      "supplier": "Organization: OpenJS Foundation",
+      "originator": "Organization: OpenJS Foundation",
+      "downloadLocation": "https://github.com/jquery/jquery-ui/tree/1.10.1",
+      "homepage": "https://jqueryui.com",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "247a88e06f30f599eba25b219f08ea798db2a550"
+      },
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "licenseInfoFromFiles": [
+        "MIT"
+      ],
+      "copyrightText": "Copyright (c) 2013 jQuery Foundation and other contributors",
+      "description": "jQuery UI custom build (all widgets and effects) with a ThemeRoller theme",
+      "comment": "bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/jquery-ui@1.10.1"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:jqueryui:jquery_ui:1.10.1:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2021-41182",
+          "comment": "CVE-2021-41182: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2021-41184",
+          "comment": "CVE-2021-41184: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2022-31160",
+          "comment": "CVE-2022-31160: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2016-7103",
+          "comment": "CVE-2016-7103: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "advisory",
+          "referenceLocator": "https://nvd.nist.gov/vuln/detail/CVE-2021-41183",
+          "comment": "CVE-2021-41183: not_affected - Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out."
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-modernizr",
+      "name": "modernizr",
+      "versionInfo": "2.6.2",
+      "supplier": "Organization: Modernizr",
+      "originator": "Organization: Modernizr",
+      "downloadLocation": "https://github.com/Modernizr/Modernizr/tree/v2.6.2",
+      "homepage": "https://modernizr.com",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "d14d86f040af5c9dda1310effe970ce9d7c48a8a"
+      },
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "280ac744c39f41acbddd3517384f84a20745205e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ce68fe41c2c6c11e6a038ef02ac49992152177c41652f0386e46132153877146"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "1b9e2fd1734df4ce54e50ad435634a9e4ca768fc9691a3d6ad683f00e2318f44ef6c710948242439a8f051e37fbd7a4be311fcb7c93620ca7efb503065ccc760"
+        }
+      ],
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "LicenseRef-MIT-BSD",
+      "licenseInfoFromFiles": [
+        "LicenseRef-MIT-BSD"
+      ],
+      "copyrightText": "Copyright (c) Faruk Ates, Paul Irish, Alex Sexton",
+      "description": "Modernizr 2.6.2 custom build",
+      "comment": "bundled in src/resources and publicly served under /resources, but not loaded by any page",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/modernizr@2.6.2"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-yepnope",
+      "name": "yepnope",
+      "versionInfo": "1.5.4",
+      "supplier": "Organization: Alex Sexton",
+      "originator": "Organization: Alex Sexton",
+      "downloadLocation": "NOASSERTION",
+      "homepage": "https://github.com/SlexAxton/yepnope.js",
+      "filesAnalyzed": false,
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "280ac744c39f41acbddd3517384f84a20745205e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ce68fe41c2c6c11e6a038ef02ac49992152177c41652f0386e46132153877146"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "1b9e2fd1734df4ce54e50ad435634a9e4ca768fc9691a3d6ad683f00e2318f44ef6c710948242439a8f051e37fbd7a4be311fcb7c93620ca7efb503065ccc760"
+        }
+      ],
+      "licenseConcluded": "WTFPL",
+      "licenseDeclared": "WTFPL",
+      "copyrightText": "NOASSERTION",
+      "description": "Resource loader, embedded in the Modernizr custom build",
+      "comment": "Embedded in modernizr; the checksums are those of the containing file src/resources/js/modernizr.js.",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/yepnope@1.5.4"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-font-awesome",
+      "name": "font-awesome",
+      "versionInfo": "4.2.0",
+      "supplier": "Organization: Fonticons, Inc.",
+      "originator": "Organization: Fonticons, Inc.",
+      "downloadLocation": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css",
+      "homepage": "https://fontawesome.com/v4/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "5738228b5d4ffdb98b89a94b25594e1359195baa"
+      },
+      "licenseConcluded": "OFL-1.1 AND MIT",
+      "licenseDeclared": "OFL-1.1 AND MIT",
+      "licenseInfoFromFiles": [
+        "OFL-1.1 AND MIT"
+      ],
+      "copyrightText": "NOASSERTION",
+      "description": "Font Awesome icon font and CSS",
+      "comment": "loaded at runtime from a CDN by src/index.php; the CSS loads the font files",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/font-awesome@4.2.0"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-php",
+      "name": "PHP",
+      "supplier": "Organization: The PHP Group",
+      "originator": "Organization: The PHP Group",
+      "downloadLocation": "NOASSERTION",
+      "homepage": "https://www.php.net",
+      "filesAnalyzed": false,
+      "licenseConcluded": "PHP-3.01",
+      "licenseDeclared": "PHP-3.01",
+      "copyrightText": "NOASSERTION",
+      "description": "PHP runtime (README: version 7.2)",
+      "comment": "Provided by the deployment environment, not bundled; accepted versions >=7.2.",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:generic/php"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-php-zip",
+      "name": "PHP zip extension",
+      "supplier": "Organization: The PHP Group",
+      "originator": "Organization: The PHP Group",
+      "downloadLocation": "NOASSERTION",
+      "homepage": "https://www.php.net/manual/en/book.zip.php",
+      "filesAnalyzed": false,
+      "licenseConcluded": "PHP-3.01",
+      "licenseDeclared": "PHP-3.01",
+      "copyrightText": "NOASSERTION",
+      "description": "ZipArchive, used by src/autodeploy to unpack release archives",
+      "comment": "Provided by the deployment environment, not bundled; accepted versions >=7.2.",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:generic/php-zip"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-php-openssl",
+      "name": "PHP openssl extension",
+      "supplier": "Organization: The PHP Group",
+      "originator": "Organization: The PHP Group",
+      "downloadLocation": "NOASSERTION",
+      "homepage": "https://www.php.net/manual/en/book.openssl.php",
+      "filesAnalyzed": false,
+      "licenseConcluded": "PHP-3.01",
+      "licenseDeclared": "PHP-3.01",
+      "copyrightText": "NOASSERTION",
+      "description": "Needed for file_get_contents on https URLs in src/autodeploy (configuration from raw.githubusercontent.com, release archives from github.com)",
+      "comment": "Provided by the deployment environment, not bundled; accepted versions >=7.2.",
+      "primaryPackagePurpose": "OTHER",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:generic/php-openssl"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-apache-httpd",
+      "name": "Apache HTTP Server",
+      "supplier": "Organization: The Apache Software Foundation",
+      "originator": "Organization: The Apache Software Foundation",
+      "downloadLocation": "NOASSERTION",
+      "homepage": "https://httpd.apache.org",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "NOASSERTION",
+      "description": "Web server with mod_rewrite (rules in conf/apache2/rewrite-rules.txt)",
+      "comment": "Provided by the deployment environment, not bundled; accepted versions >=2.4.",
+      "primaryPackagePurpose": "APPLICATION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:generic/apache-httpd"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "SPDXID": "SPDXRef-File-jquery-src-resources-js-jquery-1.9.1.js",
+      "fileName": "./src/resources/js/jquery-1.9.1.js",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9257afd2d46c3a189ec0d40a45722701d47e9ca5"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7bd80d06c01c0340c1b9159b9b4a197db882ca18cbac8e9b9aa025e68f998d40"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "d62700e7a1ff41f9d6326ca024ba2be1d391bc8fbb2aeae0f427d74837899b230940bf7c2df3d193f5300a68bb3686706d4c31328234b5cda026a1bf52ef9e70"
+        }
+      ],
+      "licenseConcluded": "MIT",
+      "licenseInfoInFiles": [
+        "MIT"
+      ],
+      "copyrightText": "Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors"
+    },
+    {
+      "SPDXID": "SPDXRef-File-jquery-ui-src-resources-js-jquery-ui-1.10.1.min.js",
+      "fileName": "./src/resources/js/jquery-ui-1.10.1.min.js",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "6ccdd8a368e50542c1ab2844b5fb7a8e71ad9c84"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ea0f93660d89caf4dd16b3aac3b49d9bd171551f8244f0b1e2493b71434d44db"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "e95fe627710d8a562738518295e9f3b0815890270e63be87adda8bd262398da40d2f91ec6313cefd17e2fae3390da3871fe7f7a3167d923f5546d4653c7c90ff"
+        }
+      ],
+      "licenseConcluded": "MIT",
+      "licenseInfoInFiles": [
+        "MIT"
+      ],
+      "copyrightText": "Copyright (c) 2013 jQuery Foundation and other contributors"
+    },
+    {
+      "SPDXID": "SPDXRef-File-jquery-ui-src-resources-css-jquery-ui-1.10.1.min.css",
+      "fileName": "./src/resources/css/jquery-ui-1.10.1.min.css",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "8439cfd7339641d84019e47cd8b500be45a21902"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "75f43b287478b79e7847db86300c04a77201cc8d627abd463f15e70ddad36a89"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "6a6928dd6176b6f1c88a142a4530eed2eb84faf45d7a818eacac4388cc5455e8cc98bd2d9964b266a97903dd5ec0bc9f143fdcd66f33d07333c691a21e6cf655"
+        }
+      ],
+      "licenseConcluded": "MIT",
+      "licenseInfoInFiles": [
+        "MIT"
+      ],
+      "copyrightText": "Copyright (c) 2013 jQuery Foundation and other contributors"
+    },
+    {
+      "SPDXID": "SPDXRef-File-modernizr-src-resources-js-modernizr.js",
+      "fileName": "./src/resources/js/modernizr.js",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "280ac744c39f41acbddd3517384f84a20745205e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ce68fe41c2c6c11e6a038ef02ac49992152177c41652f0386e46132153877146"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "1b9e2fd1734df4ce54e50ad435634a9e4ca768fc9691a3d6ad683f00e2318f44ef6c710948242439a8f051e37fbd7a4be311fcb7c93620ca7efb503065ccc760"
+        }
+      ],
+      "licenseConcluded": "MIT",
+      "licenseInfoInFiles": [
+        "LicenseRef-MIT-BSD"
+      ],
+      "copyrightText": "Copyright (c) Faruk Ates, Paul Irish, Alex Sexton"
+    },
+    {
+      "SPDXID": "SPDXRef-File-font-awesome-css-font-awesome.min.css",
+      "fileName": "./css/font-awesome.min.css",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "b71d1c7c315b67c614563382d1c2a868ac14d729"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0fb1bbca73646e8e2b93c82e8d8b219647b13d4b440c48e338290b9a685b8de1"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "e64cd0c0ff8d301c0f6bd9fe60934362dce7be85af57c9c3e1c719e42f8784cf707bc9025b58fd1f341a6deeb27490e3fa8164aed9cc76605323a602544c8220"
+        }
+      ],
+      "licenseConcluded": "OFL-1.1 AND MIT",
+      "licenseInfoInFiles": [
+        "OFL-1.1 AND MIT"
+      ],
+      "copyrightText": "NOASSERTION",
+      "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+    },
+    {
+      "SPDXID": "SPDXRef-File-font-awesome-fonts-fontawesome-webfont.eot",
+      "fileName": "./fonts/fontawesome-webfont.eot",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "0183979056f0b87616cd99d5c54a48f3b771eee6"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e511891d3e01b0b27aed51a219ced5119e2c3d0460465af8242e9bff4cb61b77"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "3d0d435310306c977bfa7faf3be358e7184a27d7f83688131d295378f6ee0fe053afaa0c1e5fbc9c00eb24787e8239f4b0d4d7b339b5576e3c4b1fe741906415"
+        }
+      ],
+      "licenseConcluded": "OFL-1.1 AND MIT",
+      "licenseInfoInFiles": [
+        "OFL-1.1 AND MIT"
+      ],
+      "copyrightText": "NOASSERTION",
+      "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.eot?v=4.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-File-font-awesome-fonts-fontawesome-webfont.svg",
+      "fileName": "./fonts/fontawesome-webfont.svg",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "cd980eab6db5fa57db670cb2e4278e67e1a4d6c9"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d5b5636ebb2e124810436200086b74a60dff9e8a8be7f4a1088bf5d3458bc3c8"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "0920ae6b27ea8119e4697b974301a854686d3ca450197f95b0daab7647d8805e7e946dfda682ec2edb756a501cb170b2b89bffcdcdd5d1c17d165a0b99ec345f"
+        }
+      ],
+      "licenseConcluded": "OFL-1.1 AND MIT",
+      "licenseInfoInFiles": [
+        "OFL-1.1 AND MIT"
+      ],
+      "copyrightText": "NOASSERTION",
+      "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.svg?v=4.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-File-font-awesome-fonts-fontawesome-webfont.ttf",
+      "fileName": "./fonts/fontawesome-webfont.ttf",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "6225ccc4ec94d060f19efab97ca42d842845b949"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4d6eb9e9d852a2a6f74e7c428456a2f07fc63a1613d10192d8ed3401d9da5ffa"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "ec66825d9579bc96301b5c123bcec3fe950ba75ee91301355494017cdd48c74d6d23886e3ad0929307e261200351013176bc7dcb4da1f13f7f9ef31bc395a5e1"
+        }
+      ],
+      "licenseConcluded": "OFL-1.1 AND MIT",
+      "licenseInfoInFiles": [
+        "OFL-1.1 AND MIT"
+      ],
+      "copyrightText": "NOASSERTION",
+      "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf?v=4.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-File-font-awesome-fonts-fontawesome-webfont.woff",
+      "fileName": "./fonts/fontawesome-webfont.woff",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "7d65e0227d0d7cdc1718119cd2a7dce0638f151c"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "199411f659f41aaccb959bacb1b0de30e54f244352a48c6f9894e65ae0f8a9a1"
+        },
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "e96012d2fcd5df03c2f7385c9ee2a2932b3909659d59e32bf3155e102eaf9eb7b4b00c5806c892ace1b8f4bdb58630fb20868ad368c771bd8d2aad7749b7a399"
+        }
+      ],
+      "licenseConcluded": "OFL-1.1 AND MIT",
+      "licenseInfoInFiles": [
+        "OFL-1.1 AND MIT"
+      ],
+      "copyrightText": "NOASSERTION",
+      "comment": "Downloaded from https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.woff?v=4.2.0"
+    }
+  ],
+  "hasExtractedLicensingInfos": [
+    {
+      "licenseId": "LicenseRef-MIT-BSD",
+      "name": "MIT & BSD",
+      "extractedText": "License as stated by the component: \"MIT & BSD\""
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-product"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-jquery",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-File-jquery-src-resources-js-jquery-1.9.1.js"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-jquery-ui",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-File-jquery-ui-src-resources-js-jquery-ui-1.10.1.min.js"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-jquery-ui",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-File-jquery-ui-src-resources-css-jquery-ui-1.10.1.min.css"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-modernizr",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-File-modernizr-src-resources-js-modernizr.js"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-font-awesome",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-File-font-awesome-css-font-awesome.min.css"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-font-awesome",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-File-font-awesome-fonts-fontawesome-webfont.eot"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-font-awesome",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-File-font-awesome-fonts-fontawesome-webfont.svg"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-font-awesome",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-File-font-awesome-fonts-fontawesome-webfont.ttf"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-font-awesome",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-File-font-awesome-fonts-fontawesome-webfont.woff"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-Package-jquery"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-Package-jquery-ui"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-Package-modernizr"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-modernizr",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-Package-yepnope"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-font-awesome"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-php"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-php-zip"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-php-zip",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-php"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-php-openssl"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-php-openssl",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-php"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-product",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-apache-httpd"
+    }
+  ]
+}

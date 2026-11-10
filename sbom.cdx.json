@@ -1,0 +1,1123 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:4e4c29a1-bafa-4d82-a1ed-c3d7211e24d0",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-06T09:23:04Z",
+    "lifecycles": [
+      {
+        "phase": "pre-build"
+      }
+    ],
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "geonovum-sbom build_sbom.js",
+          "version": "1.2.0"
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "geonovum-sbom:commit",
+        "value": "738a1b59e27a0b8f9d0491ef694edaf692233b11"
+      }
+    ],
+    "authors": [
+      {
+        "name": "Frank Terpstra"
+      }
+    ],
+    "manufacturer": {
+      "name": "Geonovum",
+      "url": [
+        "https://www.geonovum.nl"
+      ]
+    },
+    "supplier": {
+      "name": "Geonovum",
+      "url": [
+        "https://www.geonovum.nl"
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11",
+      "supplier": {
+        "name": "Geonovum",
+        "url": [
+          "https://www.geonovum.nl"
+        ]
+      },
+      "name": "technisch-register-2019",
+      "version": "738a1b59e27a0b8f9d0491ef694edaf692233b11",
+      "description": "Technisch register voor geo-standaarden: publiceert de technische bestanden van Nederlandse geo-standaarden vanuit GitHub op register.geostandaarden.nl",
+      "licenses": [
+        {
+          "expression": "MIT",
+          "acknowledgement": "declared"
+        }
+      ],
+      "copyright": "Copyright (c) 2019 Geonovum",
+      "purl": "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11",
+      "externalReferences": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/Geonovum/technisch-register-2019"
+        },
+        {
+          "type": "website",
+          "url": "https://register.geostandaarden.nl"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/jquery@1.9.1",
+      "supplier": {
+        "name": "OpenJS Foundation",
+        "url": [
+          "https://openjsf.org"
+        ]
+      },
+      "name": "jquery",
+      "version": "1.9.1",
+      "description": "jQuery JavaScript Library, including the Sizzle CSS selector engine",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "9257afd2d46c3a189ec0d40a45722701d47e9ca5"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "7bd80d06c01c0340c1b9159b9b4a197db882ca18cbac8e9b9aa025e68f998d40"
+        },
+        {
+          "alg": "SHA-512",
+          "content": "d62700e7a1ff41f9d6326ca024ba2be1d391bc8fbb2aeae0f427d74837899b230940bf7c2df3d193f5300a68bb3686706d4c31328234b5cda026a1bf52ef9e70"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "MIT",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "copyright": "Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors",
+      "cpe": "cpe:2.3:a:jquery:jquery:1.9.1:*:*:*:*:*:*:*",
+      "purl": "pkg:npm/jquery@1.9.1",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://jquery.com"
+        },
+        {
+          "type": "distribution",
+          "url": "https://code.jquery.com/jquery-1.9.1.js"
+        }
+      ],
+      "properties": [
+        {
+          "name": "geonovum-sbom:usage",
+          "value": "bundled in src/resources and publicly served under /resources, but not loaded by any page"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "src/resources/js/jquery-1.9.1.js"
+          }
+        ],
+        "copyright": [
+          {
+            "text": "Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors"
+          }
+        ]
+      }
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/jquery-ui@1.10.1",
+      "supplier": {
+        "name": "OpenJS Foundation",
+        "url": [
+          "https://openjsf.org"
+        ]
+      },
+      "name": "jquery-ui",
+      "version": "1.10.1",
+      "description": "jQuery UI custom build (all widgets and effects) with a ThemeRoller theme",
+      "scope": "required",
+      "licenses": [
+        {
+          "expression": "MIT",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "copyright": "Copyright (c) 2013 jQuery Foundation and other contributors",
+      "cpe": "cpe:2.3:a:jqueryui:jquery_ui:1.10.1:*:*:*:*:*:*:*",
+      "purl": "pkg:npm/jquery-ui@1.10.1",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://jqueryui.com"
+        },
+        {
+          "type": "distribution",
+          "url": "https://github.com/jquery/jquery-ui/tree/1.10.1"
+        }
+      ],
+      "properties": [
+        {
+          "name": "geonovum-sbom:usage",
+          "value": "bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "src/resources/js/jquery-ui-1.10.1.min.js"
+          },
+          {
+            "location": "src/resources/css/jquery-ui-1.10.1.min.css"
+          }
+        ],
+        "copyright": [
+          {
+            "text": "Copyright (c) 2013 jQuery Foundation and other contributors"
+          }
+        ]
+      },
+      "components": [
+        {
+          "type": "file",
+          "bom-ref": "pkg:npm/jquery-ui@1.10.1#src/resources/js/jquery-ui-1.10.1.min.js",
+          "name": "src/resources/js/jquery-ui-1.10.1.min.js",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "6ccdd8a368e50542c1ab2844b5fb7a8e71ad9c84"
+            },
+            {
+              "alg": "SHA-256",
+              "content": "ea0f93660d89caf4dd16b3aac3b49d9bd171551f8244f0b1e2493b71434d44db"
+            },
+            {
+              "alg": "SHA-512",
+              "content": "e95fe627710d8a562738518295e9f3b0815890270e63be87adda8bd262398da40d2f91ec6313cefd17e2fae3390da3871fe7f7a3167d923f5546d4653c7c90ff"
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "bom-ref": "pkg:npm/jquery-ui@1.10.1#src/resources/css/jquery-ui-1.10.1.min.css",
+          "name": "src/resources/css/jquery-ui-1.10.1.min.css",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "8439cfd7339641d84019e47cd8b500be45a21902"
+            },
+            {
+              "alg": "SHA-256",
+              "content": "75f43b287478b79e7847db86300c04a77201cc8d627abd463f15e70ddad36a89"
+            },
+            {
+              "alg": "SHA-512",
+              "content": "6a6928dd6176b6f1c88a142a4530eed2eb84faf45d7a818eacac4388cc5455e8cc98bd2d9964b266a97903dd5ec0bc9f143fdcd66f33d07333c691a21e6cf655"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/modernizr@2.6.2",
+      "supplier": {
+        "name": "Modernizr",
+        "url": [
+          "https://modernizr.com"
+        ]
+      },
+      "name": "modernizr",
+      "version": "2.6.2",
+      "description": "Modernizr 2.6.2 custom build",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "280ac744c39f41acbddd3517384f84a20745205e"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "ce68fe41c2c6c11e6a038ef02ac49992152177c41652f0386e46132153877146"
+        },
+        {
+          "alg": "SHA-512",
+          "content": "1b9e2fd1734df4ce54e50ad435634a9e4ca768fc9691a3d6ad683f00e2318f44ef6c710948242439a8f051e37fbd7a4be311fcb7c93620ca7efb503065ccc760"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "MIT",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "copyright": "Copyright (c) Faruk Ates, Paul Irish, Alex Sexton",
+      "purl": "pkg:npm/modernizr@2.6.2",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://modernizr.com"
+        },
+        {
+          "type": "distribution",
+          "url": "https://github.com/Modernizr/Modernizr/tree/v2.6.2"
+        }
+      ],
+      "properties": [
+        {
+          "name": "geonovum-sbom:usage",
+          "value": "bundled in src/resources and publicly served under /resources, but not loaded by any page"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "src/resources/js/modernizr.js"
+          }
+        ],
+        "licenses": [
+          {
+            "license": {
+              "name": "MIT & BSD",
+              "acknowledgement": "declared"
+            }
+          }
+        ],
+        "copyright": [
+          {
+            "text": "Copyright (c) Faruk Ates, Paul Irish, Alex Sexton"
+          }
+        ]
+      }
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/yepnope@1.5.4",
+      "supplier": {
+        "name": "Alex Sexton"
+      },
+      "name": "yepnope",
+      "version": "1.5.4",
+      "description": "Resource loader, embedded in the Modernizr custom build",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "280ac744c39f41acbddd3517384f84a20745205e"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "ce68fe41c2c6c11e6a038ef02ac49992152177c41652f0386e46132153877146"
+        },
+        {
+          "alg": "SHA-512",
+          "content": "1b9e2fd1734df4ce54e50ad435634a9e4ca768fc9691a3d6ad683f00e2318f44ef6c710948242439a8f051e37fbd7a4be311fcb7c93620ca7efb503065ccc760"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "WTFPL",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "purl": "pkg:npm/yepnope@1.5.4",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/SlexAxton/yepnope.js"
+        }
+      ],
+      "properties": [
+        {
+          "name": "geonovum-sbom:embedded-in",
+          "value": "pkg:npm/modernizr@2.6.2"
+        },
+        {
+          "name": "geonovum-sbom:hash-scope",
+          "value": "hash of the containing file src/resources/js/modernizr.js, which also holds modernizr"
+        }
+      ],
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "src/resources/js/modernizr.js"
+          }
+        ]
+      }
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/font-awesome@4.2.0",
+      "supplier": {
+        "name": "Fonticons, Inc.",
+        "url": [
+          "https://fontawesome.com"
+        ]
+      },
+      "name": "font-awesome",
+      "version": "4.2.0",
+      "description": "Font Awesome icon font and CSS",
+      "scope": "required",
+      "licenses": [
+        {
+          "expression": "OFL-1.1 AND MIT",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "purl": "pkg:npm/font-awesome@4.2.0",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://fontawesome.com/v4/"
+        },
+        {
+          "type": "distribution",
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+        }
+      ],
+      "properties": [
+        {
+          "name": "geonovum-sbom:usage",
+          "value": "loaded at runtime from a CDN by src/index.php; the CSS loads the font files"
+        }
+      ],
+      "components": [
+        {
+          "type": "file",
+          "bom-ref": "pkg:npm/font-awesome@4.2.0#css/font-awesome.min.css",
+          "name": "css/font-awesome.min.css",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "b71d1c7c315b67c614563382d1c2a868ac14d729"
+            },
+            {
+              "alg": "SHA-256",
+              "content": "0fb1bbca73646e8e2b93c82e8d8b219647b13d4b440c48e338290b9a685b8de1"
+            },
+            {
+              "alg": "SHA-512",
+              "content": "e64cd0c0ff8d301c0f6bd9fe60934362dce7be85af57c9c3e1c719e42f8784cf707bc9025b58fd1f341a6deeb27490e3fa8164aed9cc76605323a602544c8220"
+            }
+          ],
+          "externalReferences": [
+            {
+              "type": "distribution",
+              "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "bom-ref": "pkg:npm/font-awesome@4.2.0#fonts/fontawesome-webfont.eot",
+          "name": "fonts/fontawesome-webfont.eot",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "0183979056f0b87616cd99d5c54a48f3b771eee6"
+            },
+            {
+              "alg": "SHA-256",
+              "content": "e511891d3e01b0b27aed51a219ced5119e2c3d0460465af8242e9bff4cb61b77"
+            },
+            {
+              "alg": "SHA-512",
+              "content": "3d0d435310306c977bfa7faf3be358e7184a27d7f83688131d295378f6ee0fe053afaa0c1e5fbc9c00eb24787e8239f4b0d4d7b339b5576e3c4b1fe741906415"
+            }
+          ],
+          "externalReferences": [
+            {
+              "type": "distribution",
+              "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.eot?v=4.2.0"
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "bom-ref": "pkg:npm/font-awesome@4.2.0#fonts/fontawesome-webfont.svg",
+          "name": "fonts/fontawesome-webfont.svg",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "cd980eab6db5fa57db670cb2e4278e67e1a4d6c9"
+            },
+            {
+              "alg": "SHA-256",
+              "content": "d5b5636ebb2e124810436200086b74a60dff9e8a8be7f4a1088bf5d3458bc3c8"
+            },
+            {
+              "alg": "SHA-512",
+              "content": "0920ae6b27ea8119e4697b974301a854686d3ca450197f95b0daab7647d8805e7e946dfda682ec2edb756a501cb170b2b89bffcdcdd5d1c17d165a0b99ec345f"
+            }
+          ],
+          "externalReferences": [
+            {
+              "type": "distribution",
+              "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.svg?v=4.2.0"
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "bom-ref": "pkg:npm/font-awesome@4.2.0#fonts/fontawesome-webfont.ttf",
+          "name": "fonts/fontawesome-webfont.ttf",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "6225ccc4ec94d060f19efab97ca42d842845b949"
+            },
+            {
+              "alg": "SHA-256",
+              "content": "4d6eb9e9d852a2a6f74e7c428456a2f07fc63a1613d10192d8ed3401d9da5ffa"
+            },
+            {
+              "alg": "SHA-512",
+              "content": "ec66825d9579bc96301b5c123bcec3fe950ba75ee91301355494017cdd48c74d6d23886e3ad0929307e261200351013176bc7dcb4da1f13f7f9ef31bc395a5e1"
+            }
+          ],
+          "externalReferences": [
+            {
+              "type": "distribution",
+              "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf?v=4.2.0"
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "bom-ref": "pkg:npm/font-awesome@4.2.0#fonts/fontawesome-webfont.woff",
+          "name": "fonts/fontawesome-webfont.woff",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "7d65e0227d0d7cdc1718119cd2a7dce0638f151c"
+            },
+            {
+              "alg": "SHA-256",
+              "content": "199411f659f41aaccb959bacb1b0de30e54f244352a48c6f9894e65ae0f8a9a1"
+            },
+            {
+              "alg": "SHA-512",
+              "content": "e96012d2fcd5df03c2f7385c9ee2a2932b3909659d59e32bf3155e102eaf9eb7b4b00c5806c892ace1b8f4bdb58630fb20868ad368c771bd8d2aad7749b7a399"
+            }
+          ],
+          "externalReferences": [
+            {
+              "type": "distribution",
+              "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.woff?v=4.2.0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "platform",
+      "bom-ref": "component:php",
+      "supplier": {
+        "name": "The PHP Group",
+        "url": [
+          "https://www.php.net"
+        ]
+      },
+      "name": "PHP",
+      "isExternal": true,
+      "versionRange": "vers:generic/>=7.2",
+      "description": "PHP runtime (README: version 7.2)",
+      "scope": "required",
+      "licenses": [
+        {
+          "expression": "PHP-3.01",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "cpe": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+      "purl": "pkg:generic/php",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://www.php.net"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "component:php-zip",
+      "supplier": {
+        "name": "The PHP Group",
+        "url": [
+          "https://www.php.net"
+        ]
+      },
+      "name": "PHP zip extension",
+      "isExternal": true,
+      "versionRange": "vers:generic/>=7.2",
+      "description": "ZipArchive, used by src/autodeploy to unpack release archives",
+      "scope": "required",
+      "licenses": [
+        {
+          "expression": "PHP-3.01",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "purl": "pkg:generic/php-zip",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://www.php.net/manual/en/book.zip.php"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "component:php-openssl",
+      "supplier": {
+        "name": "The PHP Group",
+        "url": [
+          "https://www.php.net"
+        ]
+      },
+      "name": "PHP openssl extension",
+      "isExternal": true,
+      "versionRange": "vers:generic/>=7.2",
+      "description": "Needed for file_get_contents on https URLs in src/autodeploy (configuration from raw.githubusercontent.com, release archives from github.com)",
+      "scope": "required",
+      "licenses": [
+        {
+          "expression": "PHP-3.01",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "purl": "pkg:generic/php-openssl",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://www.php.net/manual/en/book.openssl.php"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "component:apache-httpd",
+      "supplier": {
+        "name": "The Apache Software Foundation",
+        "url": [
+          "https://httpd.apache.org"
+        ]
+      },
+      "name": "Apache HTTP Server",
+      "isExternal": true,
+      "versionRange": "vers:generic/>=2.4",
+      "description": "Web server with mod_rewrite (rules in conf/apache2/rewrite-rules.txt)",
+      "scope": "required",
+      "licenses": [
+        {
+          "expression": "Apache-2.0",
+          "acknowledgement": "concluded"
+        }
+      ],
+      "cpe": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+      "purl": "pkg:generic/apache-httpd",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://httpd.apache.org"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11",
+      "dependsOn": [
+        "pkg:npm/font-awesome@4.2.0",
+        "component:php",
+        "component:php-zip",
+        "component:php-openssl",
+        "component:apache-httpd"
+      ]
+    },
+    {
+      "ref": "pkg:npm/jquery@1.9.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/jquery-ui@1.10.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/modernizr@2.6.2",
+      "dependsOn": [
+        "pkg:npm/yepnope@1.5.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/yepnope@1.5.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/font-awesome@4.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "component:php",
+      "dependsOn": []
+    },
+    {
+      "ref": "component:php-zip",
+      "dependsOn": [
+        "component:php"
+      ]
+    },
+    {
+      "ref": "component:php-openssl",
+      "dependsOn": [
+        "component:php"
+      ]
+    },
+    {
+      "ref": "component:apache-httpd",
+      "dependsOn": []
+    }
+  ],
+  "compositions": [
+    {
+      "aggregate": "incomplete",
+      "assemblies": [
+        "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11"
+      ]
+    },
+    {
+      "aggregate": "incomplete",
+      "dependencies": [
+        "pkg:github/Geonovum/technisch-register-2019@738a1b59e27a0b8f9d0491ef694edaf692233b11"
+      ]
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "bom-ref": "vuln-CVE-2019-11358-jquery",
+      "id": "CVE-2019-11358",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2019-11358"
+      },
+      "references": [
+        {
+          "id": "GHSA-6c3j-c64m-qhgq",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-6c3j-c64m-qhgq"
+          }
+        },
+        {
+          "id": "DRUPAL-CORE-2019-006",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/DRUPAL-CORE-2019-006"
+          }
+        },
+        {
+          "id": "PYSEC-2026-628",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/PYSEC-2026-628"
+          }
+        },
+        {
+          "id": "SNYK-JS-JQUERY-174006",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/SNYK-JS-JQUERY-174006"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "XSS in jQuery as used in Drupal, Backdrop CMS, and other products",
+      "recommendation": "Upgrade jquery to a fixed version (3.4.0), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page.",
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery@1.9.1",
+          "versions": [
+            {
+              "version": "1.9.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "vuln-CVE-2020-11023-jquery",
+      "id": "CVE-2020-11023",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-11023"
+      },
+      "references": [
+        {
+          "id": "GHSA-jpcq-cgw6-v4j6",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-jpcq-cgw6-v4j6"
+          }
+        },
+        {
+          "id": "BIT-drupal-2020-11023",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/BIT-drupal-2020-11023"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "Potential XSS vulnerability in jQuery",
+      "recommendation": "Upgrade jquery to a fixed version (3.5.0), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page.",
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery@1.9.1",
+          "versions": [
+            {
+              "version": "1.9.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "vuln-CVE-2015-9251-jquery",
+      "id": "CVE-2015-9251",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2015-9251"
+      },
+      "references": [
+        {
+          "id": "GHSA-rmxg-73gg-4p98",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-rmxg-73gg-4p98"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "Cross-Site Scripting (XSS) in jquery",
+      "recommendation": "Upgrade jquery to a fixed version (1.12.2, 3.0.0), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page.",
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery@1.9.1",
+          "versions": [
+            {
+              "version": "1.9.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "vuln-CVE-2021-41182-jquery-ui",
+      "id": "CVE-2021-41182",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-41182"
+      },
+      "references": [
+        {
+          "id": "GHSA-9gj3-hwp5-pmwc",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-9gj3-hwp5-pmwc"
+          }
+        },
+        {
+          "id": "BIT-drupal-2021-41182",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/BIT-drupal-2021-41182"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "XSS in the `altField` option of the Datepicker widget in jquery-ui",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery-ui@1.10.1",
+          "versions": [
+            {
+              "version": "1.10.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "vuln-CVE-2021-41184-jquery-ui",
+      "id": "CVE-2021-41184",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-41184"
+      },
+      "references": [
+        {
+          "id": "GHSA-gpqq-952q-5327",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-gpqq-952q-5327"
+          }
+        },
+        {
+          "id": "BIT-drupal-2021-41184",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/BIT-drupal-2021-41184"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "XSS in the `of` option of the `.position()` util in jquery-ui",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery-ui@1.10.1",
+          "versions": [
+            {
+              "version": "1.10.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "vuln-CVE-2022-31160-jquery-ui",
+      "id": "CVE-2022-31160",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-31160"
+      },
+      "references": [
+        {
+          "id": "GHSA-h6gj-6jjq-h8g9",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-h6gj-6jjq-h8g9"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "jQuery UI vulnerable to XSS when refreshing a checkboxradio with an HTML-like initial text label",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.2), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery-ui@1.10.1",
+          "versions": [
+            {
+              "version": "1.10.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "vuln-CVE-2016-7103-jquery-ui",
+      "id": "CVE-2016-7103",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2016-7103"
+      },
+      "references": [
+        {
+          "id": "GHSA-hpcf-8vf9-q4gj",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-hpcf-8vf9-q4gj"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "jQuery-UI vulnerable to Cross-site Scripting in dialog closeText",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.12.0), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery-ui@1.10.1",
+          "versions": [
+            {
+              "version": "1.10.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "vuln-CVE-2021-41183-jquery-ui",
+      "id": "CVE-2021-41183",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-41183"
+      },
+      "references": [
+        {
+          "id": "GHSA-j7qv-pgf6-hvh4",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/GHSA-j7qv-pgf6-hvh4"
+          }
+        },
+        {
+          "id": "BIT-drupal-2021-41183",
+          "source": {
+            "name": "OSV",
+            "url": "https://osv.dev/vulnerability/BIT-drupal-2021-41183"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "source": {
+            "name": "OSV"
+          },
+          "severity": "medium"
+        }
+      ],
+      "description": "XSS in `*Text` options of the Datepicker widget in jquery-ui",
+      "recommendation": "Upgrade jquery-ui to a fixed version (1.13.0), or remove it.",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Not used by the product: bundled in src/resources and publicly served under /resources, but not loaded by any page; the @import in style.css is commented out.",
+        "firstIssued": "2026-11-06T09:23:04Z",
+        "lastUpdated": "2026-11-06T09:23:04Z"
+      },
+      "affects": [
+        {
+          "ref": "pkg:npm/jquery-ui@1.10.1",
+          "versions": [
+            {
+              "version": "1.10.1",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
