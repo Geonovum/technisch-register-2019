@@ -107,7 +107,7 @@ Voorbeeld: in november 2025 is `shacl` toegevoegd. Er zijn vier plekken die je m
 
 ### De server bijwerken
 
-Zie [Server](#server). Nodig na elke wijziging in `src/` (behalve de JSON-configuratie) of in `conf/apache2/rewrite-rules.txt`.
+Zie [Server](#server). Nodig na elke wijziging in `src/` (behalve de JSON-configuratie) of in `conf/apache2/`.
 
 ## Server
 
@@ -117,9 +117,11 @@ Zie [Server](#server). Nodig na elke wijziging in `src/` (behalve de JSON-config
 | DocumentRoot           | `/var/www/geostandaarden/v2/production`                       |
 | Staging                | `/var/www/geostandaarden/v2/staging` (krijgt pre-releases, maar wordt niet geserveerd) |
 | Tijdelijke map         | `/var/www/geostandaarden/v2/tmp` (moet schrijfbaar zijn voor PHP) |
-| Backups                | `/var/www/geostandaarden/v2/backup/<type>/<id>`               |
+| Backups                | `/var/www/geostandaarden/v2/backup/<type>/<id>.<tijdstempel>` (zie [Backups](#backups)) |
 | Webhookgeheim          | `/var/www/geostandaarden/v2/webhook-secret` (buiten de DocumentRoot, niet in git; zie [Webhookgeheim](#webhookgeheim)) |
 | Log van de webhook     | `/var/www/geostandaarden/v2/log/webhook.log` (schrijfbaar voor de webserver; zie [Log van de webhook](#log-van-de-webhook)) |
+| Resultaat per release  | `/var/www/geostandaarden/v2/production/autodeploy/status/<id>.txt`, online als `https://register.geostandaarden.nl/autodeploy/status/<id>.txt` (schrijfbaar voor de webserver) |
+| Verwerkte leveringen   | `/var/www/geostandaarden/v2/log/deliveries/` (zie [Resultaat en dubbele leveringen](#resultaat-en-dubbele-leveringen)) |
 | Webhook                | `https://register.geostandaarden.nl/autodeploy/releasecreated.php` |
 | Software               | Apache 2 met `mod_rewrite`, PHP 7.2+ met `ZipArchive` en `allow_url_fopen` |
 
@@ -141,7 +143,7 @@ Bij een vervanging werken de webhooks van repositories die het nieuwe geheim nog
 ### Code uitrollen
 
 1. Kopieer de gewijzigde bestanden uit `src/` naar de DocumentRoot.
-2. Zorg dat de bestanden leesbaar zijn voor de webserver en dat `tmp/`, `production/` en `backup/` schrijfbaar zijn (groep `www-data`). Gebruikers die via FTP of SSH bestanden aanpassen moeten in die groep zitten: `sudo usermod -aG www-data <gebruiker>`.
+2. Zorg dat de bestanden leesbaar zijn voor de webserver en dat `tmp/`, `production/`, `backup/`, `log/` en `production/autodeploy/status/` schrijfbaar zijn voor `www-data`. Geen enkele map hoeft schrijfbaar te zijn voor iedereen (`777`). Gebruikers die via FTP of SSH bestanden aanpassen moeten in die groep zitten: `sudo usermod -aG www-data <gebruiker>`.
 
 ### Log van de webhook
 
@@ -154,6 +156,44 @@ Inrichten: maak de map `log/` aan in de basismap en maak die schrijfbaar voor de
 Het script pakt uit een release alleen bestanden in artefactmappen uit, en alleen als de extensie in `$allowedExtensions` in `src/autodeploy/registerConfig.php` staat. Verborgen bestanden en mappen, symbolische links en paden met `..`, `\` of lege delen worden altijd overgeslagen. Server-uitvoerbare extensies (`php`, `phtml`, `phar`, `asp`, `aspx`, `jsp`, `cgi`, `pl`, `py`, `sh`, `shtml` en varianten) worden altijd overgeslagen, ook als ze in de lijst staan en ook als tussenextensie (`x.php.xsd`).
 
 De lijst is in oktober 2026 samengesteld uit alle bestanden in de artefactmappen van de geregistreerde repositories (default branch en nieuwste tag): die kwamen er allemaal door. Een bestandstype toevoegen: voeg de extensie toe aan `$allowedExtensions`, zet `registerConfig.php` op de server, en werk de lijst in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#welke-bestanden-worden-gepubliceerd) bij.
+
+### Resultaat en dubbele leveringen
+
+GitHub wacht maximaal 10 seconden op een antwoord, en een grote release verwerken duurt langer. Het script controleert daarom eerst het bericht, antwoordt GitHub direct met `202 Accepted` en verwerkt de release daarna op de achtergrond. Het resultaat schrijft het naar `production/autodeploy/status/<id>.txt`, online als `https://register.geostandaarden.nl/autodeploy/status/<id>.txt`. Dat bestand is openbaar en bevat daarom geen serverpaden; de details staan in het [log](#log-van-de-webhook). Stopt het script onverwacht, dan komt er `failed` in het statusbestand en de oorzaak in het log.
+
+Per standaard wordt één release tegelijk verwerkt; een tweede levering krijgt in de tussentijd status 409.
+
+Een levering die zonder fouten is gepubliceerd, krijgt een markering in `log/deliveries/<delivery id>` en wordt bij *Redeliver* niet opnieuw verwerkt (`Already processed`). Na `failed` of `published with errors` ontbreekt die markering, zodat de levering na herstel opnieuw kan worden verstuurd. Moet een geslaagde levering toch opnieuw worden verwerkt, bijvoorbeeld na handmatig herstel op de server, verwijder dan het markeringsbestand en doe *Redeliver*. Markeringen ouder dan 90 dagen worden automatisch opgeruimd.
+
+### Backups
+
+Een release vervangt alle gepubliceerde mappen van een standaard. Het script zet de huidige mappen eerst weg als `backup/<type>/<id>.<tijdstempel>` (bijvoorbeeld `backup/xmlschema/imgeo.20261026-141228-123456`) en bewaart per artefacttype en standaard de nieuwste vijf (`$backupsToKeep` in `registerConfig.php`). Lukt het wegzetten niet, dan meldt het resultaat `published with errors`; de oude bestanden blijven dan staan en worden overschreven.
+
+Een backup terugzetten, bijvoorbeeld voor `xmlschema` van `imgeo`:
+
+```bash
+cd /var/www/geostandaarden/v2
+ls backup/xmlschema/ | grep '^imgeo\.'                      # beschikbare backups
+sudo mv production/xmlschema/imgeo tmp/imgeo-xmlschema-weg    # huidige versie opzij
+sudo mv backup/xmlschema/imgeo.<tijdstempel> production/xmlschema/imgeo
+```
+
+Mappen in `backup/` zonder tijdstempel (`backup/<type>/<id>`) zijn backups van vóór oktober 2026. Het script laat die staan; ruim ze handmatig op als ze niet meer nodig zijn.
+
+### Apache-instellingen voor de artefactmappen
+
+De artefactmappen bevatten alleen downloads. In de vhost staan daarom twee extra beveiligingen. Ze staan in `conf/apache2/artefact-directories.txt`:
+
+- `AllowOverride None` op de DocumentRoot: `.htaccess`-bestanden worden genegeerd.
+- Een `DirectoryMatch` op alle mappen onder de DocumentRoot behalve `autodeploy/` en `resources/`. Scriptbestanden (`php`, `phtml`, `phar`, `cgi` en dergelijke) worden daar geweigerd met 403, CGI en server-side includes staan uit, en Apache zoekt alleen naar `index.html` en `index.htm` als indexbestand. Dat laatste is nodig, omdat Apache anders bij elke map naar `index.php` zoekt, daarvoor 403 krijgt en dan geen directory listing meer toont.
+
+Heeft een map een eigen instelling nodig die vroeger in een `.htaccess` stond, zet die dan in de vhost. Een voorbeeld is het content-type voor `jsonschema/uml2json/`. Controleer na een wijziging:
+
+| URL | Verwacht |
+|---|---|
+| `/xmlschema/test.php` | 403 |
+| `/xmlschema/` | 200 (directory listing) |
+| `/resources/html/help.php` | 200 |
 
 ### Rewrite-regels aanpassen
 
@@ -193,20 +233,21 @@ De rewrite-regels sturen `/<x>/`, `/<x>/<y>/` en `/<x>/index.html` door naar `/?
    - Alle andere acties (waaronder `created`, ook verstuurd bij het opslaan van een concept) → `Ignored release action: …`.
 5. Controleert de tagnaam: alleen letters, cijfers, `.`, `_` en `-`; anders status 400.
 6. Zoekt `repository.html_url` op in `repos.json` (hoofdletterongevoelig). Niet gevonden: `NOT SYNCED TO REGISTER…`.
-7. Downloadt `<url uit repos.json>/archive/refs/tags/<tag>.zip` naar `tmp/`. De URL komt uit `repos.json`, niet uit het bericht, en via `refs/tags/` zijn alleen tags van die repository zelf bereikbaar, geen commits of tags uit forks. Mislukt de download: status 502.
-8. Pakt alleen bestanden in artefactmappen uit, en alleen van een [toegestaan bestandstype](#toegestane-bestandstypen). Kan de zip niet worden geopend: status 500.
-9. Verplaatst voor **elk** artefacttype de bestaande map `<type>/<id>/` naar `backup/<type>/<id>`. Mislukt dat, dan staat dat in het log.
-10. Kopieert elke uitgepakte artefactmap naar `<type>/<id>/`.
-11. Ruimt de tijdelijke bestanden op en schrijft het resultaat in het log.
+7. Stopt met `Already processed` (200) als deze levering al eerder zonder fouten is gepubliceerd, en met status 409 als er al een release van deze standaard wordt verwerkt.
+8. Antwoordt GitHub met `202 Accepted` en de URL van het [resultaat](#resultaat-en-dubbele-leveringen). Alles hierna gebeurt op de achtergrond; de uitkomst komt in het statusbestand en het log.
+9. Downloadt `<url uit repos.json>/archive/refs/tags/<tag>.zip` naar `tmp/`. De URL komt uit `repos.json`, niet uit het bericht, en via `refs/tags/` zijn alleen tags van die repository zelf bereikbaar, geen commits of tags uit forks.
+10. Pakt alleen bestanden in artefactmappen uit, en alleen van een [toegestaan bestandstype](#toegestane-bestandstypen).
+11. Verplaatst voor **elk** artefacttype de bestaande map `<type>/<id>/` naar een [backup](#backups) met tijdstempel.
+12. Kopieert elke uitgepakte artefactmap naar `<type>/<id>/` en houdt bij welke bestanden niet konden worden geschreven.
+13. Ruimt de tijdelijke bestanden op en schrijft het resultaat: `published`, `published with errors` of `failed`.
 
-De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliveries*) vermeldt de gedownloade zip, elke gesynchroniseerde map en de overgeslagen bestanden. Een overzicht van responses en hun betekenis staat in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#controleren-of-het-gelukt-is). Mappen en bestanden worden aangemaakt met rechten `0775` en `0644` (onder de gebruikelijke umask `022`: `0755` en `0644`).
+Een overzicht van de antwoorden aan GitHub en de statussen in het resultaat staat in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#controleren-of-het-gelukt-is). Mappen en bestanden worden aangemaakt met rechten `0775` en `0644` (onder de gebruikelijke umask `022`: `0755` en `0644`).
 
 ## Bekende beperkingen
 
 | Beperking | Gevolg | Mogelijke oplossing |
 |-----------|--------|---------------------|
 | `zipfile` staat in `descriptions.json`, maar heeft geen uitzondering in de rewrite-regels. | `/zipfile/` en `/zipfile/<id>/` sturen door naar `index.php` in plaats van een directory listing te tonen. Bestanden dieper in de map zijn wel bereikbaar. | Voeg `RewriteRule ^/zipfile(/\|$) - [L]` toe. |
-| Backup via `rename()` mislukt als `backup/<type>/<id>` al bestaat (vanaf de tweede vervanging). | De oude map blijft staan en wordt overschreven. Bestanden die uit de repository zijn verwijderd, blijven online. | Backupmap met tijdstempel gebruiken (de variabele `$backupTimeStamp` bestaat al maar wordt niet gebruikt), of de oude backup eerst verwijderen. Tot die tijd: verwijderde bestanden handmatig van de server halen. |
 | Staging wordt gevuld maar niet geserveerd. | Pre-releases komen nergens online; er is geen testomgeving. | Staging als aparte vhost inrichten. |
 | Alle bronrepositories delen één webhookgeheim. | Wie het geheim kent, kan publicatie van een bestaande tag van elke geregistreerde repository starten. | Een geheim per repository, bijvoorbeeld in een bestand per `id`. |
 | De `RewriteCond`-regels gelden alleen voor de eerstvolgende `RewriteRule` (`autodeploy`). | Bestaande mappen worden niet automatisch uitgezonderd; elk artefacttype heeft een eigen uitzondering nodig. | Bekend gedrag van `mod_rewrite`; bij nieuwe artefacttypen altijd een uitzondering toevoegen. |
@@ -218,13 +259,16 @@ De response (zichtbaar in GitHub onder *Settings → Webhooks → Recent Deliver
 |----------|-------------|
 | Pagina `/<id>/index.html` geeft een fout | Bevat het id een ander teken dan letters, cijfers, `_` of `-`? → rewrite-regels. Staat het id in `cluster.json`? |
 | Standaard staat niet op de hoofdpagina | Ontbreekt de entry in `cluster.json`? |
-| Release publiceert niets | *Recent Deliveries* van de webhook bekijken; zie de tabel in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#controleren-of-het-gelukt-is). |
+| Release publiceert niets | Eerst het antwoord bij *Recent Deliveries*, daarna `autodeploy/status/<id>.txt` en het [log](#log-van-de-webhook); zie de tabellen in de [handleiding voor beheerders van informatiemodellen](HandleidingVoorBeheerdersInformatiemodellen.md#controleren-of-het-gelukt-is). |
+| Resultaat `published with errors` met `Could not write …` | De genoemde bestanden of mappen zijn niet van `www-data`, bijvoorbeeld omdat ze handmatig zijn geplaatst. Herstel de eigenaar (`chown www-data:www-data`) en doe *Redeliver*. |
+| Resultaat blijft op `processing` staan | De verwerking loopt nog (grote releases duren langer), of het script is gestopt zonder het resultaat te kunnen schrijven. Kijk in het log en in het error-log van Apache. |
+| Statusbestand verschijnt niet | `production/autodeploy/status/` ontbreekt of is niet schrijfbaar voor `www-data`. Het log meldt `could not write status file`. |
 | `/<type>/` toont de hoofdpagina in plaats van een lijst | Ontbrekende uitzondering in de rewrite-regels. |
 | Wijziging in `repos.json` lijkt niet actief | Gemerged naar `master`? Enkele minuten wachten (cache van GitHub). |
 | Levering geeft status 401 | Webhookgeheim in de bronrepository ontbreekt of wijkt af van `webhook-secret` op de server. |
 | Levering geeft status 500 `Webhook not available` | `webhook-secret` ontbreekt, is leeg of is niet leesbaar voor de webserver. Het [log](#log-van-de-webhook) noemt de oorzaak. |
-| Bestanden uit een release ontbreken | Staan ze onder `Skipped` in de response of in het log? Zie [Toegestane bestandstypen](#toegestane-bestandstypen). |
-| Download van de zip mislukt (status 502) | Bestaat de tag in de repository zelf? `allow_url_fopen` aan? Is `tmp/` schrijfbaar? Is de repository publiek? Het register haalt de zip zonder authenticatie op, dus private repositories werken niet. |
+| Bestanden uit een release ontbreken | Staan ze onder `Skipped` in het resultaat of in het log? Zie [Toegestane bestandstypen](#toegestane-bestandstypen). |
+| Resultaat `failed` met `Could not download …` | Bestaat de tag in de repository zelf? `allow_url_fopen` aan? Is `tmp/` schrijfbaar? Is de repository publiek? Het register haalt de zip zonder authenticatie op, dus private repositories werken niet. |
 
 ## Nog te documenteren
 
