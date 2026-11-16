@@ -1,0 +1,24 @@
+# Snippet of Apache 2 configuration for the DocumentRoot and the artefact directories,
+# inside the <VirtualHost> of register.geostandaarden.nl (next to rewrite-rules.txt).
+# Published artefacts are downloads only: nothing in them is executed or configures Apache.
+
+<Directory "/var/www/geostandaarden/v2/production">
+    # (existing Options and Require of the vhost stay as they are)
+    # ignore .htaccess files, also when they end up in a published release
+    AllowOverride None
+</Directory>
+
+# moved from jsonschema/uml2json/0.1/.htaccess when AllowOverride became None
+<Directory "/var/www/geostandaarden/v2/production/jsonschema/uml2json">
+    AddType application/schema+json .json
+</Directory>
+
+# every directory below the DocumentRoot except autodeploy/ (the webhook) and resources/ (help.php, over.php)
+<DirectoryMatch "^/var/www/geostandaarden/v2/production/(?!(autodeploy|resources)/)[^/]+/">
+    Options -ExecCGI -Includes
+    # without this, Apache tries index.php (refused below) and answers 403 instead of a directory listing
+    DirectoryIndex index.html index.htm
+    <FilesMatch "\.(php[0-9]?|pht|phtml|phar|phps|shtml|asp|aspx|jsp|cgi|pl|py|sh)$">
+        Require all denied
+    </FilesMatch>
+</DirectoryMatch>

@@ -63,6 +63,88 @@ function respond($status, $message, $logDetail = '')
     exit;
 }
 
+// Send the response to GitHub now and keep processing after GitHub has it: GitHub stops waiting
+// after 10 seconds, and downloading and copying a large release takes longer.
+function acceptAndContinue($message)
+{
+    global $accepted;
+    ignore_user_abort(true);
+    set_time_limit(0);
+    // compression would hold the response back until the script ends
+    if (function_exists('apache_setenv')) {
+        apache_setenv('no-gzip', '1');
+    }
+    ini_set('zlib.output_compression', '0');
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+    http_response_code(202);
+    header('Connection: close');
+    header('Content-Length: '.strlen($message));
+    echo $message;
+    flush();
+    if (function_exists('fastcgi_finish_request')) {
+        fastcgi_finish_request();
+    }
+    $accepted = true;
+    webhookLog('202 '.$message);
+}
+
+// Write the result of the release for the maintainers of the standard, at <statusURL><id>.txt.
+// This file is public: it must not contain paths or other details of the server.
+function writeStatus($state, $lines)
+{
+    global $statusFile, $deliveryId, $repoInfo, $tagName, $envName;
+    $text = "Technisch register: result of the last release\n\n"
+        ."Standard:    ".$repoInfo['id']."\n"
+        ."Release tag: ".$tagName."\n"
+        ."Environment: ".$envName."\n"
+        ."Delivery:    ".$deliveryId."\n"
+        ."Updated:     ".date('c')."\n"
+        ."Status:      ".$state."\n"
+        .($lines ? "\n".implode("\n", $lines)."\n" : '');
+    if (@file_put_contents($statusFile.'.tmp', $text) === false || !@rename($statusFile.'.tmp', $statusFile)) {
+        webhookLog("could not write status file ".$statusFile);
+    }
+}
+
+// End the processing after the response was sent: write the status file and the log, and stop.
+function finish($state, $lines, $logDetail = '')
+{
+    global $repoInfo, $tagName, $envName, $finished;
+    $finished = true;
+    writeStatus($state, $lines);
+    webhookLog($state.' '.$repoInfo['id'].' '.$tagName.' to '.$envName.($logDetail === '' ? '' : ': '.$logDetail));
+    exit;
+}
+
+// Nobody sees the output after the response was sent: record it when the script stops unexpectedly.
+$accepted = false;
+$finished = false;
+register_shutdown_function(function () {
+    global $accepted, $finished;
+    if ($accepted && !$finished) {
+        $error = error_get_last();
+        finish('failed', array("Processing stopped unexpectedly. Contact the maintainer of the register."),
+            $error ? $error['message'].' in '.$error['file'].':'.$error['line'] : 'unknown cause');
+    }
+});
+
+// Keep the newest $keep backups (<id>.<timestamp>) of a standard in a backup directory.
+function pruneBackups($backupDirFt, $id, $keep)
+{
+    $backups = array();
+    foreach (scandir($backupDirFt) as $entry) {
+        if (preg_match('/\A'.preg_quote($id, '/').'\.\d{8}-\d{6}-\d{6}\z/', $entry)) {
+            $backups[] = $entry;
+        }
+    }
+    sort($backups);
+    foreach (array_slice($backups, 0, max(0, count($backups) - $keep)) as $old) {
+        rmdir_recursive($backupDirFt.'/'.$old);
+    }
+}
+
 // Extract only files inside artefact directories, and only of an allowed type, into $targetDir.
 // The archive is not trusted to be well-formed: entries with unsafe paths, links, hidden files
 // and other file types are skipped. Returns the skipped files as "path (reason)".
@@ -229,24 +311,44 @@ if (strpos($repoURL, 'https://github.com/') !== 0) {
     respond(200, "NOT SYNCED TO REGISTER. The url in repos.json is not a https://github.com/ repository URL");
 }
 $zipballUrl = $repoURL.'/archive/refs/tags/'.$tagName.'.zip';
+$envName = basename($envDir);
+$statusFile = $statusDir.'/'.preg_replace('/[^A-Za-z0-9_-]/', '_', $repoInfo['id']).'.txt';
+$statusLink = $statusURL.preg_replace('/[^A-Za-z0-9_-]/', '_', $repoInfo['id']).'.txt';
+
+// GitHub sends the same delivery id again on Redeliver. A delivery that was published
+// without errors is not processed again; after a failure it can be redelivered.
+$deliveryMarker = $deliveriesDir.'/'.$deliveryId;
+if ($deliveryId !== '-' && file_exists($deliveryMarker)) {
+    respond(200, "Already processed: this delivery was published before, nothing to do. Result: ".$statusLink);
+}
+
+// one release of a standard at a time
+$lockHandle = @fopen($baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'.lock', 'c');
+if ($lockHandle === false || !flock($lockHandle, LOCK_EX | LOCK_NB)) {
+    respond(409, "NOT SYNCED TO REGISTER. A release of ".$repoInfo['id']." is being processed right now. Retry later with Redeliver.");
+}
+
+acceptAndContinue("Accepted: publishing ".$repoInfo['id']." ".$tagName." to ".$envName." in the background. Result: ".$statusLink);
+writeStatus('processing', array());
+$lines = array();
+
 $tempZipName = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'.zip';
-webhookLog("processing ".$repoInfo['id']." ".$tagName." for ".basename($envDir));
 // Use a streaming writer to avoid the script to fail during processing of large files (like for TPOD)
 $zipStream = @fopen($zipballUrl, 'r');
 if ($zipStream === false) {
-    respond(502, "NOT SYNCED TO REGISTER. Could not download ".$zipballUrl.": does the tag exist in this repository, and is the repository public?");
+    finish('failed', array("Could not download ".$zipballUrl.": does the tag exist in this repository, and is the repository public?"));
 }
 $written = file_put_contents($tempZipName, $zipStream);
 fclose($zipStream);
 if ($written === false) {
-    respond(500, "NOT SYNCED TO REGISTER. The ZIP file could not be stored on the server.", "could not write ".$tempZipName);
+    finish('failed', array("The ZIP file could not be stored on the server. Contact the maintainer of the register."), "could not write ".$tempZipName);
 }
-echo "ZIP downloaded from GitHub: " .$zipballUrl ."\n";
+$lines[] = "ZIP downloaded from GitHub: ".$zipballUrl;
 $zip = new ZipArchive;
 $res = $zip->open($tempZipName);
 if ($res !== true) {
     @unlink($tempZipName);
-    respond(500, "NOT SYNCED TO REGISTER. Something went wrong in processing the ZIP file", "ZipArchive::open error ".$res);
+    finish('failed', array("Something went wrong in processing the ZIP file. Contact the maintainer of the register."), "ZipArchive::open error ".$res);
 }
 
 // Use a staging dir to get all the documents
@@ -254,26 +356,31 @@ $tmpZipDir = $baseDir.'/'.$tmpDir.'/'.$repoInfo['id'].'_'.$tagName;
 @mkdir($tmpZipDir, 0775, true);
 $skipped = extractArtefacts($zip, $tmpZipDir, $descriptions, $allowedExtensions);
 $zip->close();
-// 2019-09-18: first remove all existing directories of a standaard. Remove any old data of the filetypes / descriptions
+
+// A release replaces all published directories of the standard. Move the current ones to
+// backup/<type>/<id>.<timestamp> and keep the newest $backupsToKeep of them.
+$date = new DateTime();
+$backupTimeStamp = $date->format('Ymd-His-u');
+$backupProblems = array();
 foreach (array_keys($descriptions) as $fileType) {
     $fileTypeDir = $envDir.'/'.$fileType."/".$repoInfo['id'];
     if (file_exists($fileTypeDir)) {
-        // rename instead of remove, to have a backup
         $backupDirFt = $backupDir.'/'.$fileType;
-        $backupDirFtRepo = $backupDirFt.'/'.$repoInfo['id'];
         if (!file_exists($backupDirFt)) {
-            mkdir($backupDirFt, 0775, true);
+            @mkdir($backupDirFt, 0775, true);
         }
-        // cpdir_recursive($fileTypeDir, $backupDirFt);
-        // rmdir_recursive($fileTypeDir);
-        if (!rename($fileTypeDir, $backupDirFtRepo)) {
-            webhookLog("backup of ".$fileType."/".$repoInfo['id']." failed (".$backupDirFtRepo." already exists?): the old files stay in place");
+        if (@rename($fileTypeDir, $backupDirFt.'/'.$repoInfo['id'].'.'.$backupTimeStamp)) {
+            pruneBackups($backupDirFt, $repoInfo['id'], $backupsToKeep);
+        } else {
+            $backupProblems[] = $fileType.'/'.$repoInfo['id'];
         }
     }
 }
+
 // zipfile is of format {repo}-{tagnumber-without-v}.zip.
 // get the name of the extracted zip from the staging dir and copy the allowed files to the repoName:
 $synced = array();
+$failures = array();
 $results = scandir($tmpZipDir);
 foreach ($results as $result) {
     if ($result === '.' or $result === '..') {
@@ -290,29 +397,69 @@ foreach ($results as $result) {
             if (isset($descriptions[$subDir])) {
                 // the repo contains a subdirectory that is an artefact, as listed in the descriptions. Copy the dir then to the corresponding artefact directory
                 $newBaseDir = $envDir.'/'.$subDir.'/'.$repoInfo['id'];
-                echo "Resource directory: " .$subDir.'/'.$repoInfo['id']."\n";
+                $lines[] = "Resource directory: " .$subDir.'/'.$repoInfo['id'];
                 if (!file_exists($newBaseDir)) {
-                    mkdir($newBaseDir, 0775, true);
+                    @mkdir($newBaseDir, 0775, true);
                 }
                 // 2019-09-18: the new directory does not include a version directory, use the BaseDir directly
-                echo "Sync ".$result.'/'.$subDir." directory to: ".$subDir.'/'.$repoInfo['id']."\n";
-                cpdir_recursive($tmpZipDir.'/'.$result.'/'.$subDir, $newBaseDir);
+                $lines[] = "Sync ".$result.'/'.$subDir." directory to: ".$subDir.'/'.$repoInfo['id'];
+                cpdir_recursive($tmpZipDir.'/'.$result.'/'.$subDir, $newBaseDir, $failures);
                 $synced[] = $subDir;
             }
         }
     }
 }
+if (!$synced) {
+    $lines[] = "The release contains no artefact directories.";
+}
 if ($skipped) {
-    echo "Skipped ".count($skipped)." file(s), these are not published:\n";
-    foreach (array_slice($skipped, 0, 50) as $file) {
-        echo "  ".$file."\n";
+    $lines[] = "Skipped ".count($skipped)." file(s), these are not published:";
+    foreach (array_slice($skipped, 0, 200) as $file) {
+        $lines[] = "  ".$file;
     }
-    if (count($skipped) > 50) {
-        echo "  ... and ".(count($skipped) - 50)." more\n";
+    if (count($skipped) > 200) {
+        $lines[] = "  ... and ".(count($skipped) - 200)." more";
     }
 }
+// paths relative to the environment, the status file must not show server paths
+$failedFiles = array();
+foreach ($failures as $path) {
+    $failedFiles[] = strpos($path, $envDir.'/') === 0 ? substr($path, strlen($envDir) + 1) : basename($path);
+}
+if ($failedFiles) {
+    $lines[] = "Could not write ".count($failedFiles)." file(s) on the server, these may be outdated. Contact the maintainer of the register:";
+    foreach (array_slice($failedFiles, 0, 200) as $file) {
+        $lines[] = "  ".$file;
+    }
+    if (count($failedFiles) > 200) {
+        $lines[] = "  ... and ".(count($failedFiles) - 200)." more";
+    }
+}
+if ($backupProblems) {
+    $lines[] = "The previous version of ".implode(', ', $backupProblems)." could not be moved to the backup: files removed from the repository may still be online. Contact the maintainer of the register.";
+}
+
 // Remove staging and tmp files
-unlink($tempZipName);
+@unlink($tempZipName);
 rmdir_recursive($tmpZipDir);
-webhookLog("200 published ".$repoInfo['id']." ".$tagName." to ".basename($envDir).": ".($synced ? implode(', ', $synced) : 'no artefact directories')
-    .($skipped ? "; skipped ".count($skipped).": ".implode(', ', array_slice($skipped, 0, 50)) : ''));
+
+$logDetail = ($synced ? implode(', ', $synced) : 'no artefact directories')
+    .($skipped ? "; skipped ".count($skipped).": ".implode(', ', array_slice($skipped, 0, 50)) : '')
+    .($failures ? "; could not write ".count($failures).": ".implode(', ', array_slice($failures, 0, 50)) : '')
+    .($backupProblems ? "; backup failed: ".implode(', ', $backupProblems) : '');
+if ($failures || $backupProblems) {
+    finish('published with errors', $lines, $logDetail);
+}
+
+// remember this delivery, and forget deliveries older than 90 days
+if ($deliveryId !== '-') {
+    @mkdir($deliveriesDir, 0775, true);
+    @touch($deliveryMarker);
+    $markers = @scandir($deliveriesDir);
+    foreach ($markers ? $markers : array() as $marker) {
+        if ($marker[0] !== '.' && @filemtime($deliveriesDir.'/'.$marker) < time() - 90 * 86400) {
+            @unlink($deliveriesDir.'/'.$marker);
+        }
+    }
+}
+finish('published', $lines, $logDetail);

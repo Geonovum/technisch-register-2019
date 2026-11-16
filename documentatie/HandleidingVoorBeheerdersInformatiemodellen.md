@@ -11,7 +11,7 @@ Het register haalt bestanden automatisch op uit GitHub. Je hoeft niets te upload
 1. Je zet de bestanden in een GitHub-repository, in een vaste mappenstructuur.
 2. De repository is aangemeld bij het register (in `repos.json` van [technisch-register-2019](https://github.com/Geonovum/technisch-register-2019)).
 3. De repository heeft een webhook naar het register.
-4. Je maakt een **release** op GitHub. GitHub stuurt dan een bericht naar het register. Het register downloadt de zip van de release-tag en kopieert de herkende mappen naar de website.
+4. Je maakt een **release** op GitHub. GitHub stuurt dan een bericht naar het register. Het register bevestigt dat direct, downloadt daarna de zip van de release-tag en kopieert de herkende mappen naar de website. Het resultaat staat even later op `https://register.geostandaarden.nl/autodeploy/status/<id>.txt`.
 
 Er wordt dus alleen gepubliceerd bij een release. Een push of een merge naar `main` doet niets.
 
@@ -82,7 +82,7 @@ Nooit gepubliceerd worden:
 - verborgen bestanden en mappen, waarvan de naam met een punt begint (zoals `.htaccess`);
 - symbolische links.
 
-Overgeslagen bestanden staan met de reden in de response van de webhook (zie [Controleren of het gelukt is](#controleren-of-het-gelukt-is)). Heb je een bestandstype nodig dat er niet bij staat? Vraag de beheerder van het register om het toe te voegen.
+Overgeslagen bestanden staan met de reden in het resultaat van de release (zie [Controleren of het gelukt is](#controleren-of-het-gelukt-is)). Heb je een bestandstype nodig dat er niet bij staat? Vraag de beheerder van het register om het toe te voegen.
 
 Heb je een artefacttype nodig dat er niet bij staat? Vraag dan de beheerder van het technisch register om het toe te voegen. Dat vergt een aanpassing in het register en op de server.
 
@@ -91,9 +91,9 @@ Heb je een artefacttype nodig dat er niet bij staat? Vraag dan de beheerder van 
 De versiemap is vrij te kiezen. Wij raden semantische versienummers aan (major.minor.patch, conform [BOMOS](https://www.forumstandaardisatie.nl/bomos)), bijvoorbeeld `1.0.1`. Een achtervoegsel voor een tussenversie mag, bijvoorbeeld `1.0.1-cv` voor een consultatieversie. Gebruik in mapnamen alleen letters, cijfers, punten en koppeltekens.
 
 > **Belangrijk: een release vervangt alles.**
-> Bij elke release probeert het register eerst alle gepubliceerde mappen van jouw standaard (voor alle artefacttypen) weg te zetten als backup, en zet dan de inhoud van de nieuwe release neer. Ga er dus van uit dat alleen online blijft wat **in de nieuwe release** staat. Laat oude versiemappen daarom in de repository staan.
+> Bij elke release zet het register eerst alle gepubliceerde mappen van jouw standaard (voor alle artefacttypen) weg als backup, en zet dan de inhoud van de nieuwe release neer. Alleen wat **in de nieuwe release** staat, blijft online. Laat oude versiemappen daarom in de repository staan. Andersom haal je een bestand of versie offline door het uit de repository te verwijderen en een nieuwe release te maken.
 >
-> Andersom werkt het niet betrouwbaar: een bestand of versie uit de repository verwijderen haalt het niet altijd offline (zie de [beheerdershandleiding](HandleidingVoorBeheerdersTechnischRegister.md#bekende-beperkingen)). Moet iets echt offline, vraag dat dan aan de beheerder van het register.
+> Lukt het wegzetten van de backup niet, dan meldt het [resultaat van de release](#controleren-of-het-gelukt-is) dat verwijderde bestanden nog online kunnen staan. Neem dan contact op met de beheerder van het register.
 
 Neem je in een bestand de eigen publicatie-URL op (zoals `owl:versionIRI` in een ontologie)? Laat die dan overeenkomen met de map: `https://register.geostandaarden.nl/<artefacttype>/<id>/<versie>/<bestand>`.
 
@@ -180,27 +180,46 @@ De releasetag hoeft niet overeen te komen met de versiemappen. Het register gebr
 
 ## Controleren of het gelukt is
 
+Het register verwerkt een release in twee stappen. Eerst controleert het het bericht van GitHub en antwoordt het direct. Daarna downloadt en publiceert het de release op de achtergrond; bij een grote release kan dat een minuut duren. Het resultaat komt in een tekstbestand voor jouw standaard.
+
+### Stap 1: het antwoord aan GitHub
+
 1. Ga naar **Settings → Webhooks →** jouw webhook **→ Recent Deliveries**.
 2. Open de levering met event `release` en action *released* (bij een pre-release: *published*), en kijk bij **Response**.
 
-| Status en response                                                      | Betekenis                                                        |
+| Status en response                                                       | Betekenis                                                        |
 |--------------------------------------------------------------------------|------------------------------------------------------------------|
-| 200, `ZIP downloaded from GitHub: …` gevolgd door `Resource directory: …` en `Sync <map> directory to: <map>/<id>` | Gelukt. Per gepubliceerde map staan er twee regels.          |
-| 200, alleen `ZIP downloaded from GitHub: …`, geen `Sync`-regels          | De release bevat geen herkende artefactmappen. Controleer de mapnamen en of de mappen op de getagde commit staan. |
+| 202, `Accepted: publishing <id> <tag> to production in the background. Result: <url>` | Aangenomen. Kijk voor het resultaat op de genoemde URL (stap 2). |
 | 200, `Ignored release action: …`                                         | Normaal: van de leveringen per release publiceert er maar één (zie hieronder). |
+| 200, `Already processed: …`                                              | Deze levering is al eerder zonder fouten gepubliceerd; er gebeurt niets. |
+| 409, `… is being processed right now …`                                  | Er wordt op dit moment al een release van deze standaard verwerkt. Probeer het later opnieuw met *Redeliver*. |
 | 200, `NOT SYNCED TO REGISTER. Repo information not found in repos.json…` | De repository staat niet (of met een andere URL) in `repos.json`, of de wijziging is nog niet gemerged. |
 | 200, `NOT SYNCED TO REGISTER. Repo id is too short`                      | Het `id` in `repos.json` is korter dan 2 tekens.                 |
 | 401, `… Invalid or missing signature …`                                  | Het webhookgeheim ontbreekt of klopt niet. Controleer het veld *Secret* van de webhook. |
 | 400, `… The payload is not a release event in JSON …`                    | Het content type staat niet op `application/json`.               |
 | 400, `… Unsupported tag name …`                                          | De tag bevat andere tekens dan letters, cijfers, `.`, `_` en `-`. Maak een release met een andere tag. |
-| 502, `… Could not download …`                                            | De zip van de tag kon niet worden opgehaald. Bestaat de tag in deze repository en is de repository publiek? |
-| 200, na de `Sync`-regels `Skipped … file(s), these are not published:` met een lijst | De rest is gepubliceerd; de genoemde bestanden niet. De reden staat erachter: `file type not allowed`, `hidden file or directory`, `link` of `unsafe path` (zie [Welke bestanden worden gepubliceerd](#welke-bestanden-worden-gepubliceerd)). |
-| 500, `… Something went wrong in processing the ZIP file`                 | De zip is gedownload maar kon niet worden geopend. Neem contact op met de beheerder van het register. |
 | 500 (bijvoorbeeld `Webhook not available`), 502 `… configuration could not be read …` of een timeout | Probleem op de server. Probeer het later opnieuw met *Redeliver* of neem contact op met de beheerder van het register. |
 
 Eén release levert meerdere leveringen op, zoals *created*, *published* en *released* (bij een pre-release *created*, *published* en *prereleased*). Alleen *released* publiceert naar productie, en bij een pre-release alleen *published* naar de staging-map. De andere leveringen krijgen de response `Ignored release action: …`.
 
-Mislukte leveringen kun je na een correctie opnieuw versturen met **Redeliver**. Dat werkt alleen voor fouten aan de kant van het register (bijvoorbeeld `repos.json`). Ontbreekt er iets in je repository, maak dan een nieuwe release: het register publiceert de inhoud van de tag, en een bestaande tag verandert niet.
+### Stap 2: het resultaat van de release
+
+Open `https://register.geostandaarden.nl/autodeploy/status/<id>.txt`; de exacte URL staat in het antwoord aan GitHub. Het bestand toont de standaard, de tag, de omgeving, het delivery id van GitHub en het tijdstip, met daaronder de **Status**:
+
+| Status                   | Betekenis                                                        |
+|--------------------------|------------------------------------------------------------------|
+| `processing`             | De release wordt nog verwerkt. Ververs de pagina over een minuut. |
+| `published`              | Gelukt. Per gepubliceerde map staan er regels `Resource directory: …` en `Sync … directory to: …`. Staat er `The release contains no artefact directories.`, controleer dan de mapnamen en of de mappen op de getagde commit staan. |
+| `published with errors`  | Gepubliceerd, maar niet alles kon op de server worden weggeschreven of de vorige versie kon niet als backup worden weggezet. De betreffende bestanden staan erbij. Neem contact op met de beheerder van het register. |
+| `failed`                 | Niet gepubliceerd. De reden staat eronder, bijvoorbeeld `Could not download …` (bestaat de tag in deze repository en is de repository publiek?) of `Something went wrong in processing the ZIP file`. |
+
+Bij `published` of `published with errors` kan ook een lijst `Skipped … file(s), these are not published:` staan. De rest is gepubliceerd; de genoemde bestanden niet. De reden staat erachter: `file type not allowed`, `hidden file or directory`, `link` of `unsafe path` (zie [Welke bestanden worden gepubliceerd](#welke-bestanden-worden-gepubliceerd)).
+
+Het statusbestand toont altijd de laatste release van de standaard, ook als dat een pre-release voor de staging-map was.
+
+### Opnieuw versturen
+
+Een levering die is mislukt of `published with errors` gaf, kun je na een correctie opnieuw versturen met **Redeliver**. Dat werkt voor fouten aan de kant van het register, bijvoorbeeld in `repos.json` of op de server. Een levering die zonder fouten is gepubliceerd, wordt niet nog eens verwerkt (`Already processed`). Ontbreekt er iets in je repository, maak dan een nieuwe release: het register publiceert de inhoud van de tag, en een bestaande tag verandert niet.
 
 Bekijk tot slot de pagina van je standaard: `https://register.geostandaarden.nl/<id>/index.html`, en de bestanden onder `https://register.geostandaarden.nl/<artefacttype>/<id>/`.
 
@@ -211,7 +230,7 @@ Bekijk tot slot de pagina van je standaard: `https://register.geostandaarden.nl/
 | Er gebeurt niets na een merge naar `main`             | Alleen een release start de publicatie.                                         |
 | Release gemaakt, maar niets online                    | Het was een pre-release, het webhookgeheim of content type klopt niet, de tag bevat een `/`, de repository staat niet (goed) in `repos.json`, of de artefactmap staat niet op de getagde branch. |
 | Oude versies zijn verdwenen                           | Ze stonden niet meer in de nieuwe release. Een release vervangt alles.          |
-| Verwijderd bestand staat nog online                   | Bekende beperking van het register; vraag de beheerder het weg te halen.        |
+| Verwijderd bestand staat nog online                   | Er is nog geen nieuwe release gemaakt, of het resultaat meldt dat de backup niet lukte. Neem dan contact op met de beheerder van het register. |
 | Map wordt genegeerd                                   | De mapnaam staat niet in `descriptions.json` of heeft afwijkende hoofdletters. |
-| Enkele bestanden ontbreken                            | Hun bestandstype wordt niet gepubliceerd, of het zijn verborgen bestanden of links. Ze staan in de response onder `Skipped`. |
+| Enkele bestanden ontbreken                            | Hun bestandstype wordt niet gepubliceerd, of het zijn verborgen bestanden of links. Ze staan in het resultaat van de release onder `Skipped`. |
 | Bestanden staan online, maar de pagina `/<id>/` werkt niet | Het `id` ontbreekt in `cluster.json`, of bevat tekens die de webserver niet doorstuurt (alles behalve letters, cijfers, `_` en `-`). Neem contact op met de beheerder van het register. |

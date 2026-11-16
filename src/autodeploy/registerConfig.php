@@ -70,4 +70,15 @@ $allowedExtensions = array(
     // files without an extension (e.g. xlink/1.0.0/web-location in IMKAD)
     '',
 );
+
+// The result of the last release of each standard, for its maintainers:
+// <statusDir>/<id>.txt, published as <statusURL><id>.txt. Writable for the webserver.
+$statusDir = $baseDir.'/'.$productionDir.'/autodeploy/status';
+$statusURL = $baseURL.'autodeploy/status/';
+
+// marker files of successfully processed GitHub deliveries, so a delivery is processed once
+$deliveriesDir = $baseDir.'/log/deliveries';
+
+// number of backups kept per artefact type and standard (backup/<type>/<id>.<timestamp>)
+$backupsToKeep = 5;
 ?>

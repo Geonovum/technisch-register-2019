@@ -33,23 +33,29 @@ function rmdir_recursive($dir) {
     rmdir($dir);
 }
 
-function cpdir_recursive($src, $dst) {
+// Copies $src into $dst. Paths that could not be written are added to $failures.
+function cpdir_recursive($src, $dst, &$failures = array()) {
     // check if the src-dir exists
     if (false === is_dir($src)) {
       return false;
     }
-    $dir = opendir($src);
     @mkdir($dst, 0775);
+    if (!is_dir($dst)) {
+        $failures[] = $dst;
+        return false;
+    }
+    $dir = opendir($src);
     while(false !== ( $file = readdir($dir)) ) {
         if (( $file != '.' ) && ( $file != '..' )) {
             if ( is_dir($src . '/' . $file)) {
-                cpdir_recursive($src . '/' . $file,$dst . '/' . $file);
+                cpdir_recursive($src . '/' . $file,$dst . '/' . $file, $failures);
             }
-            else {
-                copy($src . '/' . $file, $dst . '/' . $file);
+            elseif (!@copy($src . '/' . $file, $dst . '/' . $file)) {
+                $failures[] = $dst . '/' . $file;
             }
         }
     }
     closedir($dir);
+    return true;
 }
 ?>
