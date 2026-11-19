@@ -1,6 +1,12 @@
 <?php
 // TODO: document config
 include './autodeploy/registerConfig.php';
+if (!function_exists('h')) {
+  function h($text) { return htmlspecialchars((string) $text, ENT_QUOTES, 'UTF-8'); }
+}
+if (!isset($repoData)) {
+  $repoData = False;
+}
 // repo
 // if repoData: then display specific descriptions, loop over them
 ?>
@@ -23,14 +29,14 @@ if ($repoData) {
        <i class="fa fa-file-o">
        </i>
        <span style="margin-left: 25px">
-        <a href="<?=$baseURL;?><?=$descModelDir?>">
-         <?=$descriptionsArr[$key]["titel"]?>
+        <a href="<?=h($baseURL.$descModelDir);?>">
+         <?=h($descriptionsArr[$key]["titel"])?>
         </a>
        </span>
       </p>
       <p>
        <span style="margin-left:37px; width: 100%">
-         <?=$descriptionsArr[$key]["beschrijving"]?>
+         <?=h($descriptionsArr[$key]["beschrijving"])?>
        </span>
       </p>
     <?php }
