@@ -30,7 +30,8 @@
         { "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.eot?v=4.2.0", "name": "fonts/fontawesome-webfont.eot" },
         { "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.svg?v=4.2.0", "name": "fonts/fontawesome-webfont.svg" },
         { "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf?v=4.2.0", "name": "fonts/fontawesome-webfont.ttf" },
-        { "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.woff?v=4.2.0", "name": "fonts/fontawesome-webfont.woff" }
+        { "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/fonts/fontawesome-webfont.woff?v=4.2.0", "name": "fonts/fontawesome-webfont.woff" },
+        { "path": "src/bestaat-niet.js" }
       ],
       "bundled": false,
       "used": true,
