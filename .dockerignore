@@ -1,0 +1,5 @@
+# Alleen wat het Dockerfile kopieert, gaat mee naar de build.
+*
+!src/
+!conf/apache2/
+!docker/

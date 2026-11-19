@@ -1,9 +1,13 @@
-# Houdt de actions in .github/workflows actueel. De workflows zetten actions vast op
-# een commit-hash; Dependabot opent een pull request zodra er een nieuwere versie
-# is, met de nieuwe hash en het versienummer in het commentaar erachter.
+# Houdt de actions in .github/workflows en het basisimage in het Dockerfile actueel.
+# Beide staan vast op een hash; Dependabot opent een pull request zodra er een nieuwere
+# versie is, met de nieuwe hash en het versienummer erbij.
 version: 2
 updates:
   - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
