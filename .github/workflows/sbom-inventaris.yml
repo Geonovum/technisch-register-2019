@@ -1,0 +1,59 @@
+# Controle van de SBOM-inventaris bij elke pull request, met de skill geonovum-sbom.
+#
+# Wie een bibliotheek toevoegt, bijwerkt of weghaalt, moet ook sbom-inventory.json
+# bijwerken. Deze workflow vergelijkt de inventaris met wat scan_repo.js in de
+# repository vindt, en faalt als de inventaris een bestand van derden, een externe
+# link of een lockfile mist, of een bestand noemt dat er niet meer is. Zo blijkt dat
+# in de pull request, en niet pas bij de release, waar sbom.yml dezelfde controle doet.
+# Waarschuwingen (een andere versie in de kopregel, used dat niet lijkt te kloppen,
+# een ingebedde bibliotheek of PHP-extensie die ontbreekt) laten de controle niet
+# falen; ze staan in de samenvatting van de run.
+#
+# De workflow leest alleen: hij voert geen code uit de pull request uit en heeft
+# geen schrijfrechten, dus hij is ook veilig voor pull requests vanuit een fork.
+# Gebruik dezelfde SKILL_REF als in sbom.yml.
+name: SBOM-inventaris
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SKILL_REPO: developer-overheid-nl/skills-sbom
+  SKILL_REF: b3ba90a7e644f1eb64bd059d6a166e1189836159 # v0.0.2-2-gb3ba90a (geen release-tag)
+  SKILL_DIR: .sbom-skill/skills/geonovum-sbom
+
+jobs:
+  controleren:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Skill ophalen
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ env.SKILL_REPO }}
+          ref: ${{ env.SKILL_REF }}
+          path: .sbom-skill
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Inventaris tegen de repository controleren
+        run: |
+          set +e
+          node "$SKILL_DIR/scripts/scan_repo.js" --inventory sbom-inventory.json --check > "$RUNNER_TEMP/inventaris.md"
+          status=$?
+          cat "$RUNNER_TEMP/inventaris.md"
+          cat "$RUNNER_TEMP/inventaris.md" >> "$GITHUB_STEP_SUMMARY"
+          exit $status
