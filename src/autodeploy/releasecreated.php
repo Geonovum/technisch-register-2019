@@ -226,9 +226,12 @@ if ($messageBody === false || strlen($messageBody) > $maxPayloadBytes) {
 // Only accept requests signed with the shared webhook secret (header X-Hub-Signature-256).
 // The repository URL in the payload is chosen by the sender, so repos.json alone does not
 // authenticate a request. Without a configured secret nothing is processed.
-$webhookSecret = is_readable($webhookSecretFile) ? trim(file_get_contents($webhookSecretFile)) : '';
+$webhookSecret = trim((string) getenv('REGISTER_WEBHOOK_SECRET'));
+if ($webhookSecret === '' && is_readable($webhookSecretFile)) {
+    $webhookSecret = trim(file_get_contents($webhookSecretFile));
+}
 if ($webhookSecret === '') {
-    respond(500, "Webhook not available", "secret file missing, empty or not readable: ".$webhookSecretFile);
+    respond(500, "Webhook not available", "REGISTER_WEBHOOK_SECRET not set, and secret file missing, empty or not readable: ".$webhookSecretFile);
 }
 // a valid header is exactly 'sha256=' followed by 64 hexadecimal characters
 $signature = isset($_SERVER['HTTP_X_HUB_SIGNATURE_256']) ? $_SERVER['HTTP_X_HUB_SIGNATURE_256'] : '';

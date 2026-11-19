@@ -1,0 +1,110 @@
+# Container-image van het technisch register, en uitrol naar ZAD.
+#
+# Bij elke pull request: het image bouwen en testen met docker/test-image.sh.
+# Bij een gepubliceerde release: bouwen, testen, naar GitHub Container Registry
+# (ghcr.io/geonovum/technisch-register-2019) met de release-tag, ondertekenen met een
+# build-attestatie, en uitrollen naar ZAD. Een pre-release wordt wel gebouwd en gepusht,
+# maar niet uitgerold.
+# Met de hand (Actions, "Run workflow"): bouwen en testen, en met een deployment-naam ook
+# pushen en uitrollen naar die deployment, bijvoorbeeld een test-deployment.
+#
+# De uitrol gebeurt alleen als de repository-variabele ZAD_PROJECT_ID is ingesteld. Nodig:
+#   variabele ZAD_PROJECT_ID   het project in ZAD (bijvoorbeeld technisch-register-abc)
+#   variabele ZAD_DEPLOYMENT   de deployment voor releases (standaard: production)
+#   variabele ZAD_COMPONENT    het component in ZAD (standaard: register)
+#   secret    ZAD_API_KEY      API-token van ZAD
+# Zie docker/README.md. De actions staan vast op een commit-hash; Dependabot werkt ze bij.
+name: Container
+
+on:
+  pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      deployment:
+        description: ZAD-deployment om naar uit te rollen; leeg is alleen bouwen en testen
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    outputs:
+      image: ${{ steps.push.outputs.image }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Image bouwen
+        run: docker build --pull -t register:test .
+
+      - name: Image testen
+        run: sh docker/test-image.sh register:test
+
+      - name: Naar GitHub Container Registry
+        id: push
+        if: github.event_name == 'release' || inputs.deployment != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          image="ghcr.io/${GITHUB_REPOSITORY,,}"
+          tags="sha-${GITHUB_SHA::12}${TAG:+ $TAG}"
+          echo "$GH_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          for t in $tags; do
+            docker tag register:test "$image:$t"
+            docker push --quiet "$image:$t"
+          done
+          docker logout ghcr.io
+          ref="$(docker inspect --format '{{index .RepoDigests 0}}' "$image:sha-${GITHUB_SHA::12}")"
+          echo "image=$ref" >> "$GITHUB_OUTPUT"
+          echo "name=$image" >> "$GITHUB_OUTPUT"
+          echo "digest=${ref#*@}" >> "$GITHUB_OUTPUT"
+          echo "Image: \`$ref\` (tags: $tags)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Ondertekenen met een build-attestatie
+        if: steps.push.outputs.digest != ''
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-name: ${{ steps.push.outputs.name }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
+
+  zad:
+    needs: image
+    if: >-
+      vars.ZAD_PROJECT_ID != '' && needs.image.outputs.image != '' && (
+        (github.event_name == 'release' && !github.event.release.prerelease) ||
+        (github.event_name == 'workflow_dispatch' && inputs.deployment != ''))
+    runs-on: ubuntu-latest
+    # De naam van de deployment is ook de naam van de GitHub-environment: zet daar
+    # beschermingsregels op, zoals een verplichte goedkeuring voor production.
+    environment:
+      name: ${{ github.event_name == 'release' && (vars.ZAD_DEPLOYMENT || 'production') || inputs.deployment }}
+      url: ${{ steps.deploy.outputs.url }}
+    concurrency:
+      group: zad-${{ github.event_name == 'release' && (vars.ZAD_DEPLOYMENT || 'production') || inputs.deployment }}
+      cancel-in-progress: false
+    steps:
+      - name: Uitrollen naar ZAD
+        id: deploy
+        uses: RijksICTGilde/zad-actions/deploy@0b604742a137d43f6fe8fceb06bdffeb0a1665db # v4.4.1
+        with:
+          api-key: ${{ secrets.ZAD_API_KEY }}
+          project-id: ${{ vars.ZAD_PROJECT_ID }}
+          deployment-name: ${{ github.event_name == 'release' && (vars.ZAD_DEPLOYMENT || 'production') || inputs.deployment }}
+          component: ${{ vars.ZAD_COMPONENT || 'register' }}
+          image: ${{ needs.image.outputs.image }}
+          wait-for-ready: true
+          health-endpoint: /resources/css/style.css
+          fail-on-warnings: true

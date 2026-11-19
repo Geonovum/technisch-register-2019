@@ -44,6 +44,9 @@ The [Guide for registry maintainers](https://github.com/Geonovum/technisch-regis
 ### Tips
 If users update files via FTP, make sure these users are part of the appropriate group with write access (e.g. by adding the user to the www-data group, like `sudo usermod -aG {group} {user}`
 
+## Container
+The register can also run as a rootless container (Apache with PHP 8.4, port 8080), for example on [ZAD](https://zad.rijksapp.nl). [`docker/README.md`](docker/README.md) [NL] describes the image, its settings, the ZAD project and the migration; [`.github/workflows/container.yml`](.github/workflows/container.yml) builds and tests the image, and on a release pushes it to GitHub Container Registry and deploys it to ZAD.
+
 ## Metadata and SBOM
 * [`publiccode.yml`](publiccode.yml) describes this software following the [publiccode.yml standard](https://publiccodeyml.github.io/v0/) (version 0.7), for catalogues of public sector software.
 * Every [GitHub release](https://github.com/Geonovum/technisch-register-2019/releases) carries an SBOM as `sbom.cdx.json` ([CycloneDX](https://cyclonedx.org/) 1.7) and `sbom.spdx.json` ([SPDX](https://spdx.dev/) 2.3), signed with a build attestation. They list the third-party components: Font Awesome 4.2.0 (loaded from a CDN by `index.php`), and PHP with its zip and openssl extensions and Apache HTTP Server (provided by the server). They follow the [2026 CISA minimum elements](https://www.cisa.gov/resources-tools/resources/2026-minimum-elements-software-bill-materials-sbom).
