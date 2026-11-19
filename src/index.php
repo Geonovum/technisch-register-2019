@@ -2,7 +2,17 @@
 // TODO: document config
 // how to deal with staging and production environment? Have a separate config for this?
 include './autodeploy/registerConfig.php';
-$urlparts = explode("/", $_GET['url']);
+// Escape text for HTML: everything from the URL and from the JSON configuration goes through h().
+if (!function_exists('h')) {
+  function h($text) { return htmlspecialchars((string) $text, ENT_QUOTES, 'UTF-8'); }
+}
+// Only accept the names the rewrite rules produce (cluster, cluster/repo, cluster/index.html);
+// anything else is the index page.
+$url = (isset($_GET['url']) && is_string($_GET['url'])) ? $_GET['url'] : '';
+if (!preg_match('#\A[A-Za-z0-9_-]+(/([A-Za-z0-9_-]+|index\.html))?/?\z#', $url)) {
+  $url = '';
+}
+$urlparts = explode("/", rtrim($url, "/"));
 $cluster = False;
 $indexPage = True;
 $clusterPage = False;
@@ -69,19 +79,19 @@ if (count($urlparts) > 0 ) {
    </div>
    <div id="breadctxt_container">
     <div id="breadctxt">
-     <a href="<?=$baseURL;?>">
+     <a href="<?=h($baseURL);?>">
       Technisch register voor geo-standaarden in Nederland
      </a>
      <?php if ($cluster) { ?>
        &gt;
-       <a href="<?=$baseURL;?><?=$cluster?>">
-        <?=$clusterData["titel_kort"];?>
+       <a href="<?=h($baseURL.$cluster);?>">
+        <?=h(isset($clusterData["titel_kort"]) ? $clusterData["titel_kort"] : '');?>
        </a>
      <?php } ?>
-     <?php if ($repo && $repo!=$cluster) { ?>
+     <?php if ($repo && $repo!=$cluster && $repoData) { ?>
        &gt;
-       <a href="<?=$baseURL;?><?=$cluster."/".$repoData["id"]?>">
-        <?=$repoData["titel_kort"];?>
+       <a href="<?=h($baseURL.$cluster."/".$repoData["id"]);?>">
+        <?=h($repoData["titel_kort"]);?>
        </a>
      <?php } ?>
     </div>
@@ -123,14 +133,14 @@ if (count($urlparts) > 0 ) {
              </i>
              <span style="margin-left: 25px">
             <?php
-              echo '<a href="./'.$cluster.'/'.$model["id"].'">';
-              echo $model["titel_kort"].'</a>' ; //BRT
+              echo '<a href="./'.h($cluster.'/'.$model["id"]).'">';
+              echo h($model["titel_kort"]).'</a>' ; //BRT
               ?>
              </span>
             </p>
             <p>
              <span style="margin-left:37px; width: 100%">
-               <?= $model["beschrijving_kort"];?>
+               <?= h($model["beschrijving_kort"]);?>
              </span>
             </p>
             <?php
@@ -146,14 +156,14 @@ if (count($urlparts) > 0 ) {
            </i>
            <span style="margin-left: 25px">
           <?php
-            echo '<a href="./'.$cluster["id"].'/index.html">';
-            echo $cluster["titel_kort"].'</a>' ; //BRT
+            echo '<a href="./'.h($cluster["id"]).'/index.html">';
+            echo h($cluster["titel_kort"]).'</a>' ; //BRT
             ?>
            </span>
           </p>
           <p>
            <span style="margin-left:37px; width: 100%">
-             <?= $cluster["beschrijving_kort"];?>
+             <?= h($cluster["beschrijving_kort"]);?>
            </span>
           </p>
         <?php
@@ -171,10 +181,10 @@ if (count($urlparts) > 0 ) {
       ?>
       <div>
       <h2>
-       <?=$clusterData["titel"];?>
+       <?=h(isset($clusterData["titel"]) ? $clusterData["titel"] : '');?>
       </h2>
       <p>
-       <?=$clusterData["beschrijving"];?>
+       <?=h(isset($clusterData["beschrijving"]) ? $clusterData["beschrijving"] : '');?>
       </p>
          </div>
          <div id="container">
