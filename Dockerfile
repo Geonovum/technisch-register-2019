@@ -7,7 +7,7 @@
 # Zie docker/README.md voor de instellingen.
 
 # Het basisimage staat vast op een digest; Dependabot opent een pull request bij een nieuwe.
-FROM php:8.4-apache@sha256:884f64b47174de2c0e813270fe7b24a18605729fcebe201302d98c38805530d0
+FROM php:8.5-apache@sha256:08af36df144462d84c7f16190557eec06cb9f656882685610b712a15eec54d46
 
 LABEL org.opencontainers.image.title="Technisch register" \
       org.opencontainers.image.description="Technisch register voor geo-standaarden (register.geostandaarden.nl)" \
