@@ -1,7 +1,10 @@
 # SBOM bij elke release, gemaakt met de skill geonovum-sbom.
 #
-# Bij het publiceren van een release maakt deze workflow uit sbom-inventory.json
-# een CycloneDX 1.7- en een SPDX 2.3-SBOM, met de release-tag als productversie.
+# Bij het publiceren van een release controleert deze workflow eerst of
+# sbom-inventory.json nog klopt met de repository: staat er een bestand van derden
+# in de repo dat de inventaris niet noemt, of noemt de inventaris een bestand dat
+# weg is, dan stopt hij. Anders maakt hij uit de inventaris een CycloneDX 1.7- en
+# een SPDX 2.3-SBOM, met de release-tag als productversie.
 # Hij valideert beide, ondertekent ze met een build-attestatie van GitHub en hangt
 # ze als asset aan de release. De SBOMs worden niet gecommit: een gecommitte SBOM
 # beschrijft alleen het moment van committen en raakt daarna verouderd.
@@ -26,7 +29,7 @@ permissions:
 
 env:
   SKILL_REPO: developer-overheid-nl/skills-sbom
-  SKILL_REF: 0d265b221314d6fa8e4b70b6d864a459778e0cb4 # v0.0.2
+  SKILL_REF: b3ba90a7e644f1eb64bd059d6a166e1189836159 # v0.0.2-2-gb3ba90a (geen release-tag)
   SKILL_DIR: .sbom-skill/skills/geonovum-sbom
 
 jobs:
@@ -56,6 +59,18 @@ jobs:
           node-version: 24
           package-manager-cache: false
 
+      # Een verouderde inventaris levert een geldige maar onjuiste SBOM op. Deze stap
+      # vergelijkt de inventaris met wat scan_repo.js in de repository vindt en
+      # faalt bij verschillen. Waarschuwingen komen in de samenvatting van de run.
+      - name: Inventaris tegen de repository controleren
+        run: |
+          set +e
+          node "$SKILL_DIR/scripts/scan_repo.js" --inventory sbom-inventory.json --check > "$RUNNER_TEMP/inventaris.md"
+          status=$?
+          cat "$RUNNER_TEMP/inventaris.md"
+          cat "$RUNNER_TEMP/inventaris.md" >> "$GITHUB_STEP_SUMMARY"
+          exit $status
+
       # Heeft de repository een lockfile of een manifest zonder vaste versies, bouw
       # of installeer dan hier zoals de release wordt gebouwd, en laat een tool de
       # geïnstalleerde boom lezen. Pas dan staan de versies in de SBOM die echt
@@ -71,7 +86,7 @@ jobs:
         env:
           VERSION: ${{ github.event.release.tag_name }}
         run: |
-          node "$SKILL_DIR/scripts/build_sbom.js" sbom-inventory.json --out "$RUNNER_TEMP/sbom" ${VERSION:+--version "$VERSION"}
+          node "$SKILL_DIR/scripts/build_sbom.js" sbom-inventory.json --out "$RUNNER_TEMP/sbom" --strict ${VERSION:+--version "$VERSION"}
           cat "$RUNNER_TEMP/sbom/sbom-gaps.md" >> "$GITHUB_STEP_SUMMARY"
 
       - name: SBOM valideren

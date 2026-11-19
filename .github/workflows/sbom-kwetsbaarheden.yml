@@ -31,7 +31,7 @@ permissions:
 
 env:
   SKILL_REPO: developer-overheid-nl/skills-sbom
-  SKILL_REF: 0d265b221314d6fa8e4b70b6d864a459778e0cb4 # v0.0.2
+  SKILL_REF: b3ba90a7e644f1eb64bd059d6a166e1189836159 # v0.0.2-2-gb3ba90a (geen release-tag)
   SKILL_DIR: .sbom-skill/skills/geonovum-sbom
 
 jobs:
